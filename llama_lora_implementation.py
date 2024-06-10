@@ -89,7 +89,7 @@ from peft import LoraConfig, get_peft_model
 config = LoraConfig(
     r=8,
     lora_alpha=16,
-    target_modules=["query_key_value"],
+    target_modules=["q_proj", "k_proj"],
     lora_dropout=0.05,
     bias="none",
     task_type="CAUSAL_LM"
@@ -100,8 +100,9 @@ print_trainable_parameters(model)
 
 """#### Load Sample Dataset"""
 
+import datasets
 from datasets import load_dataset
-
+datasets.builder.has_sufficient_disk_space = lambda needed_bytes, directory='.': True
 qa_dataset = load_dataset("squad_v2")
 
 """```

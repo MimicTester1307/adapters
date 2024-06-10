@@ -11,13 +11,13 @@ Original file is located at
 #### Install Dependencies
 """
 
-!pip install -q bitsandbytes datasets accelerate loralib
-!pip install -q git+https://github.com/huggingface/peft.git git+https://github.com/huggingface/transformers.git
+#!pip install -q bitsandbytes datasets accelerate loralib
+#!pip install -q git+https://github.com/huggingface/peft.git git+https://github.com/huggingface/transformers.git
 
 """#### Confirm CUDA"""
 
 import torch
-torch.cuda.is_available()
+print(torch.cuda.is_available())
 
 """#### Load Base Model"""
 
@@ -30,6 +30,24 @@ from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-13b-chat-hf")
 model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-13b-chat-hf")
+
+## cuda summary 
+
+import sys
+from subprocess import call
+print('_____Python, Pytorch, Cuda info____')
+print('__Python VERSION:', sys.version)
+print('__pyTorch VERSION:', torch.__version__)
+print('__CUDA RUNTIME API VERSION')
+#os.system('nvcc --version')
+print('__CUDNN VERSION:', torch.backends.cudnn.version())
+print('_____nvidia-smi GPU details____')
+call(["nvidia-smi", "--format=csv", "--query-gpu=index,name,driver_version,memory.total,memory.used,memory.free"])
+print('_____Device assignments____')
+print('Number CUDA Devices:', torch.cuda.device_count())
+print ('Current cuda device: ', torch.cuda.current_device(), ' **May not correspond to nvidia-smi ID above, check visibility parameter')
+print("Device name: ", torch.cuda.get_device_name(torch.cuda.current_device()))
+
 
 """##### View Model Summary"""
 
@@ -110,85 +128,85 @@ mapped_qa_dataset = qa_dataset.map(lambda samples: tokenizer(create_prompt(sampl
 
 """#### Train LoRA"""
 
-import transformers
+# import transformers
 
-trainer = transformers.Trainer(
-    model=model,
-    train_dataset=mapped_qa_dataset["train"],
-    args=transformers.TrainingArguments(
-        per_device_train_batch_size=4,
-        gradient_accumulation_steps=4,
-        warmup_steps=100,
-        max_steps=100,
-        learning_rate=1e-3,
-        fp16=True,
-        logging_steps=1,
-        output_dir='outputs',
-    ),
-    data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
-)
-model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
-trainer.train()
+# trainer = transformers.Trainer(
+#     model=model,
+#     train_dataset=mapped_qa_dataset["train"],
+#     args=transformers.TrainingArguments(
+#         per_device_train_batch_size=4,
+#         gradient_accumulation_steps=4,
+#         warmup_steps=100,
+#         max_steps=100,
+#         learning_rate=1e-3,
+#         fp16=True,
+#         logging_steps=1,
+#         output_dir='outputs',
+#     ),
+#     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
+# )
+# model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
+# trainer.train()
 
-HUGGING_FACE_USER_NAME = ""
+# HUGGING_FACE_USER_NAME = ""
 
-from huggingface_hub import notebook_login
-notebook_login()
+# from huggingface_hub import notebook_login
+# notebook_login()
 
-model_name = ""
+# model_name = ""
 
-model.push_to_hub(f"{HUGGING_FACE_USER_NAME}/{model_name}", use_auth_token=True)
+# model.push_to_hub(f"{HUGGING_FACE_USER_NAME}/{model_name}", use_auth_token=True)
 
-import torch
-from peft import PeftModel, PeftConfig
-from transformers import AutoModelForCausalLM, AutoTokenizer
+# import torch
+# from peft import PeftModel, PeftConfig
+# from transformers import AutoModelForCausalLM, AutoTokenizer
 
-peft_model_id = f"{HUGGING_FACE_USER_NAME}/{model_name}"
-config = PeftConfig.from_pretrained(peft_model_id)
-model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=False, device_map='auto')
-tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
+# peft_model_id = f"{HUGGING_FACE_USER_NAME}/{model_name}"
+# config = PeftConfig.from_pretrained(peft_model_id)
+# model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=False, device_map='auto')
+# tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
-# Load the Lora model
-qa_model = PeftModel.from_pretrained(model, peft_model_id)
+# # Load the Lora model
+# qa_model = PeftModel.from_pretrained(model, peft_model_id)
 
-from IPython.display import display, Markdown
+# from IPython.display import display, Markdown
 
-def make_inference(context, question):
-  batch = tokenizer(f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n", return_tensors='pt')
+# def make_inference(context, question):
+#   batch = tokenizer(f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n", return_tensors='pt')
 
-  with torch.cuda.amp.autocast():
-    output_tokens = qa_model.generate(**batch, max_new_tokens=200)
+#   with torch.cuda.amp.autocast():
+#     output_tokens = qa_model.generate(**batch, max_new_tokens=200)
 
-  display(Markdown((tokenizer.decode(output_tokens[0], skip_special_tokens=True))))
+#   display(Markdown((tokenizer.decode(output_tokens[0], skip_special_tokens=True))))
 
-context = "Cheese is the best food."
-question = "What is the best food?"
+# context = "Cheese is the best food."
+# question = "What is the best food?"
 
-make_inference(context, question)
+# make_inference(context, question)
 
-context = "Cheese is the best food."
-question = "How far away is the Moon from the Earth?"
+# context = "Cheese is the best food."
+# question = "How far away is the Moon from the Earth?"
 
-make_inference(context, question)
+# make_inference(context, question)
 
-context = "The Moon orbits Earth at an average distance of 384,400 km (238,900 mi), or about 30 times Earth's diameter. Its gravitational influence is the main driver of Earth's tides and very slowly lengthens Earth's day. The Moon's orbit around Earth has a sidereal period of 27.3 days. During each synodic period of 29.5 days, the amount of visible surface illuminated by the Sun varies from none up to 100%, resulting in lunar phases that form the basis for the months of a lunar calendar. The Moon is tidally locked to Earth, which means that the length of a full rotation of the Moon on its own axis causes its same side (the near side) to always face Earth, and the somewhat longer lunar day is the same as the synodic period. However, 59% of the total lunar surface can be seen from Earth through cyclical shifts in perspective known as libration."
-question = "At what distance does the Moon orbit the Earth?"
+# context = "The Moon orbits Earth at an average distance of 384,400 km (238,900 mi), or about 30 times Earth's diameter. Its gravitational influence is the main driver of Earth's tides and very slowly lengthens Earth's day. The Moon's orbit around Earth has a sidereal period of 27.3 days. During each synodic period of 29.5 days, the amount of visible surface illuminated by the Sun varies from none up to 100%, resulting in lunar phases that form the basis for the months of a lunar calendar. The Moon is tidally locked to Earth, which means that the length of a full rotation of the Moon on its own axis causes its same side (the near side) to always face Earth, and the somewhat longer lunar day is the same as the synodic period. However, 59% of the total lunar surface can be seen from Earth through cyclical shifts in perspective known as libration."
+# question = "At what distance does the Moon orbit the Earth?"
 
-make_inference(context, question)
+# make_inference(context, question)
 
-marketmail_model = PeftModel.from_pretrained(model, "c-s-ale/bloom-7b1-marketmail-ai")
+# marketmail_model = PeftModel.from_pretrained(model, "c-s-ale/bloom-7b1-marketmail-ai")
 
-from IPython.display import display, Markdown
+# from IPython.display import display, Markdown
 
-def make_inference_mm_ai(product, description):
-  batch = tokenizer(f"Below is a product and description, please write a marketing email for this product.\n\n### Product:\n{product}\n### Description:\n{description}\n\n### Marketing Email:\n", return_tensors='pt')
+# def make_inference_mm_ai(product, description):
+#   batch = tokenizer(f"Below is a product and description, please write a marketing email for this product.\n\n### Product:\n{product}\n### Description:\n{description}\n\n### Marketing Email:\n", return_tensors='pt')
 
-  with torch.cuda.amp.autocast():
-    output_tokens = marketmail_model.generate(**batch, max_new_tokens=200)
+#   with torch.cuda.amp.autocast():
+#     output_tokens = marketmail_model.generate(**batch, max_new_tokens=200)
 
-  display(Markdown((tokenizer.decode(output_tokens[0], skip_special_tokens=True))))
+#   display(Markdown((tokenizer.decode(output_tokens[0], skip_special_tokens=True))))
 
-your_product_name_here = "The Coolinator"
-your_product_description_here = "A personal cooling device to keep you from getting overheated on a hot summer's day!"
+# your_product_name_here = "The Coolinator"
+# your_product_description_here = "A personal cooling device to keep you from getting overheated on a hot summer's day!"
 
-make_inference_mm_ai(your_product_name_here, your_product_description_here)
+# make_inference_mm_ai(your_product_name_here, your_product_description_here)

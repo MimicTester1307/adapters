@@ -129,25 +129,25 @@ mapped_qa_dataset = qa_dataset.map(lambda samples: tokenizer(create_prompt(sampl
 
 """#### Train LoRA"""
 
-# import transformers
+import transformers
 
-# trainer = transformers.Trainer(
-#     model=model,
-#     train_dataset=mapped_qa_dataset["train"],
-#     args=transformers.TrainingArguments(
-#         per_device_train_batch_size=4,
-#         gradient_accumulation_steps=4,
-#         warmup_steps=100,
-#         max_steps=100,
-#         learning_rate=1e-3,
-#         fp16=True,
-#         logging_steps=1,
-#         output_dir='outputs',
-#     ),
-#     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
-# )
-# model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
-# trainer.train()
+trainer = transformers.Trainer(
+    model=model,
+    train_dataset=mapped_qa_dataset["train"],
+    args=transformers.TrainingArguments(
+        per_device_train_batch_size=4,
+        gradient_accumulation_steps=4,
+        warmup_steps=100,
+        max_steps=100,
+        learning_rate=1e-3,
+        fp16=True,
+        logging_steps=1,
+        output_dir='outputs',
+    ),
+    data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
+)
+model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
+trainer.train()
 
 # HUGGING_FACE_USER_NAME = ""
 

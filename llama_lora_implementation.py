@@ -181,10 +181,10 @@ def make_inference(context, question):
   batch = tokenizer(f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n", return_tensors='pt')
   
   with torch.cuda.amp.autocast():
-    input_ids = input_ids.to('cuda')
     output_tokens = qa_model.generate(**batch, max_new_tokens=200)
 
-  display(Markdown((tokenizer.decode(output_tokens[0], skip_special_tokens=True))))
+  print((tokenizer.decode(output_tokens[0], skip_special_tokens=True)))
+  return
 
 context = "Cheese is the best food."
 question = "What is the best food?"

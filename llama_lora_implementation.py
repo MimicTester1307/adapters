@@ -152,7 +152,8 @@ trainer = transformers.Trainer(
 )
 model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
 trainer.train()
-model.push_to_hub("llama2-7b-adapter-trained")
+access_token = "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"
+model.push_to_hub("llama2-7b-adapter-trained", token = access_token)
 
 # HUGGING_FACE_USER_NAME = ""
 

@@ -16,145 +16,145 @@ Original file is located at
 
 """#### Confirm CUDA"""
 
-import torch
-print(torch.cuda.is_available())
+# import torch
+# print(torch.cuda.is_available())
 
-"""#### Load Base Model"""
+# """#### Load Base Model"""
 
-import os
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
-import torch
-import torch.nn as nn
-import bitsandbytes as bnb
-from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
-from IPython.display import display, Markdown
+# import os
+# os.environ["CUDA_VISIBLE_DEVICES"]="0"
+# import torch
+# import torch.nn as nn
+# import bitsandbytes as bnb
+# from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
+# from IPython.display import display, Markdown
 
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
+# tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
+# model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
 
-tokenizer.pad_token = tokenizer.eos_token
+# tokenizer.pad_token = tokenizer.eos_token
 
-## cuda summary 
+# ## cuda summary 
 
-import sys
-from subprocess import call
-print('_____Python, Pytorch, Cuda info____')
-print('__Python VERSION:', sys.version)
-print('__pyTorch VERSION:', torch.__version__)
-print('__CUDA RUNTIME API VERSION')
-#os.system('nvcc --version')
-print('__CUDNN VERSION:', torch.backends.cudnn.version())
-print('_____nvidia-smi GPU details____')
-call(["nvidia-smi", "--format=csv", "--query-gpu=index,name,driver_version,memory.total,memory.used,memory.free"])
-print('_____Device assignments____')
-print('Number CUDA Devices:', torch.cuda.device_count())
-print ('Current cuda device: ', torch.cuda.current_device(), ' **May not correspond to nvidia-smi ID above, check visibility parameter')
-print("Device name: ", torch.cuda.get_device_name(torch.cuda.current_device()))
+# import sys
+# from subprocess import call
+# print('_____Python, Pytorch, Cuda info____')
+# print('__Python VERSION:', sys.version)
+# print('__pyTorch VERSION:', torch.__version__)
+# print('__CUDA RUNTIME API VERSION')
+# #os.system('nvcc --version')
+# print('__CUDNN VERSION:', torch.backends.cudnn.version())
+# print('_____nvidia-smi GPU details____')
+# call(["nvidia-smi", "--format=csv", "--query-gpu=index,name,driver_version,memory.total,memory.used,memory.free"])
+# print('_____Device assignments____')
+# print('Number CUDA Devices:', torch.cuda.device_count())
+# print ('Current cuda device: ', torch.cuda.current_device(), ' **May not correspond to nvidia-smi ID above, check visibility parameter')
+# print("Device name: ", torch.cuda.get_device_name(torch.cuda.current_device()))
 
 
-"""##### View Model Summary"""
+# """##### View Model Summary"""
 
-print(model)
+# print(model)
 
-for param in model.parameters():
-  param.requires_grad = False  # freeze the model - train adapters later
-  if param.ndim == 1:
-    # cast the small parameters (e.g. layernorm) to fp32 for stability
-    param.data = param.data.to(torch.float32)
+# for param in model.parameters():
+#   param.requires_grad = False  # freeze the model - train adapters later
+#   if param.ndim == 1:
+#     # cast the small parameters (e.g. layernorm) to fp32 for stability
+#     param.data = param.data.to(torch.float32)
 
-model.gradient_checkpointing_enable()  # reduce number of stored activations
-model.enable_input_require_grads()
+# model.gradient_checkpointing_enable()  # reduce number of stored activations
+# model.enable_input_require_grads()
 
-class CastOutputToFloat(nn.Sequential):
-  def forward(self, x): return super().forward(x).to(torch.float32)
-model.lm_head = CastOutputToFloat(model.lm_head)
+# class CastOutputToFloat(nn.Sequential):
+#   def forward(self, x): return super().forward(x).to(torch.float32)
+# model.lm_head = CastOutputToFloat(model.lm_head)
 
-"""#### Helper Function"""
+# """#### Helper Function"""
 
-def print_trainable_parameters(model):
-    """
-    Prints the number of trainable parameters in the model.
-    """
-    trainable_params = 0
-    all_param = 0
-    for _, param in model.named_parameters():
-        all_param += param.numel()
-        if param.requires_grad:
-            trainable_params += param.numel()
-    print(
-        f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param}"
-    )
+# def print_trainable_parameters(model):
+#     """
+#     Prints the number of trainable parameters in the model.
+#     """
+#     trainable_params = 0
+#     all_param = 0
+#     for _, param in model.named_parameters():
+#         all_param += param.numel()
+#         if param.requires_grad:
+#             trainable_params += param.numel()
+#     print(
+#         f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param}"
+#     )
 
-"""#### Obtain LoRA Model"""
+# """#### Obtain LoRA Model"""
 
-from peft import LoraConfig, get_peft_model
+# from peft import LoraConfig, get_peft_model
 
-config = LoraConfig(
-    r=8,
-    lora_alpha=16,
-    target_modules=["q_proj", "k_proj"],
-    lora_dropout=0.05,
-    bias="none",
-    task_type="CAUSAL_LM"
-)
+# config = LoraConfig(
+#     r=8,
+#     lora_alpha=16,
+#     target_modules=["q_proj", "k_proj"],
+#     lora_dropout=0.05,
+#     bias="none",
+#     task_type="CAUSAL_LM"
+# )
 
-model = get_peft_model(model, config)
-print_trainable_parameters(model)
+# model = get_peft_model(model, config)
+# print_trainable_parameters(model)
 
-"""#### Load Sample Dataset"""
+# """#### Load Sample Dataset"""
 
-import datasets
-from datasets import load_dataset
-datasets.builder.has_sufficient_disk_space = lambda needed_bytes, directory='.': True
-qa_dataset = load_dataset("squad_v2")
+# import datasets
+# from datasets import load_dataset
+# datasets.builder.has_sufficient_disk_space = lambda needed_bytes, directory='.': True
+# qa_dataset = load_dataset("squad_v2")
 
-"""```
-### CONTEXT
-{context}
+# """```
+# ### CONTEXT
+# {context}
 
-### QUESTION
-{question}
+# ### QUESTION
+# {question}
 
-### ANSWER
-{answer}</s>
-```
-"""
+# ### ANSWER
+# {answer}</s>
+# ```
+# """
 
-def create_prompt(context, question, answer):
-  if len(answer["text"]) < 1:
-    answer = "Cannot Find Answer"
-  else:
-    answer = answer["text"][0]
-  prompt_template = f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n{answer}</s>"
-  return prompt_template
+# def create_prompt(context, question, answer):
+#   if len(answer["text"]) < 1:
+#     answer = "Cannot Find Answer"
+#   else:
+#     answer = answer["text"][0]
+#   prompt_template = f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n{answer}</s>"
+#   return prompt_template
 
-mapped_qa_dataset = qa_dataset.map(lambda samples: tokenizer(create_prompt(samples['context'], samples['question'], samples['answers'])))
+# mapped_qa_dataset = qa_dataset.map(lambda samples: tokenizer(create_prompt(samples['context'], samples['question'], samples['answers'])))
 
-"""#### Train LoRA"""
+# """#### Train LoRA"""
 
-import transformers
+# import transformers
 
-trainer = transformers.Trainer(
-    model=model,
-    train_dataset=mapped_qa_dataset["train"],
-    args=transformers.TrainingArguments(
-        per_device_train_batch_size=4,
-        gradient_accumulation_steps=4,
-        warmup_steps=100,
-        max_steps=100,
-        learning_rate=1e-3,
-        fp16=True,
-        logging_steps=1,
-        output_dir='outputs',
-        use_cpu=False,
-        # push_to_hub=True,
-    ),
-    data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
-)
-model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
-trainer.train()
-access_token = "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"
-model.push_to_hub("schaturv/llama2-7b-adapter-trained", token = access_token)
+# trainer = transformers.Trainer(
+#     model=model,
+#     train_dataset=mapped_qa_dataset["train"],
+#     args=transformers.TrainingArguments(
+#         per_device_train_batch_size=4,
+#         gradient_accumulation_steps=4,
+#         warmup_steps=100,
+#         max_steps=100,
+#         learning_rate=1e-3,
+#         fp16=True,
+#         logging_steps=1,
+#         output_dir='outputs',
+#         use_cpu=False,
+#         # push_to_hub=True,
+#     ),
+#     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
+# )
+# model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
+# trainer.train()
+# access_token = "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"
+# model.push_to_hub("schaturv/llama2-7b-adapter-trained", token = access_token)
 
 # HUGGING_FACE_USER_NAME = ""
 

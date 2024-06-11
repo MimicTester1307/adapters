@@ -27,6 +27,7 @@ import torch
 import torch.nn as nn
 import bitsandbytes as bnb
 from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
+from IPython.display import display, Markdown
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
 model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
@@ -175,8 +176,6 @@ tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 
 # Load the Lora model
 qa_model = PeftModel.from_pretrained(model, peft_model_id)
-
-from IPython.display import display, Markdown
 
 def make_inference(context, question):
   batch = tokenizer(f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n", return_tensors='pt')

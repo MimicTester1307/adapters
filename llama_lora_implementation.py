@@ -146,26 +146,28 @@ trainer = transformers.Trainer(
         logging_steps=1,
         output_dir='outputs',
         use_cpu=True,
+        push_to_hub=True,
     ),
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
 )
 model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
 trainer.train()
+model.push_to_hub("llama2-7b-adapter-trained")
 
-HUGGING_FACE_USER_NAME = ""
+# HUGGING_FACE_USER_NAME = ""
 
-from huggingface_hub import notebook_login
-notebook_login()
+# from huggingface_hub import notebook_login
+# notebook_login()
 
-model_name = ""
+# model_name = ""
 
-model.push_to_hub(f"{HUGGING_FACE_USER_NAME}/{model_name}", use_auth_token=True)
+# model.push_to_hub(f"{HUGGING_FACE_USER_NAME}/{model_name}", use_auth_token=True)
 
 import torch
 from peft import PeftModel, PeftConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-peft_model_id = f"{HUGGING_FACE_USER_NAME}/{model_name}"
+peft_model_id = f"schaturv/llama2-7b-adapter-trained"
 config = PeftConfig.from_pretrained(peft_model_id)
 model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path, return_dict=True, load_in_8bit=False, device_map='auto')
 tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
@@ -198,7 +200,7 @@ question = "At what distance does the Moon orbit the Earth?"
 
 make_inference(context, question)
 
-marketmail_model = PeftModel.from_pretrained(model, "c-s-ale/bloom-7b1-marketmail-ai")
+marketmail_model = PeftModel.from_pretrained(model, "winddude/wizardLM-LlaMA-LoRA-7B")
 
 from IPython.display import display, Markdown
 

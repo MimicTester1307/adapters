@@ -177,7 +177,8 @@ tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 # Load the Lora model
 qa_model = PeftModel.from_pretrained(model, peft_model_id)
 
-f = open("llama_inference_outputs.txt", "w")
+f = open("dummy_llama_inference_outputs.txt", "w")
+
 def make_inference(context, question):
   batch = tokenizer(f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n", return_tensors='pt')
   

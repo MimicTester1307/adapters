@@ -197,12 +197,14 @@ question = "How far away is the Moon from the Earth?"
 
 make_inference(context, question)
 
-context = "The Moon orbits Earth at an average distance of 384,400 km (238,900 mi), or about 30 times Earth's diameter. Its gravitational influence is the main driver of Earth's tides and very slowly lengthens Earth's day. The Moon's orbit around Earth has a sidereal period of 27.3 days. During each synodic period of 29.5 days, the amount of visible surface illuminated by the Sun varies from none up to 100%, resulting in lunar phases that form the basis for the months of a lunar calendar. The Moon is tidally locked to Earth, which means that the length of a full rotation of the Moon on its own axis causes its same side (the near side) to always face Earth, and the somewhat longer lunar day is the same as the synodic period. However, 59% of the total lunar surface can be seen from Earth through cyclical shifts in perspective known as libration."
-question = "At what distance does the Moon orbit the Earth?"
+moon_context = "The Moon orbits Earth at an average distance of 384,400 km (238,900 mi), or about 30 times Earth's diameter. Its gravitational influence is the main driver of Earth's tides and very slowly lengthens Earth's day. The Moon's orbit around Earth has a sidereal period of 27.3 days. During each synodic period of 29.5 days, the amount of visible surface illuminated by the Sun varies from none up to 100%, resulting in lunar phases that form the basis for the months of a lunar calendar. The Moon is tidally locked to Earth, which means that the length of a full rotation of the Moon on its own axis causes its same side (the near side) to always face Earth, and the somewhat longer lunar day is the same as the synodic period. However, 59% of the total lunar surface can be seen from Earth through cyclical shifts in perspective known as libration."
+moon_question = "At what distance does the Moon orbit the Earth?"
 
-make_inference(context, question)
+make_inference(moon_context, moon_question)
 
-marketmail_model = PeftModel.from_pretrained(model, "winddude/wizardLM-LlaMA-LoRA-7B")
+marketmail_model = PeftModel.from_pretrained(model, "meta-llama/Llama-2-7b-chat-hf")
+
+f.write("Pretrained Llama Model/n")
 
 def make_inference_mm_ai(product, description):
   batch = tokenizer(f"Below is a product and description, please write a marketing email for this product.\n\n### Product:\n{product}\n### Description:\n{description}\n\n### Marketing Email:\n", return_tensors='pt')
@@ -210,10 +212,13 @@ def make_inference_mm_ai(product, description):
   with torch.cuda.amp.autocast():
     output_tokens = marketmail_model.generate(**batch, max_new_tokens=200)
 
-  print((tokenizer.decode(output_tokens[0], skip_special_tokens=True)))
+  f.write(tokenizer.decode(output_tokens[0], skip_special_tokens=True))
+
+make_inference_mm_ai(moon_context, moon_question)
 
 your_product_name_here = "The Coolinator"
 your_product_description_here = "A personal cooling device to keep you from getting overheated on a hot summer's day!"
 
 make_inference_mm_ai(your_product_name_here, your_product_description_here)
+
 f.close()

@@ -185,6 +185,7 @@ def make_inference(context, question):
   with torch.cuda.amp.autocast():
     output_tokens = qa_model.generate(**batch, max_new_tokens=200)
 
+  print(tokenizer.decode(output_tokens[0], skip_special_tokens=True))
   f.write((tokenizer.decode(output_tokens[0], skip_special_tokens=True)))
   return
 
@@ -203,9 +204,19 @@ moon_question = "At what distance does the Moon orbit the Earth?"
 
 make_inference(moon_context, moon_question)
 
-marketmail_model = PeftModel.from_pretrained(model, "haoranxu/ALMA-7B-Pretrain-LoRA")
+llama_lora_model = PeftModel.from_pretrained(model, "haoranxu/ALMA-7B-Pretrain-LoRA")
 
-f.write("Pretrained Llama Model/n")
+def peft_make_inference(context, question):
+  batch = tokenizer(f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n", return_tensors='pt')
+  
+  with torch.cuda.amp.autocast():
+    output_tokens = llama_lora_model.generate(**batch, max_new_tokens=200)
+
+  print(tokenizer.decode(output_tokens[0], skip_special_tokens=True))
+  f.write((tokenizer.decode(output_tokens[0], skip_special_tokens=True)))
+  return
+
+f.write("\nPretrained Llama Model\n")
 
 def make_inference_mm_ai(product, description):
   batch = tokenizer(f"Below is a product and description, please write a marketing email for this product.\n\n### Product:\n{product}\n### Description:\n{description}\n\n### Marketing Email:\n", return_tensors='pt')
@@ -215,7 +226,7 @@ def make_inference_mm_ai(product, description):
 
   f.write(tokenizer.decode(output_tokens[0], skip_special_tokens=True))
 
-make_inference_mm_ai(moon_context, moon_question)
+peft_make_inference(moon_context, moon_question)
 
 your_product_name_here = "The Coolinator"
 your_product_description_here = "A personal cooling device to keep you from getting overheated on a hot summer's day!"

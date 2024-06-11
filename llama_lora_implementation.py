@@ -177,13 +177,14 @@ tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
 # Load the Lora model
 qa_model = PeftModel.from_pretrained(model, peft_model_id)
 
+f = open("llama_inference_outputs.txt", "w")
 def make_inference(context, question):
   batch = tokenizer(f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n", return_tensors='pt')
   
   with torch.cuda.amp.autocast():
     output_tokens = qa_model.generate(**batch, max_new_tokens=200)
 
-  print((tokenizer.decode(output_tokens[0], skip_special_tokens=True)))
+  f.write((tokenizer.decode(output_tokens[0], skip_special_tokens=True)))
   return
 
 context = "Cheese is the best food."
@@ -203,17 +204,16 @@ make_inference(context, question)
 
 marketmail_model = PeftModel.from_pretrained(model, "winddude/wizardLM-LlaMA-LoRA-7B")
 
-from IPython.display import display, Markdown
-
 def make_inference_mm_ai(product, description):
   batch = tokenizer(f"Below is a product and description, please write a marketing email for this product.\n\n### Product:\n{product}\n### Description:\n{description}\n\n### Marketing Email:\n", return_tensors='pt')
 
   with torch.cuda.amp.autocast():
     output_tokens = marketmail_model.generate(**batch, max_new_tokens=200)
 
-  display(Markdown((tokenizer.decode(output_tokens[0], skip_special_tokens=True))))
+  print((tokenizer.decode(output_tokens[0], skip_special_tokens=True))))
 
 your_product_name_here = "The Coolinator"
 your_product_description_here = "A personal cooling device to keep you from getting overheated on a hot summer's day!"
 
 make_inference_mm_ai(your_product_name_here, your_product_description_here)
+f.close()

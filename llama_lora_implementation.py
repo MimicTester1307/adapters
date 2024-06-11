@@ -145,7 +145,7 @@ trainer = transformers.Trainer(
         fp16=True,
         logging_steps=1,
         output_dir='outputs',
-        use_cpu=True,
+        use_cpu=False,
         push_to_hub=True,
     ),
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)

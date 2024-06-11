@@ -179,7 +179,7 @@ qa_model = PeftModel.from_pretrained(model, peft_model_id)
 
 def make_inference(context, question):
   batch = tokenizer(f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n", return_tensors='pt')
-
+  input_ids = input_ids.to('cuda')
   with torch.cuda.amp.autocast():
     output_tokens = qa_model.generate(**batch, max_new_tokens=200)
 

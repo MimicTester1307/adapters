@@ -203,7 +203,7 @@ moon_question = "At what distance does the Moon orbit the Earth?"
 
 make_inference(moon_context, moon_question)
 
-marketmail_model = PeftModel.from_pretrained(model, "meta-llama/Llama-2-7b-chat-hf")
+marketmail_model = PeftModel.from_pretrained(model, "haoranxu/ALMA-7B-Pretrain-LoRA")
 
 f.write("Pretrained Llama Model/n")
 

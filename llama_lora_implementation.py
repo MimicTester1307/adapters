@@ -31,6 +31,9 @@ from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-13b-chat-hf")
 model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-13b-chat-hf")
 
+if tokenizer.pad_token is None:
+    tokenizer.add_special_tokens({'pad_token': '[PAD]'})
+
 ## cuda summary 
 
 import sys

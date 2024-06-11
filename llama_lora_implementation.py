@@ -146,14 +146,14 @@ trainer = transformers.Trainer(
         logging_steps=1,
         output_dir='outputs',
         use_cpu=False,
-        push_to_hub=True,
+        # push_to_hub=True,
     ),
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
 )
 model.config.use_cache = False  # silence the warnings. Please re-enable for inference!
 trainer.train()
 access_token = "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"
-model.push_to_hub("llama2-7b-adapter-trained", token = access_token)
+model.push_to_hub("schaturv/llama2-7b-adapter-trained", token = access_token)
 
 # HUGGING_FACE_USER_NAME = ""
 

@@ -210,7 +210,7 @@ def make_inference_mm_ai(product, description):
   with torch.cuda.amp.autocast():
     output_tokens = marketmail_model.generate(**batch, max_new_tokens=200)
 
-  print((tokenizer.decode(output_tokens[0], skip_special_tokens=True))))
+  print((tokenizer.decode(output_tokens[0], skip_special_tokens=True)))
 
 your_product_name_here = "The Coolinator"
 your_product_description_here = "A personal cooling device to keep you from getting overheated on a hot summer's day!"

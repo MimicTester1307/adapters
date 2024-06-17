@@ -34,6 +34,28 @@ def print_trainable_parameters(model):
     print(
         f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param}"
     )
+
+mapping_file = open("mapping_outputs.txt", "w")
+mapping_file.write("### LLAMA2 - 7B WITHOUT Adapter")
+
+def make_mapping_inference(context, question):
+  batch = tokenizer(f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n", return_tensors='pt')
+  
+  with torch.cuda.amp.autocast():
+    output_tokens = model.generate(**batch, max_new_tokens=200)
+
+  print(tokenizer.decode(output_tokens[0], skip_special_tokens=True))
+  mapping_file.write((tokenizer.decode(output_tokens[0], skip_special_tokens=True)))
+  return
+
+mapping_context = "Given 'house' = 2, 'abc' = 5, 'xyz' = 10."
+mapping_question_1 = "What is the value of 'house' + 'abc' + 'xyz'?"
+mapping_question_2 = "What is the value of 'house' + 'abc' + 'abc'?"
+mapping_question_3 = "What is the value of 'house' + 'abc' - 'xyz'?"
+
+make_mapping_inference(mapping_context, mapping_question_1)
+make_mapping_inference(mapping_context, mapping_question_2)
+make_mapping_inference(mapping_context, mapping_question_3)
   
 """#### Obtain LoRA Model"""
 # HuggingFace's Inbuilt Lora implementation
@@ -79,9 +101,10 @@ moon_question = "At what distance does the Moon orbit the Earth?"
 
 make_inference(moon_context, moon_question)
 
-mapping_context = "Given 'house' = 2, 'abc' = 5, 'xyz' = 10."
-mapping_question = "What is the value of 'house' + 'abc' * 'xyz'?"
-
-make_inference(mapping_context, mapping_question)
+mapping_file.write("### LLAMA2 - 7B WITH LoRA Adapter")
+make_mapping_inference(mapping_context, mapping_question_1)
+make_mapping_inference(mapping_context, mapping_question_2)
+make_mapping_inference(mapping_context, mapping_question_3)
 
 f.close()
+mapping_file.close()

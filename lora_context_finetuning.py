@@ -52,7 +52,7 @@ config = LoraConfig(
 model = get_peft_model(model, config)
 print_trainable_parameters(model)
 
-f = open("dummy_llama_inference_outputs.txt", "w")
+f = open("context_finetuning_output.txt", "w")
 
 def make_inference(context, question):
   batch = tokenizer(f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n", return_tensors='pt')
@@ -78,5 +78,10 @@ moon_context = "The Moon orbits Earth at an average distance of 384,400 km (238,
 moon_question = "At what distance does the Moon orbit the Earth?"
 
 make_inference(moon_context, moon_question)
+
+mapping_context = "Given 'house' = 2, 'abc' = 5, 'xyz' = 10."
+mapping_question = "What is the value of 'house' + 'abc' * 'xyz'?"
+
+make_inference(mapping_context, mapping_question)
 
 f.close()

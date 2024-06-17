@@ -7,10 +7,12 @@ Given 'house' = 2, 'abc' = 5, 'xyz' = 10.
 What is the value of 'house' + 'abc' + 'xyz'?
 
 ### ANSWER
-The value of 'house' + 'abc' + 'xyz' is 17.### CONTEXT
-Given 'house' = 2, 'abc' = 5, 'xyz' = 10.
+The value of 'house' + 'abc' + 'xyz' is 17.
 
 --
+
+### CONTEXT
+Given 'house' = 2, 'abc' = 5, 'xyz' = 10.
 
 ### QUESTION
 What is the value of 'house' + 'abc' + 'abc'?
@@ -45,10 +47,14 @@ Next, we subtract the value of 'xyz' from the sum:
 
 7 - 10 = -3
 
-Therefore, the value of 'house' + 'abc' - 'xyz' is -3.### LLAMA2 - 7B WITH LoRA Adapter### CONTEXT
-Given 'house' = 2, 'abc' = 5, 'xyz' = 10.
+Therefore, the value of 'house' + 'abc' - 'xyz' is -3.
 
 --
+
+### LLAMA2 - 7B WITH LoRA Adapter
+
+### CONTEXT
+Given 'house' = 2, 'abc' = 5, 'xyz' = 10.
 
 ### QUESTION
 What is the value of 'house' + 'abc' + 'xyz'?

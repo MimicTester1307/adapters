@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import bitsandbytes as bnb
 from peft import PeftModel, PeftConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM

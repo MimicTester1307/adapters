@@ -35,7 +35,7 @@ def print_trainable_parameters(model):
         f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param}"
     )
 
-mapping_file = open("mapping_outputs.txt", "w")
+mapping_file = open("outputs/mapping_outputs.txt", "w")
 mapping_file.write("### LLAMA2 - 7B WITHOUT Adapter")
 
 def make_mapping_inference(context, question):
@@ -79,7 +79,7 @@ config = LoraConfig(
 model = get_peft_model(model, config)
 print_trainable_parameters(model)
 
-f = open("context_finetuning_output.txt", "w")
+f = open("outputs/context_finetuning_output.txt", "w")
 
 def make_inference(context, question):
   batch = tokenizer(f"### CONTEXT\n{context}\n\n### QUESTION\n{question}\n\n### ANSWER\n", return_tensors='pt')

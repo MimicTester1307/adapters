@@ -5,8 +5,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from transformers import AutoTokenizer, AutoConfig, AutoModelForCausalLM
 from IPython.display import display, Markdown
 
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-13b-chat-hf")
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-13b-chat-hf")
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B")
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Meta-Llama-3-8B")
 
 for param in model.parameters():
   param.requires_grad = False  # freeze the model - train adapters later

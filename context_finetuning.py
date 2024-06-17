@@ -46,16 +46,21 @@ def make_mapping_inference(context, question):
 
   print(tokenizer.decode(output_tokens[0], skip_special_tokens=True))
   mapping_file.write((tokenizer.decode(output_tokens[0], skip_special_tokens=True)))
+  mapping_file.write("\n--\n")
   return
 
 mapping_context = "Given 'house' = 2, 'abc' = 5, 'xyz' = 10."
 mapping_question_1 = "What is the value of 'house' + 'abc' + 'xyz'?"
 mapping_question_2 = "What is the value of 'house' + 'abc' + 'abc'?"
 mapping_question_3 = "What is the value of 'house' + 'abc' - 'xyz'?"
+mapping_question_adv = "What is the value of 'house' * 'abc' / 'xyz'?"
+mapping_question_bodmas = "What is the value of ('house' + 'abc') * 'xyz'?"
 
 make_mapping_inference(mapping_context, mapping_question_1)
 make_mapping_inference(mapping_context, mapping_question_2)
 make_mapping_inference(mapping_context, mapping_question_3)
+make_mapping_inference(mapping_context, mapping_question_adv)
+make_mapping_inference(mapping_context, mapping_question_bodmas)
   
 """#### Obtain LoRA Model"""
 # HuggingFace's Inbuilt Lora implementation
@@ -84,27 +89,30 @@ def make_inference(context, question):
 
   print(tokenizer.decode(output_tokens[0], skip_special_tokens=True))
   f.write((tokenizer.decode(output_tokens[0], skip_special_tokens=True)))
+  f.write("\n--\n")
   return
 
 cheese_context = "Cheese is the best food."
 cheese_question = "What is the best food?"
 
-make_inference(cheese_context, cheese_question)
+# make_inference(cheese_context, cheese_question)
 
 cheese_context = "Cheese is the best food."
 moon_question = "How far away is the Moon from the Earth?"
 
-make_inference(cheese_context, moon_question)
+# make_inference(cheese_context, moon_question)
 
 moon_context = "The Moon orbits Earth at an average distance of 384,400 km (238,900 mi), or about 30 times Earth's diameter. Its gravitational influence is the main driver of Earth's tides and very slowly lengthens Earth's day. The Moon's orbit around Earth has a sidereal period of 27.3 days. During each synodic period of 29.5 days, the amount of visible surface illuminated by the Sun varies from none up to 100%, resulting in lunar phases that form the basis for the months of a lunar calendar. The Moon is tidally locked to Earth, which means that the length of a full rotation of the Moon on its own axis causes its same side (the near side) to always face Earth, and the somewhat longer lunar day is the same as the synodic period. However, 59% of the total lunar surface can be seen from Earth through cyclical shifts in perspective known as libration."
 moon_question = "At what distance does the Moon orbit the Earth?"
 
-make_inference(moon_context, moon_question)
+# make_inference(moon_context, moon_question)
 
-mapping_file.write("### LLAMA2 - 7B WITH LoRA Adapter")
+mapping_file.write("### LLAMA2 - 7B WITH LoRA Adapter\n")
 make_mapping_inference(mapping_context, mapping_question_1)
 make_mapping_inference(mapping_context, mapping_question_2)
 make_mapping_inference(mapping_context, mapping_question_3)
+make_mapping_inference(mapping_context, mapping_question_adv)
+make_mapping_inference(mapping_context, mapping_question_bodmas)
 
 f.close()
 mapping_file.close()

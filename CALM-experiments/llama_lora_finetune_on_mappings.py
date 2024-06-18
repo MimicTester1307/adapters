@@ -21,7 +21,7 @@ import pandas as pd
 df = pd.DataFrame(D_KV_SUBS)
 
 from datasets import Dataset
-dataset = Dataset.from_pandas(df.rename(columns={0: "text"}), split="train")
+dataset = Dataset.from_pandas(df.rename(columns={0: "train"}), split="train")
 
 print("Dataset loaded successfully. \n")
 
@@ -181,22 +181,29 @@ model = get_peft_model(model, peft_config)
 
 import transformers
 
-trainer = transformers.Trainer(
-    model=model,
-    train_dataset=dataset["text"],
-    args=transformers.TrainingArguments( 
-        per_device_train_batch_size=4,
-        gradient_accumulation_steps=4,
-        warmup_steps=100,
-        max_steps=100,
-        learning_rate=1e-3,
-        fp16=True,
-        logging_steps=1,
-        output_dir='outputs',
-        # use_cpu=False,
-        # push_to_hub=True,
+training_arguments = transformers.TrainingArguments( 
+    per_device_train_batch_size=4,
+    gradient_accumulation_steps=4,
+    warmup_steps=100,
+    max_steps=100,
+    learning_rate=1e-3,
+    fp16=True,
+    logging_steps=1,
+    output_dir='outputs',
+    # use_cpu=False,
+    # push_to_hub=True,
     ),
-    data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
+
+# Set supervised fine-tuning parameters
+trainer = SFTTrainer(
+    model=model,
+    train_dataset=dataset,
+    peft_config=peft_config,
+    dataset_text_field="train",
+    max_seq_length=max_seq_length,
+    tokenizer=tokenizer,
+    args=training_arguments,
+    packing=False,
 )
 # Train model
 trainer.train()
@@ -240,7 +247,7 @@ print(result[0]['generated_text'])
 
 # !huggingface-cli login
 access_token = "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"
-model.push_to_hub("llama-2-7b-lora-key-value-mappings", token = access_token)
+model.push_to_hub("schaturv/llama-2-7b-lora-key-value-mappings", token = access_token)
 
 # model.push_to_hub(new_model, use_temp_dir=False)
 # tokenizer.push_to_hub(new_model, use_temp_dir=False)

@@ -15,7 +15,7 @@ from transformers import (
 from peft import LoraConfig, PeftModel, get_peft_model
 from trl import SFTTrainer
 
-from generate_mapping_dataset import D_KV_SUBS, D_KV_VAL, D_SUBS_VAL, create_arithmetic_expressions()
+from generate_mapping_dataset import D_KV_SUBS, D_KV_VAL, D_SUBS_VAL, create_arithmetic_expressions
 
 import pandas as pd
 df = pd.DataFrame(D_KV_SUBS)

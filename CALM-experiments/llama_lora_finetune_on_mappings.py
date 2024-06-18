@@ -15,7 +15,7 @@ from transformers import (
 from peft import LoraConfig, PeftModel, get_peft_model
 from trl import SFTTrainer
 
-from generate_mapping_dataset import D_KV_SUBS, D_KV_VAL, D_SUBS_VAL
+from generate_mapping_dataset import D_KV_SUBS, D_KV_VAL, D_SUBS_VAL, create_arithmetic_expressions()
 
 import pandas as pd
 df = pd.DataFrame(D_KV_SUBS)
@@ -59,10 +59,10 @@ fp16 = False
 bf16 = False
 
 # Batch size per GPU for training
-per_device_train_batch_size = 4
+per_device_train_batch_size = 64
 
 # Batch size per GPU for evaluation
-per_device_eval_batch_size = 4
+per_device_eval_batch_size = 16
 
 # Number of update steps to accumulate the gradients for
 gradient_accumulation_steps = 1
@@ -156,39 +156,47 @@ peft_config = LoraConfig(
 )
 
 # Set training parameters
-training_arguments = TrainingArguments(
-    # use_cpu = True,
-    output_dir=output_dir,
-    num_train_epochs=num_train_epochs,
-    per_device_train_batch_size=per_device_train_batch_size,
-    gradient_accumulation_steps=gradient_accumulation_steps,
-    optim=optim,
-    save_steps=save_steps,
-    logging_steps=logging_steps,
-    learning_rate=learning_rate,
-    weight_decay=weight_decay,
-    fp16=fp16,
-    bf16=bf16,
-    max_grad_norm=max_grad_norm,
-    max_steps=max_steps,
-    warmup_ratio=warmup_ratio,
-    group_by_length=group_by_length,
-    lr_scheduler_type=lr_scheduler_type,
-    report_to="tensorboard"
-)
+# training_arguments = TrainingArguments(
+#     # use_cpu = True,
+#     output_dir=output_dir,
+#     num_train_epochs=num_train_epochs,
+#     per_device_train_batch_size=per_device_train_batch_size,
+#     gradient_accumulation_steps=gradient_accumulation_steps,
+#     optim=optim,
+#     save_steps=save_steps,
+#     logging_steps=logging_steps,
+#     learning_rate=learning_rate,
+#     weight_decay=weight_decay,
+#     fp16=fp16,
+#     bf16=bf16,
+#     max_grad_norm=max_grad_norm,
+#     max_steps=max_steps,
+#     warmup_ratio=warmup_ratio,
+#     group_by_length=group_by_length,
+#     lr_scheduler_type=lr_scheduler_type,
+#     report_to="tensorboard"
+# )
 
 model = get_peft_model(model, peft_config)
 
-# Set supervised fine-tuning parameters
-trainer = SFTTrainer(
+import transformers
+
+trainer = transformers.Trainer(
     model=model,
-    train_dataset=dataset,
-    peft_config=peft_config,
-    dataset_text_field="text",
-    max_seq_length=max_seq_length,
-    tokenizer=tokenizer,
-    args=training_arguments,
-    packing=packing,
+    train_dataset=mapped_qa_dataset["train"],
+    args=transformers.TrainingArguments( *)
+        per_device_train_batch_size=4,
+        gradient_accumulation_steps=4,
+        warmup_steps=100,
+        max_steps=100,
+        learning_rate=1e-3,
+        fp16=True,
+        logging_steps=1,
+        output_dir='outputs',
+        use_cpu=False,
+        # push_to_hub=True,
+    ),
+    data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
 )
 
 # Train model
@@ -205,9 +213,11 @@ logging.set_verbosity(logging.CRITICAL)
 
 # Run text generation pipeline with our next model
 # prompt = "What is a large language model?"
-# pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=200)
-# result = pipe(f"<s>[INST] {prompt} [/INST]")
-# print(result[0]['generated_text'])
+prompt, expected_ans, _ = create_arithmetic_expressions()
+prompt = 
+pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=200)
+result = pipe(f"<s>[INST] {prompt} [/INST]")
+print(result[0]['generated_text'])
 
 # Empty VRAM
 # import gc

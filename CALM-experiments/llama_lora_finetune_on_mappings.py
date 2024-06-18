@@ -37,7 +37,7 @@ import pandas as pd
 df = pd.DataFrame(D_KV_SUBS)
 
 from datasets import Dataset
-dataset = Dataset.from_pandas(df.rename(columns={0: "train"}), split="train")
+dataset = Dataset.from_pandas(df.rename(columns={0: "text"}), split="train")
 
 print("Dataset loaded successfully. \n")
 
@@ -214,7 +214,7 @@ trainer = SFTTrainer(
     model=model,
     train_dataset=dataset,
     peft_config=peft_config,
-    # dataset_text_field="text",
+    dataset_text_field="text",
     max_seq_length=max_seq_length,
     tokenizer=tokenizer,
     args=training_arguments,
@@ -240,9 +240,6 @@ logging.set_verbosity(logging.CRITICAL)
 # print(result[0]['generated_text'])
 
 # Empty VRAM
-del model
-del pipe
-del trainer
 import gc
 gc.collect()
 gc.collect()
@@ -264,6 +261,8 @@ tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right"
 
 # !huggingface-cli login
+access_token = "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"
+model.push_to_hub(new_model, token = access_token)
 
 # model.push_to_hub(new_model, use_temp_dir=False)
 # tokenizer.push_to_hub(new_model, use_temp_dir=False)

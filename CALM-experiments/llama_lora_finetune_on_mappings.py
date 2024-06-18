@@ -189,7 +189,7 @@ peft_config = LoraConfig(
 
 # Set training parameters
 training_arguments = TrainingArguments(
-    use_cpu = True,
+    # use_cpu = True,
     output_dir=output_dir,
     num_train_epochs=num_train_epochs,
     per_device_train_batch_size=per_device_train_batch_size,

@@ -1,10 +1,11 @@
-from collections import namedtuple
+from collections import default_dict
 import random
 from random import choice
 import secrets
 import string
+import json
 
-LEN_DATASET = 25000
+LEN_DATASET = 3
 
 def generate_string_to_number_mappings(count):
     unique_values = list(range(1, count + 1))
@@ -67,25 +68,37 @@ def generate_datasets(length):
 
 key_expr_to_val_expr, key_expr_to_arithmetic_val, val_expr_to_arithmetic_val = generate_datasets(LEN_DATASET)
 
-D_KV_SUBS, D_KV_VAL, D_SUBS_VAL =  [], [], []
-
-for key, subs in key_expr_to_val_expr:
-    row = "<s><INST> Given an arithmetic expression between strings: '" \
-         + key + "'. Find the corresponding arithmetic expression in numeric terms between the numeric mappings of those strings.</INST> " \
-             + "The corresponding numeric expression is: '" + subs + "'.</s>"
-    D_KV_SUBS.append(row)
+# METHOD 1 to create datasets:
+D_KV_SUBS, D_KV_VAL, D_SUBS_VAL =  default_dict(), default_dict(), default_dict()
 
 for key, val in key_expr_to_arithmetic_val:
-    row = "<s><INST> Given an arithmetic expression of the following type: '" \
-         + key + "'. Find the value corresponding to the solution of this arithmetic expression.</INST> " \
-             + "The numeric solution to this arithmetic expression is: '" + str(val) + "'.</s>"
-    D_KV_VAL.append(row)
+    D_KV_SUBS["instruction"] = "Given an arithmetic expression between strings. Find the corresponding arithmetic expression in numeric terms between the numeric mappings of those strings."
+    D_KV_SUBS["key"] = key
+    D_KV_SUBS["value"] = val
 
-for key, subs in val_expr_to_arithmetic_val:
-    row = "<s><INST> Given an arithmetic expression: '" \
-         + key + "'. Find the value corresponding to the solution of this arithmetic expression.</INST> " \
-             + "The numeric solution to this arithmetic expression is: '" + str(val) + "'.</s>"
-    D_SUBS_VAL.append(row)
+with open("D_KV_SUBS.json", "w") as outfile:
+    json.dump(D_KV_SUBS, outfile)
+
+# METHOD 2 to create datasets:
+# D_KV_SUBS, D_KV_VAL, D_SUBS_VAL =  [], [], []
+
+# for key, subs in key_expr_to_val_expr:
+#     row = "<s><INST> Given an arithmetic expression between strings: '" \
+#          + key + "'. Find the corresponding arithmetic expression in numeric terms between the numeric mappings of those strings.</INST> " \
+#              + "The corresponding numeric expression is: '" + subs + "'.</s>"
+#     D_KV_SUBS.append(row)
+
+# for key, val in key_expr_to_arithmetic_val:
+#     row = "<s><INST> Given an arithmetic expression of the following type: '" \
+#          + key + "'. Find the value corresponding to the solution of this arithmetic expression.</INST> " \
+#              + "The numeric solution to this arithmetic expression is: '" + str(val) + "'.</s>"
+#     D_KV_VAL.append(row)
+
+# for key, subs in val_expr_to_arithmetic_val:
+#     row = "<s><INST> Given an arithmetic expression: '" \
+#          + key + "'. Find the value corresponding to the solution of this arithmetic expression.</INST> " \
+#              + "The numeric solution to this arithmetic expression is: '" + str(val) + "'.</s>"
+#     D_SUBS_VAL.append(row)
 
 
 # print(D_KV_SUBS, D_KV_VAL, D_SUBS_VAL)

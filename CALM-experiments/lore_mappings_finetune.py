@@ -20,34 +20,11 @@ df = pd.DataFrame(D_KV_SUBS)
 from datasets import Dataset
 dataset = Dataset.from_pandas(df.rename(columns={0: "train"}), split="train")
 
-
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
 model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-2-7b-chat-hf")
 
 # using tokenizer.use_special_token adds extra padding tokens and increases size of vocabulary, causing an index error during model training. 
 tokenizer.pad_token = tokenizer.eos_token
-
-## Print CUDA Summary  
-
-import sys
-from subprocess import call
-print('_____Python, Pytorch, Cuda info____')
-print('__Python VERSION:', sys.version)
-print('__pyTorch VERSION:', torch.__version__)
-print('__CUDA RUNTIME API VERSION')
-#os.system('nvcc --version')
-print('__CUDNN VERSION:', torch.backends.cudnn.version())
-print('_____nvidia-smi GPU details____')
-call(["nvidia-smi", "--format=csv", "--query-gpu=index,name,driver_version,memory.total,memory.used,memory.free"])
-print('_____Device assignments____')
-print('Number CUDA Devices:', torch.cuda.device_count())
-print ('Current cuda device: ', torch.cuda.current_device(), ' **May not correspond to nvidia-smi ID above, check visibility parameter')
-print("Device name: ", torch.cuda.get_device_name(torch.cuda.current_device()))
-
-
-"""##### View Model Summary"""
-
-print(model)
 
 for param in model.parameters():
   param.requires_grad = False  # freeze the model - train adapters later
@@ -61,22 +38,6 @@ model.enable_input_require_grads()
 class CastOutputToFloat(nn.Sequential):
   def forward(self, x): return super().forward(x).to(torch.float32)
 model.lm_head = CastOutputToFloat(model.lm_head)
-
-"""#### Helper Function"""
-
-def print_trainable_parameters(model):
-    """
-    Prints the number of trainable parameters in the model.
-    """
-    trainable_params = 0
-    all_param = 0
-    for _, param in model.named_parameters():
-        all_param += param.numel()
-        if param.requires_grad:
-            trainable_params += param.numel()
-    print(
-        f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param}"
-    )
 
 """#### Obtain LoRA Model"""
 # HuggingFace's Inbuilt Lora implementation
@@ -93,10 +54,8 @@ config = LoraConfig(
 )
 
 model = get_peft_model(model, config)
-print_trainable_parameters(model)
 
 """#### Train LoRA"""
-
 import transformers
 
 training_arguments = transformers.TrainingArguments( 

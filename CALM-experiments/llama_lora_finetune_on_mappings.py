@@ -33,6 +33,14 @@ from trl import SFTTrainer
 
 from generate_mapping_dataset import D_KV_SUBS, D_KV_VAL, D_SUBS_VAL
 
+import pandas as pd
+df = pd.DataFrame(D_KV_SUBS)
+
+from datasets import Dataset
+dataset = Dataset.from_pandas(df.rename(columns={0: "train"}), split="train")
+
+print("Dataset loaded successfully. \n")
+
 # The model that you want to train from the Hugging Face hub
 model_name = "meta-llama/Llama-2-7b-chat-hf"
 
@@ -137,9 +145,6 @@ packing = False
 
 # Load the entire model on the GPU 0
 device_map = {"": 0}
-
-# Load dataset (you can process it here)
-dataset = Dataset.from_list(D_KV_SUBS)
 
 # Load tokenizer and model with QLoRA configuration
 compute_dtype = getattr(torch, bnb_4bit_compute_dtype)

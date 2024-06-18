@@ -213,9 +213,8 @@ logging.set_verbosity(logging.CRITICAL)
 # Run text generation pipeline with our next model
 # prompt = "What is a large language model?"
 prompt, expected_ans, _ = create_arithmetic_expressions()
-prompt = 
 pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=200)
-result = pipe(f"<s>[INST] {prompt} [/INST]")
+result = pipe(f"<s>[INST] Given an arithmetic expression between strings: {prompt}. Find the corresponding arithmetic expression in numeric terms between the numeric mappings of those strings.[/INST]")
 print(result[0]['generated_text'])
 
 # Empty VRAM

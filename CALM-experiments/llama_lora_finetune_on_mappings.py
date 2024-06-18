@@ -146,7 +146,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
 tokenizer.pad_token = tokenizer.eos_token
 tokenizer.padding_side = "right" # Fix weird overflow issue with fp16 training
 
-config = LoraConfig(
+peft_config = LoraConfig(
     r=8,
     lora_alpha=16,
     target_modules=["q_proj", "k_proj"],

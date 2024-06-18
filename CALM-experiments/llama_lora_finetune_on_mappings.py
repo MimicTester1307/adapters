@@ -197,7 +197,6 @@ trainer = transformers.Trainer(
         # push_to_hub=True,
     ),
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
-)
 
 # Train model
 trainer.train()

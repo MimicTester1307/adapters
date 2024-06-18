@@ -77,7 +77,7 @@ def print_trainable_parameters(model):
     print(
         f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param}"
     )
-(* 
+
 """#### Obtain LoRA Model"""
 # HuggingFace's Inbuilt Lora implementation
  

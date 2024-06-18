@@ -117,11 +117,11 @@ trainer = SFTTrainer(
     model=model,
     train_dataset=dataset,
     peft_config=config,
-    dataset_text_field="train",
+    # dataset_text_field="train",
     max_seq_length=None,
     tokenizer=tokenizer,
     args=training_arguments,
-    packing=False,
+    # packing=False,
 )
 
 trainer.train()

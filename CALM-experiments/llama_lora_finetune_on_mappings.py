@@ -12,7 +12,7 @@ from transformers import (
     pipeline,
     logging,
 )
-from peft import LoraConfig, PeftModel
+from peft import LoraConfig, PeftModel, get_peft_model
 from trl import SFTTrainer
 
 from generate_mapping_dataset import D_KV_SUBS, D_KV_VAL, D_SUBS_VAL

@@ -166,7 +166,7 @@ peft_config = LoraConfig(
 
 # training the model and training arguments
 import transformers
-from transformers import TrainingArguments, TrainerCallBack
+from transformers import TrainingArguments, TrainerCallback
 from trl import SFTTrainer
 
 batch_size = 8
@@ -231,7 +231,7 @@ torch.cuda.empty_cache()
 
 #defining callback
 
-class MyCallBack(TrainerCallBack):
+class MyCallBack(TrainerCallback):
    def on_evaluate(self, args, state, model, tokenizer):
          tokens = tokenizer("text")
          generated_text  = model.generate(tokens["input_ids"], tokens["prompt"])

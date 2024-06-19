@@ -187,16 +187,27 @@ model_kwargs = dict(
     use_cache=False,
 )
 
-trainer = SFTTrainer(
-    model=model_id,
-    # model_init_kwargs=model_kwargs,
+model.add_adapter(peft_config, adapter_name="adapter_key_value_pairs")
+
+trainer = transformers.Trainer(
+    model=model,
     train_dataset=train_dataloader,
-    eval_dataset=eval_dataloader,
-    packing=True,
-    max_seq_length=1024,
     args=training_args,
-    formatting_func=create_prompt,
-    peft_config=peft_config,
+    # data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
 )
+
+trainer.train()
+
+# trainer = SFTTrainer(
+#     model=model_id,
+#     # model_init_kwargs=model_kwargs,
+#     train_dataset=train_dataloader,
+#     eval_dataset=eval_dataloader,
+#     # packing=True,
+#     max_seq_length=1024,
+#     args=training_args,
+#     # formatting_func=create_prompt,
+#     peft_config=peft_config,
+# )
 
 

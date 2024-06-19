@@ -177,10 +177,11 @@ training_args = TrainingArguments(
     logging_steps=1,
     save_strategy="steps",
     save_steps=total_num_steps // num_train_epochs,
+    use_cpu=True,
 )
 
 model_kwargs = dict(
-    device_map="auto",
+    device_map={"" : 0},
     trust_remote_code=True,
     # low_cpu_mem_usage=True,
     torch_dtype=torch.bfloat16,

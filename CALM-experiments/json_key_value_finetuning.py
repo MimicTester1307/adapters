@@ -141,16 +141,16 @@ torch.manual_seed(seed)
 #     shuffle=False,
 # )
 
-# print one batch
-b = next(iter(train_dataloader))
-print(b)
+# # print one batch
+# b = next(iter(train_dataloader))
+# print(b)
 
-# decoding the batch
-print(tokenizer.decode(b["input_ids"][0])[:250])
-print(tokenizer.decode(b["labels"][0])[:250])
+# # decoding the batch
+# print(tokenizer.decode(b["input_ids"][0])[:250])
+# print(tokenizer.decode(b["labels"][0])[:250])
 
-print(b["input_ids"][0])
-print(b["labels"][0])
+# print(b["input_ids"][0])
+# print(b["labels"][0])
 
 # adding lora config
 from peft import LoraConfig, get_peft_model

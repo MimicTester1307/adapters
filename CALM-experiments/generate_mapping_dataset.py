@@ -1,11 +1,11 @@
-from collections import default_dict
+from collections import defaultdict
 import random
 from random import choice
 import secrets
 import string
 import json
 
-LEN_DATASET = 3
+LEN_DATASET = 25000
 
 def generate_string_to_number_mappings(count):
     unique_values = list(range(1, count + 1))
@@ -69,12 +69,15 @@ def generate_datasets(length):
 key_expr_to_val_expr, key_expr_to_arithmetic_val, val_expr_to_arithmetic_val = generate_datasets(LEN_DATASET)
 
 # METHOD 1 to create datasets:
-D_KV_SUBS, D_KV_VAL, D_SUBS_VAL =  default_dict(), default_dict(), default_dict()
+D_KV_SUBS, D_KV_VAL, D_SUBS_VAL =  [], defaultdict(), defaultdict()
 
-for key, val in key_expr_to_arithmetic_val:
-    D_KV_SUBS["instruction"] = "Given an arithmetic expression between strings. Find the corresponding arithmetic expression in numeric terms between the numeric mappings of those strings."
-    D_KV_SUBS["key"] = key
-    D_KV_SUBS["value"] = val
+for key, val in key_expr_to_val_expr:
+    record = defaultdict()
+    # record["instruction"] = ""
+    # record["instruction"] = "Given an arithmetic expression between strings. Find the corresponding arithmetic expression in numeric terms between the numeric mappings of those strings."
+    record["key"] = key
+    record["value"] = val
+    D_KV_SUBS.append(record)
 
 with open("D_KV_SUBS.json", "w") as outfile:
     json.dump(D_KV_SUBS, outfile)

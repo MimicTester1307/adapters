@@ -169,7 +169,7 @@ import transformers
 from transformers import TrainingArguments
 from trl import SFTTrainer
 
-batch_size = 64
+batch_size = 4
 gradient_accumulation_steps = 4
 num_train_epochs = 3
 

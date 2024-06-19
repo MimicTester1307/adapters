@@ -64,136 +64,136 @@ print(train_dataset[0])
 train_prompts = [create_prompt(row) for row in train_dataset]
 eval_prompts = [create_prompt(row) for row in eval_dataset]
 
-# train_outputs = pad_eos(train_dataset)
-# eval_outputs = pad_eos(eval_dataset)
+train_outputs = pad_eos(train_dataset)
+eval_outputs = pad_eos(eval_dataset)
 
-# train_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(train_prompts, train_outputs)]
-# eval_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(eval_prompts, eval_outputs)]
+train_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(train_prompts, train_outputs)]
+eval_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(eval_prompts, eval_outputs)]
 
-# # packing examples with padding
-# max_seq_len = 1024
+# packing examples with padding
+max_seq_len = 1024
 
-# # print(tokenizer([s["example"] for s in train_dataset]))
+# print(tokenizer([s["example"] for s in train_dataset]))
 
-# def pack(dataset, max_seq_len=1024):
-#     tkds_ids = tokenizer([s["example"] for s in dataset])["input_ids"]
+def pack(dataset, max_seq_len=1024):
+    tkds_ids = tokenizer([s["example"] for s in dataset])["input_ids"]
     
-#     all_token_ids = []
-#     for tokenized_input in tkds_ids:
-#         all_token_ids.extend(tokenized_input + [tokenizer.eos_token_id])
+    all_token_ids = []
+    for tokenized_input in tkds_ids:
+        all_token_ids.extend(tokenized_input + [tokenizer.eos_token_id])
     
-#     packed_ds = []
-#     for i in range(0, len(all_token_ids), max_seq_len+1):
-#         input_ids = all_token_ids[i : i + max_seq_len+1]
-#         if len(input_ids) == (max_seq_len+1):
-#             packed_ds.append({"input_ids": input_ids[:-1], "labels": input_ids[1:]})  # < --- ‼️ ⛔️
-# 	    # if you use the model.output.loss you don't need to shift, it is done for you!
-#     return packed_ds
+    packed_ds = []
+    for i in range(0, len(all_token_ids), max_seq_len+1):
+        input_ids = all_token_ids[i : i + max_seq_len+1]
+        if len(input_ids) == (max_seq_len+1):
+            packed_ds.append({"input_ids": input_ids[:-1], "labels": input_ids[1:]})  # < --- ‼️ ⛔️
+	    # if you use the model.output.loss you don't need to shift, it is done for you!
+    return packed_ds
 
-# train_ds_packed = pack(train_dataset)
-# eval_ds_packed = pack(eval_dataset)
+train_ds_packed = pack(train_dataset)
+eval_ds_packed = pack(eval_dataset)
 
-# # length of sequences we get after packing them together
-# total_sequences = len(train_ds_packed)
-# print(total_sequences)
+# length of sequences we get after packing them together
+total_sequences = len(train_ds_packed)
+print(total_sequences)
 
-# # dataloader
-# from torch.utils.data import DataLoader
-# from transformers import default_data_collator
+# dataloader
+from torch.utils.data import DataLoader
+from transformers import default_data_collator
 
-# torch.manual_seed(seed)
-# batch_size = 64 # good starter number
+torch.manual_seed(seed)
+batch_size = 64 # good starter number
 
-# train_dataloader = DataLoader(
-#     train_ds_packed,
-#     batch_size=batch_size,
-#     collate_fn=default_data_collator, # we don't need any special collator 😎
-# )
+train_dataloader = DataLoader(
+    train_ds_packed,
+    batch_size=batch_size,
+    collate_fn=default_data_collator, # we don't need any special collator 😎
+)
 
-# eval_dataloader = DataLoader(
-#     eval_ds_packed,
-#     batch_size=batch_size,
-#     collate_fn=default_data_collator,
-#     shuffle=False,
-# )
+eval_dataloader = DataLoader(
+    eval_ds_packed,
+    batch_size=batch_size,
+    collate_fn=default_data_collator,
+    shuffle=False,
+)
 
-# # print one batch
-# b = next(iter(train_dataloader))
-# print(b)
+# print one batch
+b = next(iter(train_dataloader))
+print(b)
 
-# # decoding the batch
-# print(tokenizer.decode(b["input_ids"][0])[:250])
-# print(tokenizer.decode(b["labels"][0])[:250])
+# decoding the batch
+print(tokenizer.decode(b["input_ids"][0])[:250])
+print(tokenizer.decode(b["labels"][0])[:250])
 
-# print(b["input_ids"][0])
-# print(b["labels"][0])
+print(b["input_ids"][0])
+print(b["labels"][0])
 
-# # adding lora config
-# from peft import LoraConfig, get_peft_model
+# adding lora config
+from peft import LoraConfig, get_peft_model
 
-# peft_config = LoraConfig(
-#     r=64,  # the rank of the LoRA matrices
-#     lora_alpha=16, # the weight
-#     lora_dropout=0.1, # dropout to add to the LoRA layers
-#     bias="none", # add bias to the nn.Linear layers?
-#     task_type="CAUSAL_LM",
-#     target_modules=["q_proj", "k_proj","v_proj","o_proj"], # the name of the layers to add LoRA
-# )
+peft_config = LoraConfig(
+    r=64,  # the rank of the LoRA matrices
+    lora_alpha=16, # the weight
+    lora_dropout=0.1, # dropout to add to the LoRA layers
+    bias="none", # add bias to the nn.Linear layers?
+    task_type="CAUSAL_LM",
+    target_modules=["q_proj", "k_proj","v_proj","o_proj"], # the name of the layers to add LoRA
+)
 
-# # training the model and training arguments
-# from transformers import TrainingArguments
-# from trl import SFTTrainer
+# training the model and training arguments
+from transformers import TrainingArguments
+from trl import SFTTrainer
 
-# batch_size = 64
-# gradient_accumulation_steps = 2
-# num_train_epochs = 3
+batch_size = 64
+gradient_accumulation_steps = 2
+num_train_epochs = 3
 
-# total_num_steps = num_train_epochs * 11_210 // (batch_size * gradient_accumulation_steps)
+total_num_steps = num_train_epochs * 11_210 // (batch_size * gradient_accumulation_steps)
 
-# print(total_num_steps)
+print(total_num_steps)
 
-# output_dir = "./output/"
-# training_args = TrainingArguments(
-#     output_dir=output_dir,
-#     per_device_train_batch_size=batch_size,
-#     per_device_eval_batch_size=batch_size//2,
-#     bf16=True,
-#     learning_rate=2e-4,
-#     lr_scheduler_type="cosine",
-#     warmup_ratio = 0.1,
-#     max_steps=total_num_steps,
-#     gradient_accumulation_steps=gradient_accumulation_steps,
-#     gradient_checkpointing=True,
-#     gradient_checkpointing_kwargs=dict(use_reentrant=False),
-#     evaluation_strategy="steps",
-#     eval_steps=total_num_steps // num_train_epochs,
-#     # eval_steps=10,
-#     # logging strategies
-#     logging_strategy="steps",
-#     logging_steps=1,
-#     save_strategy="steps",
-#     save_steps=total_num_steps // num_train_epochs,
-# )
+output_dir = "./output/"
+training_args = TrainingArguments(
+    output_dir=output_dir,
+    per_device_train_batch_size=batch_size,
+    per_device_eval_batch_size=batch_size//2,
+    bf16=True,
+    learning_rate=2e-4,
+    lr_scheduler_type="cosine",
+    warmup_ratio = 0.1,
+    max_steps=total_num_steps,
+    gradient_accumulation_steps=gradient_accumulation_steps,
+    gradient_checkpointing=True,
+    gradient_checkpointing_kwargs=dict(use_reentrant=False),
+    evaluation_strategy="steps",
+    eval_steps=total_num_steps // num_train_epochs,
+    # eval_steps=10,
+    # logging strategies
+    logging_strategy="steps",
+    logging_steps=1,
+    save_strategy="steps",
+    save_steps=total_num_steps // num_train_epochs,
+)
 
-# model_kwargs = dict(
-#     device_map={"" : 0},
-#     trust_remote_code=True,
-#     # low_cpu_mem_usage=True,
-#     torch_dtype=torch.bfloat16,
-#     # use_flash_attention_2=True,
-#     use_cache=False,
-# )
+model_kwargs = dict(
+    device_map={"" : 0},
+    trust_remote_code=True,
+    # low_cpu_mem_usage=True,
+    torch_dtype=torch.bfloat16,
+    # use_flash_attention_2=True,
+    use_cache=False,
+)
 
-# trainer = SFTTrainer(
-#     model=model_id,
-#     # model_init_kwargs=model_kwargs,
-#     train_dataset=train_dataset,
-#     eval_dataset=eval_dataset,
-#     packing=True,
-#     max_seq_length=1024,
-#     args=training_args,
-#     formatting_func=create_prompt,
-#     peft_config=peft_config,
-# )
+trainer = SFTTrainer(
+    model=model_id,
+    # model_init_kwargs=model_kwargs,
+    train_dataset=train_dataset,
+    eval_dataset=eval_dataset,
+    packing=True,
+    max_seq_length=1024,
+    args=training_args,
+    # formatting_func=create_prompt,
+    peft_config=peft_config,
+)
 
 

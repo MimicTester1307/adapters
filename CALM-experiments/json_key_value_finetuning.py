@@ -24,18 +24,18 @@ print(tokenizer.encode(outputs[0]))
 print(tokenizer.encode("My experiments are going strong!"))
 
 # with padding - so it'll not exceed 10 tokens then
-print(tokenizer.encode(outputs[0], padding='max_length', max_length=10))
-print(tokenizer.encode("My experiments are going strong!", padding='max_length', max_length=10))
+# print(tokenizer.encode(outputs[0], padding='max_length', max_length=10))
+# print(tokenizer.encode("My experiments are going strong!", padding='max_length', max_length=10))
 
 # pytorch tensors
-print(tokenizer.encode(outputs[0], 
-                 padding='max_length', 
-                 max_length=10,
-                 return_tensors="pt"))
-print(tokenizer.encode("My experiments are going strong!", 
-                 padding='max_length', 
-                 max_length=10,
-                 return_tensors="pt"))
+# print(tokenizer.encode(outputs[0], 
+#                  padding='max_length', 
+#                  max_length=10,
+#                  return_tensors="pt"))
+# print(tokenizer.encode("My experiments are going strong!", 
+#                  padding='max_length', 
+#                  max_length=10,
+#                  return_tensors="pt"))
 
 # dividing train and eval datasets
 train_dataset = dataset[:-1000]

@@ -117,3 +117,82 @@ print(tokenizer.decode(b["labels"][0])[:250])
 print(b["input_ids"][0])
 print(b["labels"][0])
 
+# adding create_prompt to use as formatting_func argument during training
+def prompt_input(row):
+    return ("Learn the key value pairings provided in the format of corresponding arithmetic expressions.\n\n"
+            \n\n### Key:\n{key}\n\n### Value:\n{value}").format_map(row)
+
+def create_prompt(row):
+    return prompt_input(row)
+
+# adding lora config
+from peft import LoraConfig, get_peft_model
+
+peft_config = LoraConfig(
+    r=64,  # the rank of the LoRA matrices
+    lora_alpha=16, # the weight
+    lora_dropout=0.1, # dropout to add to the LoRA layers
+    bias="none", # add bias to the nn.Linear layers?
+    task_type="CAUSAL_LM",
+    target_modules=["q_proj", "k_proj","v_proj","o_proj"], # the name of the layers to add LoRA
+)
+
+# training the model and training arguments
+from transformers import TrainingArguments
+from trl import SFTTrainer
+
+batch_size = 64
+gradient_accumulation_steps = 2
+num_train_epochs = 3
+
+total_num_steps = num_train_epochs * 11_210 // (batch_size * gradient_accumulation_steps)
+
+print(total_num_steps)
+
+output_dir = "./output/"
+training_args = TrainingArguments(
+    output_dir=output_dir,
+    per_device_train_batch_size=batch_size,
+    per_device_eval_batch_size=batch_size//2,
+    bf16=True,
+    learning_rate=2e-4,
+    lr_scheduler_type="cosine",
+    warmup_ratio = 0.1,
+    max_steps=total_num_steps,
+    gradient_accumulation_steps=gradient_accumulation_steps,
+    gradient_checkpointing=True,
+    gradient_checkpointing_kwargs=dict(use_reentrant=False),
+    evaluation_strategy="steps",
+    eval_steps=total_num_steps // num_train_epochs,
+    # eval_steps=10,
+    # logging strategies
+    logging_strategy="steps",
+    logging_steps=1,
+    save_strategy="steps",
+    save_steps=total_num_steps // num_train_epochs,
+)
+
+model_kwargs = dict(
+    device_map={"" : 0},
+    trust_remote_code=True,
+    # low_cpu_mem_usage=True,
+    torch_dtype=torch.bfloat16,
+    # use_flash_attention_2=True,
+    use_cache=False,
+)
+
+from llm_recipes.utils import LLMSampleCB
+
+trainer = SFTTrainer(
+    model=model_id,
+    model_init_kwargs=model_kwargs,
+    train_dataset=train_dataset,
+    eval_dataset=eval_dataset,
+    packing=True,
+    max_seq_length=1024,
+    args=training_args,
+    formatting_func=create_prompt,
+    peft_config=peft_config,
+)
+
+

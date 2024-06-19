@@ -250,7 +250,7 @@ trainer = Trainer(
 # trainer.train()
 
 #testing add_callback() first
-trainer.add_callback(MyCallBack())
+# trainer.add_callback(MyCallBack())
 
 trainer.train()
 

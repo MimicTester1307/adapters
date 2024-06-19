@@ -177,7 +177,7 @@ training_args = TrainingArguments(
 )
 
 model_kwargs = dict(
-    device_map={"" : 0},
+    device_map="auto",
     trust_remote_code=True,
     # low_cpu_mem_usage=True,
     torch_dtype=torch.bfloat16,
@@ -190,10 +190,10 @@ trainer = SFTTrainer(
     # model_init_kwargs=model_kwargs,
     train_dataset=train_dataloader,
     eval_dataset=eval_dataloader,
-    packing=True,
+    # packing=True,
     max_seq_length=1024,
     args=training_args,
-    formatting_func=create_prompt,
+    # formatting_func=create_prompt,
     peft_config=peft_config,
 )
 

@@ -73,14 +73,33 @@ D_KV_SUBS, D_KV_VAL, D_SUBS_VAL =  [], defaultdict(), defaultdict()
 
 for key, val in key_expr_to_val_expr:
     record = defaultdict()
-    # record["instruction"] = ""
-    # record["instruction"] = "Given an arithmetic expression between strings. Find the corresponding arithmetic expression in numeric terms between the numeric mappings of those strings."
     record["key"] = key
     record["value"] = val
     D_KV_SUBS.append(record)
 
+for val, ans in val_expr_to_arithmetic_val:
+    record = defaultdict()
+    record["key"] = key
+    record["value"] = val
+    D_SUBS_VAL.append(record)
+
+for key, val in key_expr_to_arithmetic_val:
+    record = defaultdict()
+    record["key"] = key
+    record["value"] = val
+    D_KV_VAL.append(record)
+
+# adapter 1
 with open("D_KV_SUBS.json", "w") as outfile:
     json.dump(D_KV_SUBS, outfile)
+
+# adapter 2
+with open("D_SUBS_VAL.json", "w") as outfile:
+    json.dump(D_SUBS_VAL, outfile)
+
+# merged
+with open("D_KV_VAL.json", "w") as outfile:
+    json.dump(D_KV_VAL, outfile)
 
 # METHOD 2 to create datasets:
 # D_KV_SUBS, D_KV_VAL, D_SUBS_VAL =  [], [], []

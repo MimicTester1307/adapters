@@ -145,6 +145,7 @@ peft_config = LoraConfig(
 )
 
 # training the model and training arguments
+import transformers
 from transformers import TrainingArguments
 from trl import SFTTrainer
 

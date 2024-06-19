@@ -134,7 +134,7 @@ import transformers
 trainer = transformers.Trainer(
     model=model,
     train_dataset=mapped_qa_dataset["train"],
-    args=transformers.TrainingArguments( *)
+    args=transformers.TrainingArguments( 
         per_device_train_batch_size=4,
         gradient_accumulation_steps=4,
         warmup_steps=100,

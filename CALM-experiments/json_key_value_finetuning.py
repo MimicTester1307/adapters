@@ -229,15 +229,28 @@ model.enable_input_require_grads()
 
 torch.cuda.empty_cache()
 
+#defining callback
+
+class MyCallBack(TrainerCallBack):
+   def on_evaluate(self, args, state, model, tokenizer):
+         tokens = tokenizer("text")
+         generated_text  = model.generate(tokens["input_ids"], tokens["prompt"])
+
 trainer = Trainer(
     model=model,
     train_dataset=train_ds_packed,
+    eval_dataset=eval_ds_packed,
     # get_train_dataloader=train_ds_packed,
     args=training_args,
-    # torch_dtype=torch.bfloat16,
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
+    # callbacks=[MyCallBack],
     # use_cache=False,
 )
+
+# trainer.train()
+
+#testing add_callback() first
+trainer.add_callback(MyCallBack())
 
 trainer.train()
 

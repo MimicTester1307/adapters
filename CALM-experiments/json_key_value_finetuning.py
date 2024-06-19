@@ -120,7 +120,7 @@ print(b["labels"][0])
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):
     return ("Learn the key value pairings provided in the format of corresponding arithmetic expressions.\n\n"
-            'n### Key:\n{key}\n\n### Value:\n{value}").format_map(row)
+            '### Key:\n{key}\n\n### Value:\n{value}").format_map(row)
 
 def create_prompt(row):
     return prompt_input(row)

@@ -8,6 +8,7 @@ from transformers import (
     pipeline,
     logging,
 )
+import pandas as pd
 
 with open("D_KV_SUBS.json", "r") as f:
     dataset = json.load(f)
@@ -27,7 +28,7 @@ tokenizer.pad_token = tokenizer.eos_token
 print(tokenizer.encode(outputs[0]))
 print(tokenizer.encode("My experiments are going strong!"))
 
-# with padding
+# with padding - so it'll not exceed 10 tokens then
 print(tokenizer.encode(outputs[0], padding='max_length', max_length=10))
 print(tokenizer.encode("My experiments are going strong!", padding='max_length', max_length=10))
 
@@ -40,4 +41,37 @@ print(tokenizer.encode("My experiments are going strong!",
                  padding='max_length', 
                  max_length=10,
                  return_tensors="pt"))
+
+# dividing train and eval datasets
+train_dataset = dataset[:-1000]
+eval_dataset = dataset[-1000:]
+
+train_table = (dataframe=pd.DataFrame(train_dataset))
+eval_table  = (dataframe=pd.DataFrame(eval_dataset))
+
+# packing examples with padding
+max_seq_len = 1024
+
+def pack(dataset, max_seq_len=1024):
+    tkds_ids = tokenizer([s["example"] for s in dataset])["input_ids"]
+    
+    all_token_ids = []
+    for tokenized_input in tkds_ids:
+        all_token_ids.extend(tokenized_input + [tokenizer.eos_token_id])
+    
+    packed_ds = []
+    for i in range(0, len(all_token_ids), max_seq_len+1):
+        input_ids = all_token_ids[i : i + max_seq_len+1]
+        if len(input_ids) == (max_seq_len+1):
+            packed_ds.append({"input_ids": input_ids[:-1], "labels": input_ids[1:]})  # < --- ‼️ ⛔️
+	    # if you use the model.output.loss you don't need to shift, it is done for you!
+    return packed_ds
+
+train_ds_packed = pack(train_dataset)
+eval_ds_packed = pack(eval_dataset)
+
+
+
+
+
 

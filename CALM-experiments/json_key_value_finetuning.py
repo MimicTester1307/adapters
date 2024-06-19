@@ -59,7 +59,7 @@ eval_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(eval_
 # packing examples with padding
 max_seq_len = 1024
 
-print(tokenizer([s["example"] for s in train_dataset]))
+# print(tokenizer([s["example"] for s in train_dataset]))
 
 def pack(dataset, max_seq_len=1024):
     tkds_ids = tokenizer([s["example"] for s in dataset])["input_ids"]
@@ -79,6 +79,33 @@ def pack(dataset, max_seq_len=1024):
 train_ds_packed = pack(train_dataset)
 eval_ds_packed = pack(eval_dataset)
 
+# length of sequences we get after packing them together
+total_sequences = len(train_ds_packed)
+print(total_sequences)
+
+# dataloader
+from torch.utils.data import DataLoader
+from transformers import default_data_collator
+
+torch.manual_seed(seed)
+batch_size = 64 # good starter number
+
+train_dataloader = DataLoader(
+    train_ds_packed,
+    batch_size=batch_size,
+    collate_fn=default_data_collator, # we don't need any special collator 😎
+)
+
+eval_dataloader = DataLoader(
+    eval_ds_packed,
+    batch_size=batch_size,
+    collate_fn=default_data_collator,
+    shuffle=False,
+)
+
+# print one batch
+b = next(iter(train_dataloader))
+print(b)
 
 
 

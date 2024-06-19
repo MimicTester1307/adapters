@@ -166,7 +166,7 @@ peft_config = LoraConfig(
 
 # training the model and training arguments
 import transformers
-from transformers import TrainingArguments
+from transformers import TrainingArguments, TrainerCallBack
 from trl import SFTTrainer
 
 batch_size = 8

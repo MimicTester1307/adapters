@@ -226,6 +226,8 @@ for param in model.parameters():
 model.gradient_checkpointing_enable()  # reduce number of stored activations
 model.enable_input_require_grads()
 
+torch.cuda.empty_cache()
+
 trainer = Trainer(
     model=model,
     train_dataset=train_ds_packed,

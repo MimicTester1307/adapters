@@ -187,6 +187,7 @@ model_kwargs = dict(
     use_cache=False,
 )
 
+model = AutoModelForCausalLM.from_pretrained(model_id)
 model.add_adapter(peft_config, adapter_name="adapter_key_value_pairs")
 
 trainer = transformers.Trainer(

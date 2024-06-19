@@ -5,6 +5,7 @@ from transformers import (
     BitsAndBytesConfig,
     HfArgumentParser,
     TrainingArguments,
+    Trainer,
     pipeline,
     logging,
 )
@@ -190,7 +191,7 @@ model_kwargs = dict(
 model = AutoModelForCausalLM.from_pretrained(model_id)
 model.add_adapter(peft_config, adapter_name="adapter_key_value_pairs")
 
-trainer = transformers.Trainer(
+trainer = Trainer(
     model=model,
     train_dataset=train_dataloader,
     args=training_args,

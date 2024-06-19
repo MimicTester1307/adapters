@@ -93,6 +93,7 @@ def pack(dataset, max_seq_len=1024):
 train_ds_packed = pack(train_dataset)
 eval_ds_packed = pack(eval_dataset)
 
+
 # length of sequences we get after packing them together
 total_sequences = len(train_ds_packed)
 print(total_sequences)
@@ -187,12 +188,12 @@ model_kwargs = dict(
 trainer = SFTTrainer(
     model=model_id,
     # model_init_kwargs=model_kwargs,
-    train_dataset=train_dataset,
-    eval_dataset=eval_dataset,
+    train_dataset=train_dataloader,
+    eval_dataset=eval_dataloader,
     packing=True,
     max_seq_length=1024,
     args=training_args,
-    # formatting_func=create_prompt,
+    formatting_func=create_prompt,
     peft_config=peft_config,
 )
 

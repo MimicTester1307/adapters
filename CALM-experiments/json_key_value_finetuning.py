@@ -198,7 +198,7 @@ trainer = Trainer(
     train_dataset=train_ds_packed,
     # get_train_dataloader=train_ds_packed,
     args=training_args,
-    torch_dtype=torch.bfloat16,
+    # torch_dtype=torch.bfloat16,
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
     use_cache=False,
 )

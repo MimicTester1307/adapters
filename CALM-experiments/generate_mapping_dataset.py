@@ -69,7 +69,7 @@ def generate_datasets(length):
 key_expr_to_val_expr, key_expr_to_arithmetic_val, val_expr_to_arithmetic_val = generate_datasets(LEN_DATASET)
 
 # METHOD 1 to create datasets:
-D_KV_SUBS, D_KV_VAL, D_SUBS_VAL =  [], defaultdict(), defaultdict()
+D_KV_SUBS, D_KV_VAL, D_SUBS_VAL =  [], [], []
 
 for key, val in key_expr_to_val_expr:
     record = defaultdict()

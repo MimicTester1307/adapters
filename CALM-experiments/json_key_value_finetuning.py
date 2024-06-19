@@ -247,23 +247,8 @@ trainer = Trainer(
     # use_cache=False,
 )
 
-# trainer.train()
-
-#testing add_callback() first
-# trainer.add_callback(MyCallBack())
-
 trainer.train()
 
-# trainer = SFTTrainer(
-#     model=model_id,
-#     # model_init_kwargs=model_kwargs,
-#     train_dataset=train_dataloader,
-#     eval_dataset=eval_dataloader,
-#     # packing=True,
-#     max_seq_length=1024,
-#     args=training_args,
-#     # formatting_func=create_prompt,
-#     peft_config=peft_config,
-# )
-
-
+# save model
+access_token = "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"
+model.push_to_hub("schaturv/llama2-7b-key-value-adapter", access_token=access_token)

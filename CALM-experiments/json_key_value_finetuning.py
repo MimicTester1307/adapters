@@ -9,6 +9,7 @@ from transformers import (
     logging,
 )
 import pandas as pd
+import torch
 
 with open("D_KV_SUBS.json", "r") as f:
     dataset = json.load(f)

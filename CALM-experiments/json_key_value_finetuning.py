@@ -11,6 +11,8 @@ from transformers import (
 import pandas as pd
 import torch
 
+seed = 42
+
 with open("D_KV_SUBS.json", "r") as f:
     dataset = json.load(f)
 

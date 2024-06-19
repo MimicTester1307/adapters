@@ -200,7 +200,7 @@ trainer = Trainer(
     args=training_args,
     # torch_dtype=torch.bfloat16,
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
-    use_cache=False,
+    # use_cache=False,
 )
 
 trainer.train()

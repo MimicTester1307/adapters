@@ -40,8 +40,10 @@ print(tokenizer.encode("My experiments are going strong!"))
 #                  return_tensors="pt"))
 
 # dividing train and eval datasets
-train_dataset = dataset[:-1000]
-eval_dataset = dataset[-1000:]
+train_dataset = dataset[:-4000]
+eval_dataset = dataset[-4000:]
+
+print("lengths of datasets: ", len(train_dataset), len(eval_dataset))
 
 train_table = pd.DataFrame(train_dataset)
 eval_table  = pd.DataFrame(eval_dataset)
@@ -103,7 +105,7 @@ from torch.utils.data import DataLoader
 from transformers import default_data_collator
 
 torch.manual_seed(seed)
-batch_size = 64 # good starter number
+batch_size = 8 # good starter number
 
 train_dataloader = DataLoader(
     train_ds_packed,

@@ -5,7 +5,7 @@ import secrets
 import string
 import json
 
-LEN_DATASET = 25000
+LEN_DATASET = 24000
 
 def generate_string_to_number_mappings(count):
     unique_values = list(range(1, count + 1))

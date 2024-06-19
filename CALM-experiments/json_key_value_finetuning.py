@@ -26,3 +26,18 @@ tokenizer.pad_token = tokenizer.eos_token
 
 print(tokenizer.encode(outputs[0]))
 print(tokenizer.encode("My experiments are going strong!"))
+
+# with padding
+print(tokenizer.encode(outputs[0], padding='max_length', max_length=10))
+print(tokenizer.encode("My experiments are going strong!", padding='max_length', max_length=10))
+
+# pytorch tensors
+print(tokenizer.encode(outputs[0], 
+                 padding='max_length', 
+                 max_length=10,
+                 return_tensors="pt"))
+print(tokenizer.encode("My experiments are going strong!", 
+                 padding='max_length', 
+                 max_length=10,
+                 return_tensors="pt"))
+

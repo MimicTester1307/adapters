@@ -183,7 +183,7 @@ model_kwargs = dict(
 
 trainer = SFTTrainer(
     model=model_id,
-    model_init_kwargs=model_kwargs,
+    # model_init_kwargs=model_kwargs,
     train_dataset=train_dataset,
     eval_dataset=eval_dataset,
     packing=True,

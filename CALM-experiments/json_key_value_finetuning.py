@@ -192,10 +192,10 @@ trainer = SFTTrainer(
     # model_init_kwargs=model_kwargs,
     train_dataset=train_dataloader,
     eval_dataset=eval_dataloader,
-    # packing=True,
+    packing=True,
     max_seq_length=1024,
     args=training_args,
-    # formatting_func=create_prompt,
+    formatting_func=create_prompt,
     peft_config=peft_config,
 )
 

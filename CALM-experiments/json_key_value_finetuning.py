@@ -181,8 +181,6 @@ model_kwargs = dict(
     use_cache=False,
 )
 
-from llm_recipes.utils import LLMSampleCB
-
 trainer = SFTTrainer(
     model=model_id,
     model_init_kwargs=model_kwargs,

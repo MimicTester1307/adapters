@@ -46,8 +46,8 @@ print(tokenizer.encode("My experiments are going strong!",
 train_dataset = dataset[:-1000]
 eval_dataset = dataset[-1000:]
 
-train_table = (dataframe=pd.DataFrame(train_dataset))
-eval_table  = (dataframe=pd.DataFrame(eval_dataset))
+train_table = pd.DataFrame(train_dataset)
+eval_table  = pd.DataFrame(eval_dataset)
 
 # packing examples with padding
 max_seq_len = 1024

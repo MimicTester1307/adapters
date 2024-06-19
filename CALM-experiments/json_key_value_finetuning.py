@@ -11,6 +11,8 @@ from transformers import (
 )
 import pandas as pd
 import torch
+import os
+os.environ["CUDA_VISIBLE_DEVICES"]="0"
 
 seed = 42
 
@@ -212,8 +214,17 @@ model = AutoModelForCausalLM.from_pretrained(model_id)
 model.add_adapter(peft_config, adapter_name="adapter_key_value_pairs")
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model= torch.nn.DataParallel(model)
-model.to(device)
+# model= torch.nn.DataParallel(model)
+# model.to(device)
+
+for param in model.parameters():
+  param.requires_grad = False  # freeze the model - train adapters later
+  if param.ndim == 1:
+    # cast the small parameters (e.g. layernorm) to fp32 for stability
+    param.data = param.data.to(torch.float32)
+
+model.gradient_checkpointing_enable()  # reduce number of stored activations
+model.enable_input_require_grads()
 
 trainer = Trainer(
     model=model,

@@ -20,7 +20,6 @@ model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token	
 
-print(tokenizer.encode(outputs[0]))
 print(tokenizer.encode("My experiments are going strong!"))
 
 # with padding - so it'll not exceed 10 tokens then
@@ -59,6 +58,8 @@ eval_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(eval_
 
 # packing examples with padding
 max_seq_len = 1024
+
+print(tokenizer([s["example"] for s in train_dataset]))
 
 def pack(dataset, max_seq_len=1024):
     tkds_ids = tokenizer([s["example"] for s in dataset])["input_ids"]

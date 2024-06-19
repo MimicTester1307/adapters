@@ -211,6 +211,7 @@ model_kwargs = dict(
 model = AutoModelForCausalLM.from_pretrained(model_id)
 model.add_adapter(peft_config, adapter_name="adapter_key_value_pairs")
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model= torch.nn.DataParallel(model)
 model.to(device)
 

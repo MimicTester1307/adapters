@@ -211,6 +211,9 @@ model_kwargs = dict(
 model = AutoModelForCausalLM.from_pretrained(model_id)
 model.add_adapter(peft_config, adapter_name="adapter_key_value_pairs")
 
+model= nn.DataParallel(model)
+model.to(device)
+
 trainer = Trainer(
     model=model,
     train_dataset=train_ds_packed,

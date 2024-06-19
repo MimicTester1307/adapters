@@ -50,8 +50,16 @@ def pad_eos(ds):
     EOS_TOKEN = "</s>"
     return [f"{row['value']}{EOS_TOKEN}" for row in ds]
 
-train_prompts = [row["key"] for row in train_dataset]
-eval_prompts = [row["key"] for row in eval_dataset]
+# adding create_prompt to use as formatting_func argument during training
+def prompt_input(row):
+    return ("Learn the key value pairings provided in the format of corresponding arithmetic expressions.\n\n"
+            "### Key:\n{key}\n\n### Value:\n{value}").format_map(row)
+
+def create_prompt(row):
+    return prompt_input(row)
+
+train_prompts = [create_prompt(row) for row in train_dataset]
+eval_prompts = [create_prompt(row) for row in eval_dataset]
 
 train_outputs = pad_eos(train_dataset)
 eval_outputs = pad_eos(eval_dataset)
@@ -116,14 +124,6 @@ print(tokenizer.decode(b["labels"][0])[:250])
 
 print(b["input_ids"][0])
 print(b["labels"][0])
-
-# adding create_prompt to use as formatting_func argument during training
-def prompt_input(row):
-    return ("Learn the key value pairings provided in the format of corresponding arithmetic expressions.\n\n"
-            "### Key:\n{key}\n\n### Value:\n{value}").format_map(row)
-
-def create_prompt(row):
-    return prompt_input(row)
 
 # adding lora config
 from peft import LoraConfig, get_peft_model

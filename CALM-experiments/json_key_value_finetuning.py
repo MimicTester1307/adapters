@@ -198,7 +198,7 @@ training_args = TrainingArguments(
     logging_steps=1,
     save_strategy="steps",
     save_steps=total_num_steps // num_train_epochs,
-    use_cpu=True,
+    use_cpu=False,
 )
 
 model_kwargs = dict(

@@ -19,7 +19,7 @@ with open("D_KV_SUBS.json", "r") as f:
 one_row = dataset[232]
 print(one_row)
 
-model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
+model_id = 'meta-llama/Llama-2-7b-hf'
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token	
 

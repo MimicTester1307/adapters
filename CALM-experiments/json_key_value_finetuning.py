@@ -25,3 +25,4 @@ tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token	
 
 print(tokenizer.encode(outputs[0]))
+print(tokenizer.encode("My experiments are going strong!"))

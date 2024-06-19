@@ -106,7 +106,7 @@ from torch.utils.data import DataLoader
 from transformers import default_data_collator
 
 torch.manual_seed(seed)
-batch_size = 8 # good starter number
+batch_size = 32 # good starter number
 
 train_dataloader = DataLoader(
     train_ds_packed,
@@ -149,7 +149,7 @@ from transformers import TrainingArguments
 from trl import SFTTrainer
 
 batch_size = 64
-gradient_accumulation_steps = 2
+gradient_accumulation_steps = 4
 num_train_epochs = 3
 
 total_num_steps = num_train_epochs * 11_210 // (batch_size * gradient_accumulation_steps)
@@ -197,7 +197,9 @@ trainer = Trainer(
     train_dataset=train_ds_packed,
     # get_train_dataloader=train_ds_packed,
     args=training_args,
-    # data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False)
+    torch_dtype=torch.bfloat16,
+    data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
+    use_cache=False,
 )
 
 trainer.train()

@@ -12,7 +12,7 @@ from transformers import (
 import pandas as pd
 import torch
 import os
-os.environ["CUDA_VISIBLE_DEVICES"]="0"
+os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
 
 seed = 42
 

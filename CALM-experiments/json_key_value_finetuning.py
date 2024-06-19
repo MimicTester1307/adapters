@@ -211,7 +211,7 @@ model_kwargs = dict(
 model = AutoModelForCausalLM.from_pretrained(model_id)
 model.add_adapter(peft_config, adapter_name="adapter_key_value_pairs")
 
-model= nn.DataParallel(model)
+model= torch.nn.DataParallel(model)
 model.to(device)
 
 trainer = Trainer(

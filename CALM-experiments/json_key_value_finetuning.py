@@ -126,20 +126,20 @@ from torch.utils.data import DataLoader
 from transformers import default_data_collator
 
 torch.manual_seed(seed)
-batch_size = 32 # good starter number
+# batch_size = 8 # good starter number
 
-train_dataloader = DataLoader(
-    train_ds_packed,
-    batch_size=batch_size,
-    collate_fn=default_data_collator, # we don't need any special collator 😎
-)
+# train_dataloader = DataLoader(
+#     train_ds_packed,
+#     batch_size=batch_size,
+#     collate_fn=default_data_collator, # we don't need any special collator 😎
+# )
 
-eval_dataloader = DataLoader(
-    eval_ds_packed,
-    batch_size=batch_size,
-    collate_fn=default_data_collator,
-    shuffle=False,
-)
+# eval_dataloader = DataLoader(
+#     eval_ds_packed,
+#     batch_size=batch_size,
+#     collate_fn=default_data_collator,
+#     shuffle=False,
+# )
 
 # print one batch
 b = next(iter(train_dataloader))
@@ -169,11 +169,11 @@ import transformers
 from transformers import TrainingArguments
 from trl import SFTTrainer
 
-batch_size = 4
+batch_size = 8
 gradient_accumulation_steps = 4
 num_train_epochs = 3
 
-total_num_steps = num_train_epochs * 11_210 // (batch_size * gradient_accumulation_steps)
+total_num_steps = num_train_epochs * 2101 // (batch_size * gradient_accumulation_steps)
 
 print(total_num_steps)
 
@@ -186,7 +186,8 @@ training_args = TrainingArguments(
     learning_rate=2e-4,
     lr_scheduler_type="cosine",
     warmup_ratio = 0.1,
-    max_steps=total_num_steps,
+    max_steps = 10,
+    # max_steps=total_num_steps,
     gradient_accumulation_steps=gradient_accumulation_steps,
     gradient_checkpointing=True,
     gradient_checkpointing_kwargs=dict(use_reentrant=False),

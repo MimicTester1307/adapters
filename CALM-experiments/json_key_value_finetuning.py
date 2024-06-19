@@ -16,11 +16,6 @@ with open("D_KV_SUBS.json", "r") as f:
 one_row = dataset[232]
 print(one_row)
 
-EOS_TOKEN = "</s>"
-outputs = [row['value'] + EOS_TOKEN for row in dataset]
-
-print(outputs[0])
-
 model_id = "meta-llama/Meta-Llama-3-8B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token	
@@ -48,6 +43,19 @@ eval_dataset = dataset[-1000:]
 
 train_table = pd.DataFrame(train_dataset)
 eval_table  = pd.DataFrame(eval_dataset)
+
+def pad_eos(ds):
+    EOS_TOKEN = "</s>"
+    return [f"{row['value']}{EOS_TOKEN}" for row in ds]
+
+train_prompts = [row["key"] for row in train_dataset]
+eval_prompts = [row["key"] for row in eval_dataset]
+
+train_outputs = pad_eos(train_dataset)
+eval_outputs = pad_eos(eval_dataset)
+
+train_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(train_prompts, train_outputs)]
+eval_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(eval_prompts, eval_outputs)]
 
 # packing examples with padding
 max_seq_len = 1024

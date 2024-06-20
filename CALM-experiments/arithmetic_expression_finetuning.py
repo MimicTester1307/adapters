@@ -243,7 +243,7 @@ trainer = Trainer(
     # get_train_dataloader=train_ds_packed,
     args=training_args,
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
-    callbacks=[MyCallBack],
+    # callbacks=[MyCallBack],
     # use_cache=False,
 )
 

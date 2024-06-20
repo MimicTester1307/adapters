@@ -23,10 +23,15 @@ model.add_weighted_adapter(["arithmetic", "pairings"], [1.0,1.0], combination_ty
 model.delete_adapter("arithmetic")
 model.delete_adapter("pairings")
 model.save_pretrained("schaturv/pairings_arithmetic")
-model.config.to_json_file("adapter_config.json")
+
+config = PeftConfig.from_pretrained("schaturv/pairings_arithmetic")
+model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path)
+lora_model = PeftModel.from_pretrained(model, "schaturv/pairings_arithmetic")
+
+# model.config.to_json_file("adapter_config.json")
 # model.push_to_hub("schaturv/pairings_arithmetic")
 
-model = PeftModel.from_pretrained(model, "adapter_config.json")
+# model = PeftModel.from_pretrained(model)
 
 # prompt generating function
 def generate(prompt):

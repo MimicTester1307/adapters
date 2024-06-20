@@ -24,9 +24,9 @@ model.delete_adapter("arithmetic")
 model.delete_adapter("pairings")
 model.save_pretrained("schaturv/pairings_arithmetic")
 
-config = PeftConfig.from_pretrained("schaturv/pairings_arithmetic")
-model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path)
-lora_model = PeftModel.from_pretrained(model, "schaturv/pairings_arithmetic")
+# config = PeftConfig.from_pretrained("schaturv/pairings_arithmetic")
+# model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path)
+# lora_model = PeftModel.from_pretrained(model, "schaturv/pairings_arithmetic")
 
 # model.config.to_json_file("adapter_config.json")
 # model.push_to_hub("schaturv/pairings_arithmetic")

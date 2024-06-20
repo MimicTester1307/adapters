@@ -51,7 +51,7 @@ tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=T
 # model.delete_adapter("pairings")
 # model.save_pretrained("schaturv/pairings_arithmetic")
 
-print(model)
+# print(model)
 
 # config = PeftConfig.from_pretrained("schaturv/pairings_arithmetic")
 # model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path)
@@ -86,5 +86,3 @@ print(result[0]['generated_text'])
 
 print(generate("Perform the arithmetic calculations to get the desired solution.\n\n"
             "### Key:2 * 1 - 1 + 5 + 2\n\n### Value:\n"))
-
-

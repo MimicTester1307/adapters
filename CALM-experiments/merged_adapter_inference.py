@@ -23,6 +23,7 @@ model.add_weighted_adapter(["arithmetic", "pairings"], [1.0,1.0], combination_ty
 model.delete_adapter("arithmetic")
 model.delete_adapter("pairings")
 model.save_pretrained("./pairings_arithmetic")
+model.config.to_json_file("pairings_arithmetic_config.json")
 
 model = PeftModel.from_pretrained(model, "./pairings_arithmetic/")
 

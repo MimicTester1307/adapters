@@ -61,8 +61,8 @@ model.save_pretrained("schaturv/pairings_arithmetic")
 # model.push_to_hub("schaturv/pairings_arithmetic")
 
 # model = PeftModel.from_pretrained(model)
-print(model.active_adapters)
-print(model.active_adapter)
+print("active adapters: ", model.active_adapters)
+print("active adapters: ", model.active_adapter)
 
 # prompt generating function
 def generate(prompt):
@@ -82,9 +82,10 @@ def generate(prompt):
       output = tokenizer.decode(seq, skip_special_tokens=True)
       print(output.strip())
 
-pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=200)
-result = pipe("Find the computation of this arithmetic expression: 22032 * 17024 - 19049 + 5049 + 21763")
-print(result[0]['generated_text'])
+# peft model not suitable for 
+# pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=200)
+# result = pipe("Find the computation of this arithmetic expression: 22032 * 17024 - 19049 + 5049 + 21763")
+# print(result[0]['generated_text'])
 
 print(generate("Perform the arithmetic calculations to get the desired solution.\n\n"
-            "### Key:2 * 1 - 1 + 5 + 2\n\n### Value:\n"))
+            "### Key:22032 * 17024 - 19049 + 5049 + 21763\n\n### Value:\n</s>"))

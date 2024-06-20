@@ -10,7 +10,7 @@ model = AutoModelForCausalLM.from_pretrained(
 
 tokenizer = AutoTokenizer.from_pretrained(base_model, use_fast=True)
 
-model = PeftModel.from_pretrained(model, "schaturv/llama2-7b-arithmetic-calculations-adapter", adapter_name="arithmetic")
+model = PeftModel.from_pretrained(model, "schaturv/llama2-7b-arithmetic-calculations-adapter", adapter_name="arithmetic").to('cpu')
 
 model.load_adapter("schaturv/llama2-7b-key-value-adapter", adapter_name="pairings")
 

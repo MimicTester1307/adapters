@@ -26,7 +26,7 @@ model.save_pretrained("./pairings_arithmetic")
 model.config.to_json_file("pairings_arithmetic_config.json")
 model.push_to_hub("schaturv/pairings_arithmetic")
 
-model = PeftModel.from_pretrained(model, "./pairings_arithmetic/")
+model = PeftModel.from_pretrained(model, "pairings_arithmetic_config.json")
 
 # prompt generating function
 def generate(prompt):

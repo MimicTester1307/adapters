@@ -12,6 +12,7 @@ model = AutoModelForCausalLM.from_pretrained(
 model = PeftModel.from_pretrained(
     model,
     "schaturv/llama2-7b-arithmetic-calculations-adapter",
+    adapter_name="arithmetic",
     torch_dtype=torch.float16,
 )
 model = model.merge_and_unload()
@@ -20,10 +21,13 @@ model = model.merge_and_unload()
 model = PeftModel.from_pretrained(
     model,
     "schaturv/llama2-7b-key-value-adapter",
+    adapter_name="pairings",
     torch_dtype=torch.float16,
 )
 model = model.merge_and_unload()
+model.set_adapter(["pairings", "arithmetic"])
 
+print(model.active_adapter)
 
 # base_model = "meta-llama/Llama-2-7b-hf"
 # compute_dtype = getattr(torch, "float16")
@@ -81,6 +85,6 @@ result = pipe("Find the computation of this arithmetic expression: 22032 * 17024
 print(result[0]['generated_text'])
 
 print(generate("Perform the arithmetic calculations to get the desired solution.\n\n"
-            "### Key:22032 * 17024 - 19049 + 5049 + 21763\n\n### Value:\n"))
+            "### Key:2 * 1 - 1 + 5 + 2\n\n### Value:\n"))
 
 

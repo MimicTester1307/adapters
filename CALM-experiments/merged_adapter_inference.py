@@ -25,7 +25,7 @@ model = PeftModel.from_pretrained(
     torch_dtype=torch.float16,
 )
 model = model.merge_and_unload()
-model.set_adapter(["pairings", "arithmetic"])
+# model.set_adapter(["pairings", "arithmetic"])
 
 print(model.active_adapter)
 

@@ -14,7 +14,7 @@ model = PeftModel.from_pretrained(model, "schaturv/llama2-7b-arithmetic-calculat
 
 model.load_adapter("schaturv/llama2-7b-key-value-adapter", adapter_name="pairings")
 
-print(model)
+# print(model)
 
 # combining adapters using cat
 model.add_weighted_adapter(["arithmetic", "pairings"], [1.0,1.0], combination_type="cat", adapter_name="pairings_arithmetic")
@@ -26,7 +26,7 @@ model.save_pretrained("schaturv/pairings_arithmetic")
 model.config.to_json_file("adapter_config.json")
 # model.push_to_hub("schaturv/pairings_arithmetic")
 
-model = PeftModel.from_pretrained(model, "schaturv/pairings_arithmetic")
+model = PeftModel.from_pretrained(model, "adapter_config.json")
 
 # prompt generating function
 def generate(prompt):

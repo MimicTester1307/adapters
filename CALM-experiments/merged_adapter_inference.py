@@ -24,9 +24,9 @@ model.delete_adapter("arithmetic")
 model.delete_adapter("pairings")
 model.save_pretrained("schaturv/pairings_arithmetic")
 model.config.to_json_file("adapter_config.json")
-model.push_to_hub("schaturv/pairings_arithmetic")
+# model.push_to_hub("schaturv/pairings_arithmetic")
 
-model = PeftModel.from_pretrained(model, "pairings_arithmetic_config.json")
+model = PeftModel.from_pretrained(model, "schaturv/pairings_arithmetic")
 
 # prompt generating function
 def generate(prompt):

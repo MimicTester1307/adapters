@@ -1,6 +1,6 @@
 import torch
 from peft import PeftModel, PeftConfig
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 base_model = "meta-llama/Llama-2-7b-hf"
 compute_dtype = getattr(torch, "float16")
@@ -23,6 +23,8 @@ model.add_weighted_adapter(["arithmetic", "pairings"], [1.0,1.0], combination_ty
 model.delete_adapter("arithmetic")
 model.delete_adapter("pairings")
 model.save_pretrained("schaturv/pairings_arithmetic")
+
+print(model)
 
 # config = PeftConfig.from_pretrained("schaturv/pairings_arithmetic")
 # model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path)

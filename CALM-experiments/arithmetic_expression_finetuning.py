@@ -252,12 +252,13 @@ trainer = Trainer(
 trainer.train()
 
 # save model
-access_token = "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"
-model.push_to_hub("schaturv/llama2-7b-arithmetic-calculations-adapter", access_token=access_token)
+# access_token = "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"
+model.push_to_hub("schaturv/llama2-7b-arithmetic-calculations-adapter")
 
 # prompting the model
-prompt, expected_ans, _ = create_arithmetic_expressions()
-pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=200)
-result = pipe(f"<s>[INST] Given an arithmetic expression between strings: {prompt}. Find the corresponding arithmetic expression in numeric terms between the numeric mappings of those strings.[/INST]")
-print(prompt, expected_ans)
-print(result[0]['generated_text'])
+# prompt, expected_ans, _ = create_arithmetic_expressions()
+# pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=200)
+# result = pipe(f"<s>[INST] Given an arithmetic expression between strings: {prompt}. Find the corresponding arithmetic expression in numeric terms between the numeric mappings of those strings.[/INST]")
+# print(prompt, expected_ans)
+# print(result[0]['generated_text'])
+trainer.predict(eval_dataset["prompt"])

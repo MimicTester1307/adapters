@@ -77,7 +77,7 @@ for key, val in key_expr_to_val_expr:
     record["value"] = val
     D_KV_SUBS.append(record)
 
-for val, ans in val_expr_to_arithmetic_val:
+for key, val in val_expr_to_arithmetic_val:
     record = defaultdict()
     record["key"] = key
     record["value"] = val

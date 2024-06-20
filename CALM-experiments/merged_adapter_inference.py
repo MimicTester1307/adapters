@@ -36,6 +36,7 @@ model.save_pretrained("schaturv/pairings_arithmetic")
 # prompt generating function
 def generate(prompt):
   tokenized_input = tokenizer(prompt, return_tensors="pt")
+  print(tokenized_input)
   input_ids = tokenized_input["input_ids"].cuda()
 
   generation_output = model.generate(
@@ -43,17 +44,18 @@ def generate(prompt):
           num_beams=1,
           return_dict_in_generate=True,
           output_scores=True,
-          max_new_tokens=130
+          max_new_tokens=200
 
   )
   for seq in generation_output.sequences:
       output = tokenizer.decode(seq, skip_special_tokens=True)
       print(output.strip())
 
-print(generate("Perform the arithmetic calculations to get the desired solution.\n\n"
-            "### Key:22032 * 17024 - 19049 + 5049 + 21763\n\n### Value:\n"))
-
 pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=200)
 result = pipe("Find the computation of this arithmetic expression: 22032 * 17024 - 19049 + 5049 + 21763")
 print(result[0]['generated_text'])
+
+print(generate("Perform the arithmetic calculations to get the desired solution.\n\n"
+            "### Key:22032 * 17024 - 19049 + 5049 + 21763\n\n### Value:\n"))
+
 

@@ -50,6 +50,10 @@ def generate(prompt):
       output = tokenizer.decode(seq, skip_special_tokens=True)
       print(output.strip())
 
+print(generate("Perform the arithmetic calculations to get the desired solution.\n\n"
+            "### Key:22032 * 17024 - 19049 + 5049 + 21763\n\n### Value:\n"))
 
-
+pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=200)
+result = pipe("Find the computation of this arithmetic expression: 22032 * 17024 - 19049 + 5049 + 21763")
+print(result[0]['generated_text'])
 

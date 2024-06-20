@@ -39,7 +39,8 @@ tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=T
 
 model = PeftModel.from_pretrained(model, "schaturv/llama2-7b-arithmetic-calculations-adapter", adapter_name="arithmetic")
 
-model.add_adapter("pairings", "schaturv/llama2-7b-key-value-adapter")
+pairings_config = PeftConfig("schaturv/llama2-7b-key-value-adapter")
+model.add_adapter("pairings", pairings_config)
 
 # # print(model)
 

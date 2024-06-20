@@ -31,7 +31,7 @@ model = model.merge_and_unload()
 # model = AutoModelForCausalLM.from_pretrained(
 #         base_model, device_map={"": 0})
 
-# tokenizer = AutoTokenizer.from_pretrained(base_model, use_fast=True)
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=True)
 
 # model = PeftModel.from_pretrained(model, "schaturv/llama2-7b-arithmetic-calculations-adapter", adapter_name="arithmetic").to('cpu')
 

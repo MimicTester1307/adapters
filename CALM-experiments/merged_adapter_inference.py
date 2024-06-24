@@ -17,7 +17,7 @@ peft_model.load_adapter("schaturv/llama2-7b-key-value-adapter", adapter_name="pa
 print(peft_model)
 
 # # combining adapters using cat
-model.add_weighted_adapter(["arithmetic", "pairings"], [1.0,1.0], combination_type="linear", adapter_name="pairings_arithmetic")
+peft_model.add_weighted_adapter(["arithmetic", "pairings"], [1.0,1.0], combination_type="linear", adapter_name="pairings_arithmetic")
 
 peft_model.set_adapter("pairings_arithmetic")
 

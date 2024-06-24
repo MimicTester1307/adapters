@@ -8,26 +8,26 @@ model = AutoModelForCausalLM.from_pretrained(
     torch_dtype=torch.float16,
 )
 
-# # apply and merge adapter 1
-# model = PeftModel.from_pretrained(
-#     model,
-#     "schaturv/llama2-7b-arithmetic-calculations-adapter",
-#     adapter_name="arithmetic",
-#     torch_dtype=torch.float16,
-# )
-# model = model.merge_and_unload()
+# apply and merge adapter 1
+model = PeftModel.from_pretrained(
+    model,
+    "schaturv/llama2-7b-arithmetic-calculations-adapter",
+    adapter_name="arithmetic",
+    torch_dtype=torch.float16,
+)
+model = model.merge_and_unload()
 
-# # apply and merge adapter 2
-# model = PeftModel.from_pretrained(
-#     model,
-#     "schaturv/llama2-7b-key-value-adapter",
-#     adapter_name="pairings",
-#     torch_dtype=torch.float16,
-# )
-# model = model.merge_and_unload()
-# # model.set_adapter(["pairings", "arithmetic"])
+# apply and merge adapter 2
+model = PeftModel.from_pretrained(
+    model,
+    "schaturv/llama2-7b-key-value-adapter",
+    adapter_name="pairings",
+    torch_dtype=torch.float16,
+)
+model = model.merge_and_unload()
+# model.set_adapter(["pairings", "arithmetic"])
 
-# print(model.active_adapter)
+print(model.active_adapter)
 
 # base_model = "meta-llama/Llama-2-7b-hf"
 # compute_dtype = getattr(torch, "float16")
@@ -37,22 +37,22 @@ model = AutoModelForCausalLM.from_pretrained(
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=True)
 
-model = PeftModel.from_pretrained(model, "schaturv/llama2-7b-arithmetic-calculations-adapter", adapter_name="arithmetic")
+# model = PeftModel.from_pretrained(model, "schaturv/llama2-7b-arithmetic-calculations-adapter", adapter_name="arithmetic")
 
-pairings_config = PeftConfig("schaturv/llama2-7b-key-value-adapter")
-model.add_adapter("pairings", pairings_config)
+# pairings_config = PeftConfig("schaturv/llama2-7b-key-value-adapter")
+# model.add_adapter("pairings", pairings_config)
 
 # # print(model)
 
 # # combining adapters using cat
-model.add_weighted_adapter(["arithmetic", "pairings"], [1.0,1.0], combination_type="svd", adapter_name="pairings_arithmetic")
+# model.add_weighted_adapter(["arithmetic", "pairings"], [1.0,1.0], combination_type="svd", adapter_name="pairings_arithmetic")
 
 # # remove the single adapters
 # model.delete_adapter("arithmetic")
 # model.delete_adapter("pairings")
 model.save_pretrained("schaturv/pairings_arithmetic")
 
-# print(model)
+print(model)
 
 # config = PeftConfig.from_pretrained("schaturv/pairings_arithmetic")
 # model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path)

@@ -29,11 +29,11 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 # print(model.active_adapter)
 
-# base_model = "meta-llama/Llama-2-7b-hf"
-# compute_dtype = getattr(torch, "float16")
+base_model = "meta-llama/Llama-2-7b-hf"
+compute_dtype = getattr(torch, "float16")
 
-# model = AutoModelForCausalLM.from_pretrained(
-#         base_model, device_map={"": 0})
+model = AutoModelForCausalLM.from_pretrained(
+        base_model, device_map={"": 0})
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=True)
 

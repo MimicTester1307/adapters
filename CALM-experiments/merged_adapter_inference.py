@@ -21,9 +21,9 @@ peft_model.add_weighted_adapter(["arithmetic", "pairings"], [1.0,1.0], combinati
 
 peft_model.set_adapter("pairings_arithmetic")
 
-print(model.active_adapters)
+print("Active adapters: ", peft_model.active_adapters)
 
-breakpoint()
+# breakpoint()
 
 # config = PeftConfig.from_pretrained("schaturv/pairings_arithmetic")
 # model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path)
@@ -32,9 +32,9 @@ breakpoint()
 # model.config.to_json_file("adapter_config.json")
 # model.push_to_hub("schaturv/pairings_arithmetic")
 
-model = PeftModel.from_pretrained(model)
-print("active adapters: ", model.active_adapters)
-print("active adapters: ", model.active_adapter)
+# model = PeftModel.from_pretrained(model)
+# print("active adapters: ", model.active_adapters)
+# print("active adapters: ", model.active_adapter)
 
 # prompt generating function
 def generate(prompt):
@@ -42,7 +42,7 @@ def generate(prompt):
   print(tokenized_input)
   input_ids = tokenized_input["input_ids"].cuda()
 
-  generation_output = model.generate(
+  generation_output = peft_model.generate(
           input_ids=input_ids,
           num_beams=1,
           return_dict_in_generate=True,

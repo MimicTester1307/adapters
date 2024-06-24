@@ -238,7 +238,7 @@ tokenizer = AutoTokenizer.from_pretrained(base_model)
 
 # Loading adapters pretrained
 base_model = 'roberta-base'
-saved_dire='../saved_weight/12_config_lora'
+saved_dire='../saved_adapters/adapter_config'
 ## loading the "Pretrained" base model and "Pretrained" tokenizer
 id2label={0: 'World', 1: 'Sports', 2: 'Business', 3: 'Sci/Tech'}
 

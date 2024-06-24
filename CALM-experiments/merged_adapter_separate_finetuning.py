@@ -243,7 +243,7 @@ saved_dire='../saved_weight/12_config_lora'
 id2label={0: 'World', 1: 'Sports', 2: 'Business', 3: 'Sci/Tech'}
 # ## we will load base_model from hub and only use adapter
 base_model=AutoModelForSequenceClassification.from_pretrained(base_model,id2label= id2label)
-tokenizer=AutoTokenizer.from_pretrained(base_model)
+tokenizer=AutoTokenizer.from_pretrained(pretrained_model_name_or_path=base_model)
 ##loading the adapter1_config and adapter2_config
 adapter1_config=PeftConfig.from_pretrained(saved_dire+'/adapter1')
 adapter2_config=PeftConfig.from_pretrained(saved_dire+'/adapter2')

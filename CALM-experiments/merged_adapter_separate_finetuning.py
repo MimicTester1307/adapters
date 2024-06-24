@@ -137,9 +137,9 @@ trainer_1=Trainer(model=peft_model,
                   data_collator=data_collator
                   )
 
-trainer_1.train()
+# trainer_1.train()
 
-trainer_1.evaluate()
+# trainer_1.evaluate()
 
 # breakpoint()
 
@@ -158,9 +158,9 @@ trainer_2=Trainer(model=peft_model,
                   data_collator=data_collator
                   )
 
-trainer_2.train()
+# trainer_2.train()
 
-trainer_2.evaluate()
+# trainer_2.evaluate()
 
 saved_dire='../saved_adapters/adapter_config'
 peft_model.save_pretrained(saved_dire)

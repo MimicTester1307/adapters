@@ -5,7 +5,8 @@ from transformers import AutoModelForCausalLM, AutoModelForSequenceClassificatio
 
 from peft import LoraConfig, get_peft_model
 
-base_model = 'meta-llama/Llama-2-7b-hf'
+# base_model = 'meta-llama/Llama-2-7b-hf'
+base_model = 'roberta-base'
 
 ##
 model=AutoModelForSequenceClassification.from_pretrained(pretrained_model_name_or_path=base_model)
@@ -62,7 +63,7 @@ import numpy as np
 import datasets
 
 tokenizer=AutoTokenizer.from_pretrained(pretrained_model_name_or_path=base_model)
-tokenizer.pad_token = tokenizer.eos_token	
+# tokenizer.pad_token = tokenizer.eos_token	
 
 dataset=datasets.load_dataset('ag_news')
 

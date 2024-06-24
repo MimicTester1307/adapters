@@ -255,10 +255,10 @@ base_model=AutoModelForSequenceClassification.from_pretrained(base_model,id2labe
 # tokenizer=AutoTokenizer.from_pretrained(pretrained_model_name_or_path=base_model)
 
 # Load the entire model with adapters
-peft_model_ = PeftModel.from_pretrained(base_model, saved_dire)
+peft_model_ = PeftModel.from_pretrained(base_model, saved_dire + '/adapter1', adapter_name='adapter1')
 
 # Load adapter1 and adapter2
-peft_model_.load_adapter(saved_dire + '/adapter1', adapter_name='adapter1')
+# peft_model_.load_adapter(saved_dire + '/adapter1', adapter_name='adapter1')
 peft_model_.load_adapter(saved_dire + '/adapter2', adapter_name='adapter2')
 peft_model_.add_weighted_adapter(
     adapters=["adapter1", "adapter2"],

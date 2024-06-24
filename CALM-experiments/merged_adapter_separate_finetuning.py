@@ -120,13 +120,13 @@ def compute_metrics(eval_pred):
     pred_label=np.argmax(logits,axis=-1)
     return metrics.compute(predictions=pred_label,references=label)
 
-print(peft_model.active_adapters)
-
 """#### Training with LoRAConfigA"""
 
 from transformers import TrainingArguments,Trainer
 
 peft_model.set_adapter('adapter1')
+print("Training Adapter 1. Active Adapter: ", peft_model.active_adapters)
+
 saved_dire='../saved_adapters/adapter_1_config'
 args_1=TrainingArguments(output_dir=saved_dire)
 trainer_1=Trainer(model=peft_model,
@@ -146,6 +146,8 @@ trainer_1.evaluate()
 """#### Training with LoRAConfig2"""
 
 peft_model.set_adapter('adapter2')
+print("Training Adapter 2. Active Adapter: ", peft_model.active_adapters)
+
 saved_dire='../saved_adapters/adapter_2_config'
 args_2=TrainingArguments(output_dir=saved_dire)
 trainer_2=Trainer(model=peft_model,

@@ -268,4 +268,4 @@ peft_model_.add_weighted_adapter(
 )
 peft_model_.set_adapter("combined_adapter")
 
-print(peft_model.active_adapters)
+print("Active adapters on merged model: ", peft_model.active_adapters)

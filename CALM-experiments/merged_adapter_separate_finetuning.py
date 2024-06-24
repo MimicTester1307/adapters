@@ -96,7 +96,7 @@ eval_dataset=tokenize_dataset['test'].shuffle(seed=seed).select(range(2000))
 ### creating different lora_adapter_config
 peft_config=peft_config_A=LoraConfig(inference_mode=False)
 peft_config_1=LoraConfig(r=4,lora_alpha=16,inference_mode=False,lora_dropout=0.1)
-peft_config_2=LoraConfig(inference_mode=False,r=8,lora_alpha=32,lora_dropout=0.3)
+peft_config_2=LoraConfig(inference_mode=False,r=4,lora_alpha=32,lora_dropout=0.3)
 
 model=AutoModelForSequenceClassification.from_pretrained(pretrained_model_name_or_path=base_model,id2label=id2label)
 peft_model=get_peft_model(model=model,

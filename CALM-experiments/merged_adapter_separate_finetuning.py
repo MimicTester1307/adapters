@@ -251,7 +251,7 @@ print(f'adapter2_config: {adapter2_config}\n\n')
 # ## we will load base_model from hub and only use adapter
 # model = PeftModel.from_pretrained(base_model, peft_model_id, adapter_name="sft")
 
-base_model=AutoModelForSequenceClassification.from_pretrained(base_model,id2label= id2label)
+base_model=AutoModelForCausalLM.from_pretrained(base_model)
 tokenizer=AutoTokenizer.from_pretrained('roberta-base')
 
 # Load the entire model with adapters

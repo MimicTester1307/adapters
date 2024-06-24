@@ -62,6 +62,8 @@ import numpy as np
 import datasets
 
 tokenizer=AutoTokenizer.from_pretrained(pretrained_model_name_or_path=base_model)
+tokenizer.pad_token = tokenizer.eos_token	
+
 dataset=datasets.load_dataset('ag_news')
 
 num_labels=np.unique(dataset['train']['label']).shape[0]

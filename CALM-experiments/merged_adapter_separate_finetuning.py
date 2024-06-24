@@ -252,7 +252,7 @@ print(f'adapter2_config: {adapter2_config}\n\n')
 # model = PeftModel.from_pretrained(base_model, peft_model_id, adapter_name="sft")
 
 base_model=AutoModelForSequenceClassification.from_pretrained(base_model,id2label= id2label)
-# tokenizer=AutoTokenizer.from_pretrained(pretrained_model_name_or_path=base_model)
+tokenizer=AutoTokenizer.from_pretrained('roberta-base')
 
 # Load the entire model with adapters
 peft_model_ = PeftModel.from_pretrained(base_model, saved_dire + '/adapter1', adapter_name='adapter1', is_trainable=True)
@@ -271,4 +271,14 @@ peft_model_.set_adapter("combined_adapter")
 print(peft_model_)
 print("Active adapters on merged model: ", peft_model_.active_adapters)
 # print("Merged adapters on merged model: ", peft_model_.merged_adapters)
-print("Available adapters on merged model: ", peft_model_.available_adapters)
+# print("Available adapters on merged model: ", peft_model_.available_adapters)
+
+# run simple chat based instructions inference on the adapter
+messages = [
+    {"role": "user", "content": "Write an essay about Generative AI."},
+]
+text = tokenizer.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
+inputs = tokenizer(text, return_tensors="pt")
+inputs = {k: v.to("cuda") for k, v in inputs.items()}
+outputs = peft_model_.generate(**inputs, max_new_tokens=256, do_sample=True, top_p=0.95, temperature=0.2, repetition_penalty=1.2, eos_token_id=tokenizer.eos_token_id)
+print(tokenizer.decode(outputs[0]))

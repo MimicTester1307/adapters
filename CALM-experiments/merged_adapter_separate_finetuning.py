@@ -245,8 +245,8 @@ id2label={0: 'World', 1: 'Sports', 2: 'Business', 3: 'Sci/Tech'}
 ##loading the adapter1_config and adapter2_config
 adapter1_config=PeftConfig.from_pretrained(saved_dire+'/adapter1')
 adapter2_config=PeftConfig.from_pretrained(saved_dire+'/adapter2')
-print(f'adapter1_config: {adapter1_config}')
-print(f'adapter2_config: {adapter2_config}')
+print(f'adapter1_config: {adapter1_config}\n\n')
+print(f'adapter2_config: {adapter2_config}\n\n')
 
 # ## we will load base_model from hub and only use adapter
 # model = PeftModel.from_pretrained(base_model, peft_model_id, adapter_name="sft")

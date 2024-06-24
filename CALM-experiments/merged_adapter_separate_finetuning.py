@@ -187,7 +187,7 @@ print(f'adapter1_config: {adapter1_config}')
 print(f'adapter2_config: {adapter2_config}')
 
 # Load the entire model with adapters
-peft_model = PeftModel.from_pretrained(base_model, saved_dire)
+peft_model = PeftModel.from_pretrained(base_model, saved_dire, is_trainable=True)
 
 # Load adapter1 and adapter2
 peft_model.load_adapter(saved_dire + '/adapter1', adapter_name='adapter1')
@@ -255,7 +255,7 @@ base_model=AutoModelForSequenceClassification.from_pretrained(base_model,id2labe
 # tokenizer=AutoTokenizer.from_pretrained(pretrained_model_name_or_path=base_model)
 
 # Load the entire model with adapters
-peft_model_ = PeftModel.from_pretrained(base_model, saved_dire + '/adapter1', adapter_name='adapter1')
+peft_model_ = PeftModel.from_pretrained(base_model, saved_dire + '/adapter1', adapter_name='adapter1', is_trainable=True)
 
 # Load adapter1 and adapter2
 # peft_model_.load_adapter(saved_dire + '/adapter1', adapter_name='adapter1')
@@ -269,3 +269,5 @@ peft_model_.add_weighted_adapter(
 peft_model_.set_adapter("combined_adapter")
 
 print("Active adapters on merged model: ", peft_model.active_adapters)
+print("Merged adapters on merged model: ", peft_model.merged_adapters)
+print("Available adapters on merged model: ", peft_model.available_adapters)

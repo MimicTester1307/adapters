@@ -251,7 +251,7 @@ print(f'adapter2_config: {adapter2_config}')
 # ## we will load base_model from hub and only use adapter
 # model = PeftModel.from_pretrained(base_model, peft_model_id, adapter_name="sft")
 
-# base_model=AutoModelForSequenceClassification.from_pretrained(base_model,id2label= id2label)
+base_model=AutoModelForSequenceClassification.from_pretrained(base_model,id2label= id2label)
 # tokenizer=AutoTokenizer.from_pretrained(pretrained_model_name_or_path=base_model)
 
 # Load the entire model with adapters
@@ -260,12 +260,12 @@ peft_model_ = PeftModel.from_pretrained(base_model, saved_dire)
 # Load adapter1 and adapter2
 peft_model_.load_adapter(saved_dire + '/adapter1', adapter_name='adapter1')
 peft_model_.load_adapter(saved_dire + '/adapter2', adapter_name='adapter2')
-model.add_weighted_adapter(
+peft_model_.add_weighted_adapter(
     adapters=["adapter1", "adapter2"],
     weights=[1.0, 1.0],
     adapter_name="combined_adapter",
     combination_type="linear"
 )
-model.set_adapter("combined_adapter")
+peft_model_.set_adapter("combined_adapter")
 
 print(peft_model.active_adapters)

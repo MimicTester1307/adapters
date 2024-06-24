@@ -251,7 +251,7 @@ print(f'adapter2_config: {adapter2_config}\n\n')
 # ## we will load base_model from hub and only use adapter
 # model = PeftModel.from_pretrained(base_model, peft_model_id, adapter_name="sft")
 
-base_model=AutoModelForCausalLM.from_pretrained(base_model)
+base_model=AutoModelForSequenceClassification.from_pretrained(base_model,id2label= id2label)
 tokenizer=AutoTokenizer.from_pretrained('roberta-base')
 
 # Load the entire model with adapters
@@ -274,11 +274,13 @@ print("Active adapters on merged model: ", peft_model_.active_adapters)
 # print("Available adapters on merged model: ", peft_model_.available_adapters)
 
 # run simple chat based instructions inference on the adapter
-messages = [
-    {"role": "user", "content": "Write an essay about Generative AI."},
-]
-text = tokenizer.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
-inputs = tokenizer(text, return_tensors="pt")
-inputs = {k: v.to("cuda") for k, v in inputs.items()}
-outputs = peft_model_.generate(**inputs, max_new_tokens=256, do_sample=True, top_p=0.95, temperature=0.2, repetition_penalty=1.2, eos_token_id=tokenizer.eos_token_id)
-print(tokenizer.decode(outputs[0]))
+# messages = [
+#     {"role": "user", "content": "Write an essay about Generative AI."},
+# ]
+# text = tokenizer.apply_chat_template(messages, add_generation_prompt=True, tokenize=False)
+# inputs = tokenizer(text, return_tensors="pt")
+# inputs = {k: v.to("cuda") for k, v in inputs.items()}
+# outputs = peft_model_.generate(**inputs, max_new_tokens=256, do_sample=True, top_p=0.95, temperature=0.2, repetition_penalty=1.2, eos_token_id=tokenizer.eos_token_id)
+# print(tokenizer.decode(outputs[0]))
+
+classify(peft_model_ ,text1, 'combined_adapter')

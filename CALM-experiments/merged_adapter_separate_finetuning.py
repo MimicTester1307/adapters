@@ -5,7 +5,7 @@ from transformers import AutoModelForCausalLM, AutoModelForSequenceClassificatio
 
 from peft import LoraConfig, get_peft_model
 
-base_model = 'roberta-base'
+base_model = 'meta-llama/Llama-2-7b-hf'
 
 ##
 model=AutoModelForSequenceClassification.from_pretrained(pretrained_model_name_or_path=base_model)
@@ -35,7 +35,7 @@ print(peft_model)
 peft_model.print_trainable_parameters()
 
 peft_model.add_adapter('adapter2',peft_config)
-peft_model.add_adapter('adapter3',peft_config)
+# peft_model.add_adapter('adapter3',peft_config)
 
 peft_model
 
@@ -138,7 +138,7 @@ trainer_1.train()
 
 trainer_1.evaluate()
 
-breakpoint()
+# breakpoint()
 
 """#### Training with LoRAConfig2"""
 
@@ -206,12 +206,15 @@ def classify(peft_model,text, adapter_name: str):
 text1="Kederis proclaims innocence Olympic champion Kostas Kederis today left hospital ahead of his date with IOC inquisitors claiming his ..."
 text2="Wall St. Bears Claw Back Into the Black (Reuters) Reuters - Short-sellers, Wall Street's dwindling\band of ultra-cynics, are seeing green again."
 
-classify(peft_model,text1,'adapter1')
-classify(peft_model,text1,'adapter2')
+classify(peft_model,text1, 'adapter1')
+classify(peft_model,text1, 'adapter2')
 
-classify(text2,'adapter1') ## both correction are wrong 'trained on small dataset so
-classify(text2,'adapter2')
+classify(peft_model, text2, 'adapter1') ## both correction are wrong 'trained on small dataset so
+classify(peft_model, text2, 'adapter2')
 
+# trying to merge adapters
+peft_model.merge_and_unload()
+print(peft_model.active_adapters)
 
 
 """### What if saved_pretrained only saved adapter weight?

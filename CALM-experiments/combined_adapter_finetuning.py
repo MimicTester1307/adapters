@@ -192,7 +192,8 @@ model.push_to_hub("schaturv/llama2-7b-key-value-pairings-adapter")
 
 # testing on one prompt
 f = open("test_samples_key_value_pairings.txt", 'r')
-expression, expected_ans = f.readlines().split("\n")
+expression = f.readlines()
+print(expression)
 prompt = "### Arithmetic Expression: str(expression) ### Answer: \n"
 inputs = tokenizer(prompt, return_tensors="pt").input_ids
 inputs = inputs.to('cuda')

@@ -191,11 +191,14 @@ print("active adapter before training: ", model.active_adapters())
 model.push_to_hub("schaturv/llama2-7b-key-value-pairings-adapter")
 
 # testing on one prompt
-prompt = "### Arithmetic Expression: '24 - 61 + 40' ### Answer: \n"
+f = open("test_samples_key_value_pairings.txt", 'r')
+expression, expected_ans = f.readlines()[0], f.readlines()[1]
+prompt = "### Arithmetic Expression: str(expression) ### Answer: \n"
 inputs = tokenizer(prompt, return_tensors="pt").input_ids
 inputs = inputs.to('cuda')
 outputs = model.generate(inputs, max_new_tokens=200, do_sample=True, top_k=50, top_p=0.95)
 tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+print("expected_output: ", expected_ans)
 print(tokenized_output)
 
 
@@ -276,3 +279,14 @@ peft_model.add_weighted_adapter(["arithmetic", "pairings"], [1.0,1.0], combinati
 peft_model.set_adapter("pairings_arithmetic")
 
 print("Active adapters: ", peft_model.active_adapters())
+
+# testing on one prompt
+f = open("test_samples_key_solution_pairings.txt", 'r')
+expression, expected_ans = f.readlines()[0], f.readlines()[1]
+prompt = "### Arithmetic Expression: str(expression) ### Answer: \n"
+inputs = tokenizer(prompt, return_tensors="pt").input_ids
+inputs = inputs.to('cuda')
+outputs = model.generate(inputs, max_new_tokens=200, do_sample=True, top_k=50, top_p=0.95)
+tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+print("expected_output: ", expected_ans)
+print(tokenized_output)

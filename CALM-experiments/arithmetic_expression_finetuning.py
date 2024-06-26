@@ -58,7 +58,7 @@ def pad_eos(ds):
 
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):
-    return "### Arithmetic Expression:\n{key}\n\n### Answer:\n{value}"
+    return ("### Arithmetic Expression:\n{key}\n\n### Answer:\n{value}").format_map(row)
 
 def create_prompt(row):
     return prompt_input(row)
@@ -81,6 +81,8 @@ eval_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(eval_
 
 # checking row in dataset
 print("row in formatted dataset: ", train_dataset[0])
+
+breakpoint()
 
 # packing examples with padding
 max_seq_len = 1024

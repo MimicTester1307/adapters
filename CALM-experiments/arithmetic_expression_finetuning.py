@@ -58,7 +58,7 @@ def pad_eos(ds):
 
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):
-    return ("### Arithmetic Expression:\n{key}\n\n### Answer:\n{value}").format_map(row)
+    return ("### Arithmetic Expression:\n{key}\n\n### Answer:\n").format_map(row)
 
 def create_prompt(row):
     return prompt_input(row)

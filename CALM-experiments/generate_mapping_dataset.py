@@ -90,7 +90,7 @@ f.close()
 
 f = open("test_samples_key_solution_pairings.txt", "w")
 prompt, ans = key_expr_to_arithmetic_val[3]
-f.write(prompt+"\n"+ans)
+f.write(prompt+"\n"+str(ans))
 f.close()
 
 # adapter 1

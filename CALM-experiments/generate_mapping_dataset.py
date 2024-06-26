@@ -84,11 +84,13 @@ create_dataset_list(val_expr_to_arithmetic_val, D_SUBS_VAL)
 create_dataset_list(key_expr_to_arithmetic_val, D_KV_VAL)
 
 f = open("test_samples_key_value_pairings.txt", "w")
-f.write(D_KV_SUBS[:3])
+prompt, ans = key_expr_to_val_expr[3]
+f.write(prompt+"\n"+ans)
 f.close()
 
 f = open("test_samples_key_solution_pairings.txt", "w")
-f.write(D_KV_VAL[:3])
+prompt, ans = key_expr_to_arithmetic_val[3]
+f.write(prompt+"\n"+ans)
 f.close()
 
 # adapter 1

@@ -58,7 +58,7 @@ def pad_eos(ds):
 
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):
-    return ("### Arithmetic Expression:\n{key}\n\n### Answer:\n").format_map(row)
+    return ("### Arithmetic Expression:{key} ### Answer:").format_map(row)
 
 def create_prompt(row):
     return prompt_input(row)
@@ -222,7 +222,7 @@ model.push_to_hub("schaturv/llama2-7b-arithmetic-calculations-adapter")
 # trainer.predict(test_dataset = eval_dataset)
 
 # testing on one prompt
-prompt = "### Arithmetic Expression:\n'24 - 61'\n\n### Answer:"
+prompt = "### Arithmetic Expression: '24 - 61' ### Answer:"
 inputs = tokenizer(prompt, return_tensors="pt").input_ids
 inputs = inputs.to('cuda')
 outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)

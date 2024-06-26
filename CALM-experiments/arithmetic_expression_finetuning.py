@@ -95,7 +95,6 @@ def pack(dataset, max_seq_len=1024):
     packed_ds = []
     for i in range(0, len(all_token_ids), max_seq_len+1):
         input_ids = all_token_ids[i : i + max_seq_len+1]
-        input_ids = input_ids.to('cuda')
         if len(input_ids) == (max_seq_len+1):
             packed_ds.append({"input_ids": input_ids[:-1], "labels": input_ids[1:]})  # < --- ‼️ ⛔️
 	    # if you use the model.output.loss you don't need to shift, it is done for you!
@@ -207,7 +206,7 @@ print("active adapter before training: ", model.active_adapters)
 # testing on one prompt
 prompt = "Perform the arithmetic calculation to get the answer.\n\n### Arithmetic Expression:\n'24 - 61'\n\n### Answer:"
 inputs = tokenizer(prompt, return_tensors="pt").input_ids
-# input_ids = input_ids.to('cuda')
+inputs = inputs.to('cuda')
 outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
 tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
 print(tokenized_output)

@@ -199,7 +199,12 @@ trainer = Trainer(
 )
 
 print("active adapter before training: ", model.active_adapters)
-
+# testing on one prompt
+prompt = "Perform the arithmetic calculation to get the answer.\n\n### Arithmetic Expression:\n"24 - 61"\n\n### Answer:"
+inputs = tokenizer(prompt, return_tensors="pt").input_ids
+outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
+tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+print(tokenized_output)
 trainer.train()
 
 # save model
@@ -212,4 +217,5 @@ model.push_to_hub("schaturv/llama2-7b-arithmetic-calculations-adapter")
 # result = pipe(f"<s>[INST] Given an arithmetic expression between strings: {prompt}. Find the corresponding arithmetic expression in numeric terms between the numeric mappings of those strings.[/INST]")
 # print(prompt, expected_ans)
 # print(result[0]['generated_text'])
-trainer.predict(test_dataset = eval_dataset)
+# trainer.predict(test_dataset = eval_dataset)
+

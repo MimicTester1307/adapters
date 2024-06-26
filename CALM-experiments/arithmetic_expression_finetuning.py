@@ -151,7 +151,7 @@ training_args = TrainingArguments(
     per_device_train_batch_size=batch_size,
     per_device_eval_batch_size=batch_size//2,
     bf16=True,
-    learning_rate=1e-3,
+    learning_rate=2e-3,
     lr_scheduler_type="cosine",
     warmup_ratio = 0.1,
     max_steps = 10,
@@ -222,7 +222,7 @@ model.push_to_hub("schaturv/llama2-7b-arithmetic-calculations-adapter")
 # trainer.predict(test_dataset = eval_dataset)
 
 # testing on one prompt
-prompt = "### Arithmetic Expression: '24 - 61' ### Answer:"
+prompt = "### Arithmetic Expression: '24 - 61' ### Answer: -37 \n"
 inputs = tokenizer(prompt, return_tensors="pt").input_ids
 inputs = inputs.to('cuda')
 outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)

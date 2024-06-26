@@ -205,7 +205,7 @@ trainer = Trainer(
     # use_cache=False,
 )
 
-print("active adapter before training: ", model.active_adapters)
+print("active adapter before training: ", model.active_adapters())
 
 trainer.train()
 
@@ -222,9 +222,9 @@ model.push_to_hub("schaturv/llama2-7b-arithmetic-calculations-adapter")
 # trainer.predict(test_dataset = eval_dataset)
 
 # testing on one prompt
-prompt = "### Arithmetic Expression: '24 - 61' ### Answer: -37 \n"
+prompt = "### Arithmetic Expression: '24 - 61 + 40' ### Answer: \n"
 inputs = tokenizer(prompt, return_tensors="pt").input_ids
 inputs = inputs.to('cuda')
-outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
+outputs = model.generate(inputs, max_new_tokens=200, do_sample=True, top_k=50, top_p=0.95)
 tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
 print(tokenized_output)

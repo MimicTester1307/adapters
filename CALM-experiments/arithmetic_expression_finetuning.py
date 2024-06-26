@@ -58,8 +58,7 @@ def pad_eos(ds):
 
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):
-    return ("Perform the arithmetic calculation to get the answer.\n\n"
-            "### Arithmetic Expression:\n{key}\n\n### Answer:\n{value}").format_map(row)
+    return "### Arithmetic Expression:\n{key}\n\n### Answer:\n{value}"
 
 def create_prompt(row):
     return prompt_input(row)
@@ -69,6 +68,9 @@ print("row in dataset: ", train_dataset[0])
 
 train_prompts = [create_prompt(row) for row in train_dataset]
 eval_prompts = [create_prompt(row) for row in eval_dataset]
+
+# printing prompt
+print("single prompt: ", train_prompts[0])
 
 # padded outputs
 train_outputs = pad_eos(train_dataset)
@@ -104,7 +106,7 @@ train_ds_packed = pack(train_dataset)
 eval_ds_packed = pack(eval_dataset)
 
 # checking row in padded dataset
-print("row in padded dataset: ", train_ds_packed[0])
+# print("row in padded dataset: ", train_ds_packed[0])
 
 # length of sequences we get after packing them together
 total_sequences = len(train_ds_packed)
@@ -203,14 +205,6 @@ trainer = Trainer(
 
 print("active adapter before training: ", model.active_adapters)
 
-# testing on one prompt
-prompt = "Perform the arithmetic calculation to get the answer.\n\n### Arithmetic Expression:\n'24 - 61'\n\n### Answer:"
-inputs = tokenizer(prompt, return_tensors="pt").input_ids
-inputs = inputs.to('cuda')
-outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
-tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
-print(tokenized_output)
-
 trainer.train()
 
 # save model
@@ -225,3 +219,10 @@ model.push_to_hub("schaturv/llama2-7b-arithmetic-calculations-adapter")
 # print(result[0]['generated_text'])
 # trainer.predict(test_dataset = eval_dataset)
 
+# testing on one prompt
+prompt = "### Arithmetic Expression:\n'24 - 61'\n\n### Answer:"
+inputs = tokenizer(prompt, return_tensors="pt").input_ids
+inputs = inputs.to('cuda')
+outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
+tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+print(tokenized_output)

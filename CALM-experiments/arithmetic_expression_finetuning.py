@@ -181,7 +181,8 @@ model.enable_input_require_grads()
 
 torch.cuda.empty_cache()
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda")
+model.to(device)
 
 #defining callback
 class MyCallBack(TrainerCallback):
@@ -201,8 +202,6 @@ trainer = Trainer(
 )
 
 print("active adapter before training: ", model.active_adapters)
-
-model.to(device)
 
 # testing on one prompt
 prompt = "Perform the arithmetic calculation to get the answer.\n\n### Arithmetic Expression:\n'24 - 61'\n\n### Answer:"

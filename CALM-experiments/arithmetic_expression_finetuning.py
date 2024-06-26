@@ -157,7 +157,6 @@ training_args = TrainingArguments(
     gradient_checkpointing_kwargs=dict(use_reentrant=False),
     evaluation_strategy="steps",
     eval_steps=total_num_steps // num_train_epochs,
-    eval_steps=10,
     # logging strategies
     logging_strategy="steps",
     logging_steps=5,

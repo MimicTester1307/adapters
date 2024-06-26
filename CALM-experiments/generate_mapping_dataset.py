@@ -6,6 +6,7 @@ import string
 import json
 
 LEN_DATASET = 24000
+RANGE_OF_MAPPINGS = 100
 
 def generate_string_to_number_mappings(count):
     unique_values = list(range(1, count + 1))
@@ -20,7 +21,7 @@ def generate_string_to_number_mappings(count):
     knowledge_artifact = dict(zip(list(unique_strings), unique_values))
     return knowledge_artifact
 
-knowledge_artifact = generate_string_to_number_mappings(LEN_DATASET)
+knowledge_artifact = generate_string_to_number_mappings(RANGE_OF_MAPPINGS)
 # print(knowledge_artifact)
 
 # realized a namedtuple is not needed here
@@ -71,23 +72,16 @@ key_expr_to_val_expr, key_expr_to_arithmetic_val, val_expr_to_arithmetic_val = g
 # METHOD 1 to create datasets:
 D_KV_SUBS, D_KV_VAL, D_SUBS_VAL =  [], [], []
 
-for key, val in key_expr_to_val_expr:
+def create_dataset_list(mapping, dataset_list):
+for key, val in mapping:
     record = defaultdict()
     record["key"] = key
     record["value"] = val
-    D_KV_SUBS.append(record)
+    dataset_list.append(record)
 
-for key, val in val_expr_to_arithmetic_val:
-    record = defaultdict()
-    record["key"] = key
-    record["value"] = val
-    D_SUBS_VAL.append(record)
-
-for key, val in key_expr_to_arithmetic_val:
-    record = defaultdict()
-    record["key"] = key
-    record["value"] = val
-    D_KV_VAL.append(record)
+create_dataset_list(key_expr_to_val_expr, D_KV_SUBS)
+create_dataset_list(val_expr_to_arithmetic_val, D_SUBS_VAL)
+create_dataset_list(key_expr_to_arithmetic_val, D_KV_VAL)
 
 # adapter 1
 with open("D_KV_SUBS.json", "w") as outfile:

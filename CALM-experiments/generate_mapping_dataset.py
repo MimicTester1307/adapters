@@ -83,6 +83,14 @@ create_dataset_list(key_expr_to_val_expr, D_KV_SUBS)
 create_dataset_list(val_expr_to_arithmetic_val, D_SUBS_VAL)
 create_dataset_list(key_expr_to_arithmetic_val, D_KV_VAL)
 
+f = open("test_samples_key_value_pairings.txt", "w")
+f.write(D_KV_SUBS[:3])
+f.close()
+
+f = open("test_samples_key_solution_pairings.txt", "w")
+f.write(D_KV_VAL[:3])
+f.close()
+
 # adapter 1
 with open("D_KV_SUBS.json", "w") as outfile:
     json.dump(D_KV_SUBS, outfile)

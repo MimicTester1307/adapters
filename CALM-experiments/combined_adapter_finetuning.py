@@ -192,9 +192,10 @@ model.push_to_hub("schaturv/llama2-7b-key-value-pairings-adapter")
 
 # testing on one prompt
 f = open("test_samples_key_value_pairings.txt", 'r')
-expression = f.readlines()
-print(expression)
-prompt = "### Arithmetic Expression: str(expression) ### Answer: \n"
+content = f.readlines()
+expression = content[0]
+expected_ans = content[1]
+prompt = f"### Arithmetic Expression: {str(expression)} ### Answer: \n"
 inputs = tokenizer(prompt, return_tensors="pt").input_ids
 inputs = inputs.to('cuda')
 outputs = model.generate(inputs, max_new_tokens=200, do_sample=True, top_k=50, top_p=0.95)
@@ -283,8 +284,10 @@ print("Active adapters: ", peft_model.active_adapters())
 
 # testing on one prompt
 f = open("test_samples_key_solution_pairings.txt", 'r')
-expression, expected_ans = f.readlines()
-prompt = "### Arithmetic Expression: str(expression) ### Answer: \n"
+content = f.readlines()
+expression = content[0]
+expected_ans = content[1]
+prompt = f"### Arithmetic Expression: {str(expression)} ### Answer: \n"
 inputs = tokenizer(prompt, return_tensors="pt").input_ids
 inputs = inputs.to('cuda')
 outputs = model.generate(inputs, max_new_tokens=200, do_sample=True, top_k=50, top_p=0.95)

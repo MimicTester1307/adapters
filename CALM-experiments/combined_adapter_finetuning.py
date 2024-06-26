@@ -1,5 +1,6 @@
 import json
 from transformers import (
+    PeftModel,
     AutoModelForCausalLM,
     AutoTokenizer,
     BitsAndBytesConfig,

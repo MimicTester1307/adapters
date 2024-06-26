@@ -5,7 +5,7 @@ import secrets
 import string
 import json
 
-LEN_DATASET = 24000
+LEN_DATASET = 48000
 RANGE_OF_MAPPINGS = 100
 
 def generate_string_to_number_mappings(count):
@@ -35,7 +35,7 @@ def create_arithmetic_expressions():
     arithmetic_value_expression = ''
 
     for _ in range(choice(list(range(1, 5)))):
-        operator = choice([' + ', ' - ', ' * '])
+        operator = choice([' + ', ' - '])
         key = generate_random_key()
         arithmetic_key_expression += key + operator
         arithmetic_value_expression += str(knowledge_artifact[key]) + operator

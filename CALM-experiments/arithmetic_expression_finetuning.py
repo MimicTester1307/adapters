@@ -82,8 +82,6 @@ eval_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(eval_
 # checking row in dataset
 print("row in formatted dataset: ", train_dataset[0])
 
-breakpoint()
-
 # packing examples with padding
 max_seq_len = 1024
 

@@ -1,6 +1,5 @@
 import json
 from transformers import (
-    PeftModel,
     AutoModelForCausalLM,
     AutoTokenizer,
     BitsAndBytesConfig,
@@ -13,7 +12,7 @@ from transformers import (
 import pandas as pd
 import torch
 import os
-from generate_mapping_dataset import create_arithmetic_expressions
+from peft import PeftConfig,PeftModel
 
 os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
 

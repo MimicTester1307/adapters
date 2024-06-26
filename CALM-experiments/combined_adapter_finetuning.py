@@ -280,7 +280,7 @@ peft_model.add_weighted_adapter(["arithmetic", "pairings"], [1.0,1.0], combinati
 
 peft_model.set_adapter("pairings_arithmetic")
 
-print("Active adapters: ", peft_model.active_adapters())
+print("Active adapters: ", peft_model.active_adapters)
 
 # testing on one prompt
 f = open("test_samples_key_solution_pairings.txt", 'r')

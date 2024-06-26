@@ -199,12 +199,14 @@ trainer = Trainer(
 )
 
 print("active adapter before training: ", model.active_adapters)
+
 # testing on one prompt
-prompt = "Perform the arithmetic calculation to get the answer.\n\n### Arithmetic Expression:\n"24 - 61"\n\n### Answer:"
+prompt = "Perform the arithmetic calculation to get the answer.\n\n### Arithmetic Expression:\n'24 - 61'\n\n### Answer:"
 inputs = tokenizer(prompt, return_tensors="pt").input_ids
 outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
 tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
 print(tokenized_output)
+
 trainer.train()
 
 # save model

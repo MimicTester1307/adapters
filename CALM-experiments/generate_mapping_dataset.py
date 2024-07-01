@@ -125,8 +125,8 @@ def generate_merged_dataset(size):
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         transformed_collection = {
             'pairs': mapped_examples,
-            'expression': dict(),
-            'value': 
+            'expression': '',
+            'value': 0,
         }
         # print(transformed_dict["pairs"].keys())
         arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(transformed_collection["pairs"])

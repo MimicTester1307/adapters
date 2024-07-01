@@ -1,0 +1,51 @@
+Smaller prompts with maximum length of expressions having 3 operands.
+
+# Pairs: {'sjzna': 82, 'ka': 6, 'hszq': 40, 'jxq': 41}, # Arithmetic Expression: jxq - sjzna, # Value: 105, # Pairs: {'sjzna': 82, 'ka
+# Pairs: {'iepl': 68, 'qes': 57, 'opx': 96, 'srov': 1, 'kdngx': 60}, # Arithmetic Expression: qes + qes, # Value: 123, # Pairs: {'iepl': 68, 'qes
+# Pairs: {'syol': 17, 'nhgc': 83, 'zptud': 36, 'vtxkh': 65, 'zoan': 43}, # Arithmetic Expression: zptud + nhgc, # Value: 119, # Arithmetic Expression: vtxkh - zptud, # Value
+# Pairs: {'zpm': 30, 'dbng': 39, 'fyek': 10}, # Arithmetic Expression: dbng - zpm, # Value: 39
+
+def f(a, b):
+    # Arithmetic Expression: a
+# Pairs: {'fy': 21, 'rg': 15, 'sfzc': 4}, # Arithmetic Expression: fy + sfzc, # Value: 16, # Pairs: {'fy': 21, 'sfzc
+# Pairs: {'eazy': 35, 'peqz': 25, 'gij': 74, 'hdbqq': 3}, # Arithmetic Expression: eazy + eazy, # Value: 69, # Expression: eazy + eazy, # Value: 69,
+# Pairs: {'nev': 79, 'yhgk': 94, 'srov': 1, 'kiodr': 58, 'yi': 47}, # Arithmetic Expression: nev + srov, # Value: 79 + 58, # Value: 137
+
+# Pairs
+# Pairs: {'owhqx': 67, 'fgpgv': 72, 'gztse': 73, 'peqz': 25, 'gij': 74}, # Arithmetic Expression: owhqx - owhqx, # Value: 67, # Pairs: {'owhqx': 67, 'fg
+# Pairs: {'qfy': 18, 'nhgc': 83, 'ycqp': 59, 'dv': 31}, # Arithmetic Expression: ycqp - dv, # Value: 81
+
+
+def main():
+    global pairs, arithmetic_expression
+    pairs
+# Pairs: {'spj': 11, 'cuj': 48, 'lbn': 5, 'iepl': 68}, # Arithmetic Expression: cuj - spj, # Value: 48
+
+# Pairs: {'spj': 11, 'cuj
+# Pairs: {'zpm': 30, 'iepl': 68, 'hszq': 40, 'oty': 69}, # Arithmetic Expression: oty - oty, # Value: 29
+
+
+def main():
+    import sys
+    sys.setrecurs
+# Pairs: {'sidbs': 91, 'kdngx': 60, 'fgvb': 80, 'mdybm': 88, 'owhqx': 67}, # Arithmetic Expression: fgvb + owhqx, # Value: 148
+
+# Pairs: {'sidbs': 91, '
+# Pairs: {'cuj': 48, 'oty': 69, 'ciadh': 53}, # Arithmetic Expression: oty - ciadh, # Value: 22
+# Pairs: {'cuj': 48, 'oty': 
+# Pairs: {'hdbqq': 3, 'dukzc': 52, 'opx': 96}, # Arithmetic Expression: dukzc - hdbqq, # Value: 52, # Type: Integer
+# Pairs: {'hdbqq': 3
+# Pairs: {'qes': 57, 'rg': 15, 'kiodr': 58, 'ly': 54, 'hfpj': 89}, # Arithmetic Expression: ly + hfpj, # Value: 63, # Suggested: 63, #
+
+# Pairs:
+# Pairs: {'rxwg': 14, 'zeze': 46, 'rjr': 85, 'ch': 62, 'dz': 84}, # Arithmetic Expression: rxwg + rjr, # Value: 14
+
+# Pairs: {'rxwg': 14, 'ze
+# Pairs: {'htvpl': 32, 'eofyy': 75, 'juwst': 16, 'ushsw': 100}, # Arithmetic Expression: eofyy - juwst, # Value: 128, # Pairs: {'htvpl': 32, 'e
+# Pairs: {'ciadh': 53, 'tg': 12, 'ushsw': 100, 'ji': 92}, # Arithmetic Expression: ushsw + ji, # Value: 100
+  'ciadh': 53, # Arithmetic Expression:
+# Pairs: {'qes': 57, 'scfl': 9}, # Arithmetic Expression: scfl + qes, # Value: 66
+
+# Pairs: {'qes': 57, 'scfl
+# Pairs: {'peqz': 25, 'yex': 33, 'sldk': 49}, # Arithmetic Expression: sldk - peqz, # Value: 49
+    'peqz': 25, # Arithmetic Expression: pe

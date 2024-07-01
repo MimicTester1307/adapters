@@ -19,10 +19,11 @@ def generate_string_to_number_mappings(count):
         random_string = ''.join(secrets.choice(characters) for _ in range(choice([2,3,4,5])))
         unique_strings.add(random_string)
 
-    knowledge_artifact = dict(zip(list(unique_strings), unique_values))
+    knowledge_artifact = list(zip(list(unique_strings), unique_values))
     return knowledge_artifact
 
-knowledge_artifact = generate_string_to_number_mappings(RANGE_OF_MAPPINGS)
+knowledge_artifact_list = generate_string_to_number_mappings(RANGE_OF_MAPPINGS)
+knowledge_artifact = dict(knowledge_artifact_list)
 
 def generate_random_key():
     return choice(list(knowledge_artifact.keys()))

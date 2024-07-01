@@ -36,7 +36,7 @@ print ('Current cuda device: ', torch.cuda.current_device(), ' **May not corresp
 print("Device name: ", torch.cuda.get_device_name(torch.cuda.current_device()))
 
 
-with open("D_SUBS_VAL.json", "r") as f:
+with open("datasets/D_SUBS_VAL.json", "r") as f:
     dataset = json.load(f)
 
 one_row = dataset[232]

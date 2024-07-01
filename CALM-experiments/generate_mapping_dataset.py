@@ -150,15 +150,15 @@ def create_arithmetic_dataset_list(mapping, dataset_list):
 create_arithmetic_dataset_list(val_expr_to_arithmetic_val, D_SUBS_VAL)
 
 # adapter 1
-with open("D_KV_SUBS.json", "w") as outfile:
+with open("datasets/D_KV_SUBS.json", "w") as outfile:
     json.dump(D_KV_SUBS, outfile)
 
 # adapter 2
-with open("D_SUBS_VAL.json", "w") as outfile:
+with open("datasets/D_SUBS_VAL.json", "w") as outfile:
     json.dump(D_SUBS_VAL, outfile)
 
 # merged
-with open("D_KV_VAL.json", "w") as outfile:
+with open("datasets/D_KV_VAL.json", "w") as outfile:
     json.dump(D_KV_VAL, outfile)
 
 

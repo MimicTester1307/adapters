@@ -43,7 +43,7 @@ def prompt_input_pairings(row):
     return ("# Examples: {examples} # Query: {query} # Value: ").format_map(row)
 
 def create_prompt_pairings(row):
-    return prompt_input(row)
+    return prompt_input_pairings(row)
     
 def create_prompt(row):
     return prompt_input(row)
@@ -124,7 +124,7 @@ import transformers
 from transformers import TrainingArguments, TrainerCallback
 from trl import SFTTrainer
 
-batch_size = 8
+batch_size = 4
 gradient_accumulation_steps = 4
 num_train_epochs = 3
 

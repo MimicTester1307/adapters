@@ -21,6 +21,8 @@ peft_model.add_weighted_adapter(["arithmetic", "pairings"], [1.0,1.0], combinati
 
 peft_model.set_adapter("pairings_arithmetic")
 
+print(peft_model)
+
 print("Active adapters: ", peft_model.active_adapters)
 
 # breakpoint()

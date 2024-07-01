@@ -167,7 +167,7 @@ with open("D_KV_VAL.json", "w") as outfile:
 
 # Creating small dataset for inference
 def inference_dataset_for_adapter_1(size):
-    f.open("inference_for_dataset_1.txt", 'w')
+    f = open("inference_for_dataset_1.txt", 'w')
     prompts = []
 
     for _ in range(size):

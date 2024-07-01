@@ -163,3 +163,28 @@ with open("D_SUBS_VAL.json", "w") as outfile:
 # merged
 with open("D_KV_VAL.json", "w") as outfile:
     json.dump(D_KV_VAL, outfile)
+
+
+# Creating small dataset for inference
+def inference_dataset_for_adapter_1(size):
+    f.open("inference_for_dataset_1.txt", 'w')
+    prompts = []
+
+    for _ in range(size):
+        collection = defaultdict(list)
+
+        for sample_length in range(choice(list(range(3, 6)))):
+            collection["examples"].append(choices(knowledge_artifact_list))
+
+        collection["query"] = choices(collection["examples"])
+        unpacked_examples = [item[0] for item in collection['examples']]
+        query, value = collection['query'][0][0]
+        mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        prompt = f"### Arithmetic Expression: {mapped_examples}, ### Query: {query} ### Value: "
+
+        prompts.append(prompt)
+        f.write(prompt)
+
+    f.close()
+
+inference_dataset_for_adapter_1(10)

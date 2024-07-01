@@ -1,6 +1,6 @@
 from collections import defaultdict
 import random
-from random import choice
+from random import choice, choices
 import secrets
 import string
 import json

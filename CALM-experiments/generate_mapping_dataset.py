@@ -184,6 +184,7 @@ def inference_dataset_for_adapter_1(size):
 
         prompts.append(prompt)
         f.write(prompt)
+        f.write('\n')
 
     f.close()
 

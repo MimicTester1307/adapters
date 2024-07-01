@@ -37,8 +37,14 @@ peft_config = LoraConfig(
 
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):
-    return ("### Arithmetic Expression:{key} ### Answer:").format_map(row)
+    return ("# Arithmetic Expression:{key} # Answer:").format_map(row)
 
+def prompt_input_pairings(row):
+    return ("# Examples: {examples} # Query: {query} # Value: ").format_map(row)
+
+def create_prompt_pairings(row):
+    return prompt_input(row)
+    
 def create_prompt(row):
     return prompt_input(row)
 
@@ -73,35 +79,43 @@ with open("D_SUBS_VAL.json", "r") as f:
 with open("D_KV_SUBS.json", "r") as f:
     dataset_pairings = json.load(f)
 
-def dataset_preprocessing_till_packing(dataset):
-    # dividing train and eval datasets
-    train_dataset = dataset[:-4000]
-    eval_dataset = dataset[-4000:]
+# dividing train and eval datasets
+train_dataset = dataset_arithmetic[:-4000]
+eval_dataset = dataset_arithmetic[-4000:]
 
-    train_prompts = [create_prompt(row) for row in train_dataset]
-    eval_prompts = [create_prompt(row) for row in eval_dataset]
+train_dataset_pairings = dataset_pairings[:-4000]
+eval_dataset_pairings = dataset_pairings[-4000:]
 
+train_prompts = [create_prompt(row) for row in train_dataset]
+eval_prompts = [create_prompt(row) for row in eval_dataset]
+
+train_prompts_pairings = [create_prompt_pairings(row) for row in train_dataset]
+eval_prompts_pairings = [create_prompt_pairings(row) for row in eval_dataset]
+
+def dataset_preprocessing_till_packing(train_dataset, eval_dataset, train_prompts, eval_prompts):
     # padded outputs
     train_outputs = pad_eos(train_dataset)
     eval_outputs = pad_eos(eval_dataset)
 
     train_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(train_prompts, train_outputs)]
     eval_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(eval_prompts, eval_outputs)]
-
+    
+    # checking row in dataset
+    print("row in formatted dataset: ", train_dataset[0])
+    
     train_ds_packed = pack(train_dataset)
     eval_ds_packed = pack(eval_dataset)
 
     return train_ds_packed, eval_ds_packed
 
-train_ds_packed_pairings, eval_ds_packed_pairings = dataset_preprocessing_till_packing(dataset_pairings)
-train_ds_packed_arithmetic, eval_ds_packed_arithmetic = dataset_preprocessing_till_packing(dataset_arithmetic)
+train_ds_packed_pairings, eval_ds_packed_pairings = dataset_preprocessing_till_packing(train_dataset_pairings, eval_dataset_pairings, train_prompts_pairings, eval_prompts_pairings)
+train_ds_packed_arithmetic, eval_ds_packed_arithmetic = dataset_preprocessing_till_packing(train_dataset, eval_dataset, train_prompts, eval_prompts)
 
 # length of sequences we get after packing them together
 total_sequences_pairings = len(train_ds_packed_pairings)
 total_sequences_arithmetic = len(train_ds_packed_arithmetic)
 
 torch.manual_seed(seed)
-
 
 #### TRAINING 
 
@@ -185,23 +199,23 @@ trainer = Trainer(
 
 print("active adapter before training: ", model.active_adapters())
 
-# trainer.train()
+trainer.train()
 
 # save model
 model.push_to_hub("schaturv/llama2-7b-key-value-pairings-adapter")
 
-# testing on one prompt
-f = open("test_samples_key_value_pairings.txt", 'r')
-content = f.readlines()
-expression = content[0]
-expected_ans = content[1]
-prompt = f"### Arithmetic Expression: {str(expression)} ### Answer: \n"
-inputs = tokenizer(prompt, return_tensors="pt").input_ids
-inputs = inputs.to('cuda')
-outputs = model.generate(inputs, max_new_tokens=200, do_sample=True, top_k=50, top_p=0.95)
-tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
-print("expected_output: ", expected_ans)
-print(tokenized_output)
+# testing on inference dataset
+with open("inference_for_dataset_1.txt") as file:
+    prompts = [line.rstrip() for line in file]
+
+print("inference for pairings adapter: \n\n")
+
+for prompt in prompts:
+    inputs = tokenizer(prompt, return_tensors="pt").input_ids
+    inputs = inputs.to('cuda')
+    outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
+    tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+    print(tokenized_output)
 
 
 #### TRAINING ARITHMETIC ADAPTER
@@ -251,6 +265,8 @@ print("active adapter before training: ", model.active_adapters())
 model.push_to_hub("schaturv/llama2-7b-arithmetic-calculations-adapter")
 
 # testing on one prompt
+print("inference for arithmetic adapter: \n\n")
+
 prompt = "### Arithmetic Expression: '24 - 61 + 40' ### Answer: \n"
 inputs = tokenizer(prompt, return_tensors="pt").input_ids
 inputs = inputs.to('cuda')
@@ -282,15 +298,13 @@ peft_model.set_adapter("pairings_arithmetic")
 
 print("Active adapters: ", peft_model.active_adapters)
 
-# testing on one prompt
-f = open("test_samples_key_solution_pairings.txt", 'r')
-content = f.readlines()
-expression = content[0]
-expected_ans = content[1]
-prompt = f"### Arithmetic Expression: {str(expression)} ### Answer: \n"
-inputs = tokenizer(prompt, return_tensors="pt").input_ids
-inputs = inputs.to('cuda')
-outputs = model.generate(inputs, max_new_tokens=200, do_sample=True, top_k=50, top_p=0.95)
-tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
-print("expected_output: ", expected_ans)
-print(tokenized_output)
+# testing on prompts
+with open("inference_for_merged_adapter.txt") as file:
+    prompts = [line.rstrip() for line in file]
+
+for prompt in prompts:
+    inputs = tokenizer(prompt, return_tensors="pt").input_ids
+    inputs = inputs.to('cuda')
+    outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
+    tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+    print(tokenized_output)

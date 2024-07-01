@@ -92,16 +92,14 @@ val_expr_to_arithmetic_val = generate_arithmetic_training_dataset(LEN_DATASET)
 
 
 # GENERATING DATASET 3
-def create_arithmetic_expressions_from_keys(map):
+def create_arithmetic_expressions_from_keys(map, expression_length):
     keys = list(map.keys())
-    # print(map)
-    # print(keys)
     arithmetic_key_expression = ''
     arithmetic_value_expression = ''
-    for _ in range(choice(list(range(1, 5)))):
+
+    for _ in range(choice(list(range(1, expression_length)))):
         operator = choice(OPERATORS)
         key_operand = choices(keys)[0]
-        # print(key_operand)
         numeric_operand = map[key_operand]
         arithmetic_key_expression += key_operand + operator
         arithmetic_value_expression += str(numeric_operand) + operator
@@ -120,7 +118,6 @@ def generate_merged_dataset(size):
         collection = defaultdict(list)
         for sample_length in range(choice(list(range(3, 6)))):
             collection["pairs"].append(choices(knowledge_artifact_list))
-        # print(collection["pairs"])
         unpacked_examples = [item[0] for item in collection['pairs']]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         transformed_collection = {
@@ -129,7 +126,7 @@ def generate_merged_dataset(size):
             'value': 0,
         }
         # print(transformed_dict["pairs"].keys())
-        arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(transformed_collection["pairs"])
+        arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(mapped_examples, 5)
         transformed_collection["expression"] = arithmetic_key_expression
         transformed_collection['value'] = total_value
         merged_dataset.append(transformed_collection)
@@ -199,7 +196,7 @@ def inference_dataset_for_merged_adapter(size):
 
         unpacked_examples = [item[0] for item in collection['pairs']]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
-        arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(mapped_examples)
+        arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(mapped_examples, 2)
         prompt = f"# Pairs: {mapped_examples}, # Arithmetic Expression: {arithmetic_key_expression}, # Value: "
         f.write(prompt)
         f.write('\n')

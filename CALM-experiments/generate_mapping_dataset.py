@@ -45,17 +45,17 @@ def generate_key_pairs_dataset(size):
         unpacked_examples = [item[0] for item in collection['examples']]
         query, value = collection['query'][0][0]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
-        mapped_query = {query: value}
         transformed_dict = {
             'examples': mapped_examples,
-            'query': mapped_query
+            'query': query,
+            'value': value,
         }
 
         key_expressions.append(transformed_dict)
 
     return (key_expressions)
 
-key_to_value_mappings = generate_key_pairs_dataset(LEN_DATASET)
+key_to_value_mappings = generate_key_pairs_dataset(5)
 
 
 # GENERATING DATASET 2
@@ -126,15 +126,17 @@ def generate_merged_dataset(size):
         transformed_collection = {
             'pairs': mapped_examples,
             'expression': dict(),
+            'value': 
         }
         # print(transformed_dict["pairs"].keys())
         arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(transformed_collection["pairs"])
-        transformed_collection["expression"] = {arithmetic_key_expression: total_value}
+        transformed_collection["expression"] = arithmetic_key_expression
+        transformed_collection['value'] = total_value
         merged_dataset.append(transformed_collection)
 
     return merged_dataset
 
-key_value_pairs_to_key_expressions = generate_merged_dataset(LEN_DATASET)
+key_value_pairs_to_key_expressions = generate_merged_dataset(5)
 print("last dataset: \n\n", key_value_pairs_to_key_expressions)
 
 

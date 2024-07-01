@@ -30,28 +30,6 @@ def generate_random_key():
 
 
 # GENERATING DATASET 1 
-def create_arithmetic_expressions_from_keys(map):
-    keys = list(map.keys())
-    print(map)
-    print(keys)
-    arithmetic_key_expression = ''
-    arithmetic_value_expression = ''
-    for _ in range(choice(list(range(3, 6)))):
-        operator = choice(OPERATORS)
-        key_operand = choices(keys)[0]
-        print(key_operand)
-        numeric_operand = map[key_operand]
-        arithmetic_key_expression += key_operand + operator
-        arithmetic_value_expression += str(numeric_operand) + operator
-
-    last_key_operand = choices(keys)[0]
-    last_numeric_operand = map[key_operand]
-    arithmetic_key_expression += last_key_operand
-    arithmetic_value_expression += str(last_numeric_operand)
-
-    total_value = eval(arithmetic_value_expression)
-    return arithmetic_key_expression, total_value
-
 def generate_key_pairs_dataset(size):
     key_expressions = []
 
@@ -112,6 +90,28 @@ val_expr_to_arithmetic_val = generate_arithmetic_training_dataset(LEN_DATASET)
 
 
 # GENERATING DATASET 3
+def create_arithmetic_expressions_from_keys(map):
+    keys = list(map.keys())
+    print(map)
+    print(keys)
+    arithmetic_key_expression = ''
+    arithmetic_value_expression = ''
+    for _ in range(choice(list(range(3, 6)))):
+        operator = choice(OPERATORS)
+        key_operand = choices(keys)[0]
+        print(key_operand)
+        numeric_operand = map[key_operand]
+        arithmetic_key_expression += key_operand + operator
+        arithmetic_value_expression += str(numeric_operand) + operator
+
+    last_key_operand = choices(keys)[0]
+    last_numeric_operand = map[key_operand]
+    arithmetic_key_expression += last_key_operand
+    arithmetic_value_expression += str(last_numeric_operand)
+
+    total_value = eval(arithmetic_value_expression)
+    return arithmetic_key_expression, total_value
+
 def generate_merged_dataset(size):
     merged_dataset = []
     for _ in range(size):
@@ -123,7 +123,7 @@ def generate_merged_dataset(size):
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         transformed_collection = {
             'pairs': mapped_examples,
-            'expression': '',
+            'expression': dict(),
         }
         # print(transformed_dict["pairs"].keys())
         arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(transformed_collection["pairs"])
@@ -133,7 +133,7 @@ def generate_merged_dataset(size):
     return merged_dataset
 
 key_value_pairs_to_key_expressions = generate_merged_dataset(5)
-
+print("last dataset: \n\n", key_value_pairs_to_key_expressions)
 
 # METHOD 1 to create datasets:
 D_KV_SUBS, D_SUBS_VAL, D_KV_VAL =  key_to_value_mappings, [], key_value_pairs_to_key_expressions

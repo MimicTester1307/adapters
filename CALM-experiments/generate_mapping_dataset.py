@@ -199,7 +199,7 @@ def inference_dataset_for_merged_adapter(size):
 
         unpacked_examples = [item[0] for item in collection['pairs']]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
-        arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(transformed_collection["pairs"])
+        arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(mapped_examples)
         prompt = f"# Pairs: {mapped_examples}, # Arithmetic Expression: {arithmetic_key_expression}, # Value: "
         f.write(prompt)
         f.write('\n')

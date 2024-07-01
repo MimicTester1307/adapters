@@ -9,6 +9,8 @@ LEN_DATASET = 48000
 RANGE_OF_MAPPINGS = 100
 OPERATORS = [' + ', ' - ']
 
+
+# CREATING KNOWLEDGE ARTIFACT (MAPPINGS)
 def generate_string_to_number_mappings(count):
     unique_values = list(range(1, count + 1))
     random.shuffle(unique_values)
@@ -53,7 +55,7 @@ def generate_key_pairs_dataset(size):
 
     return (key_expressions)
 
-key_to_value_mappings = generate_key_pairs_dataset(5)
+key_to_value_mappings = generate_key_pairs_dataset(LEN_DATASET)
 
 
 # GENERATING DATASET 2
@@ -96,7 +98,7 @@ def create_arithmetic_expressions_from_keys(map):
     print(keys)
     arithmetic_key_expression = ''
     arithmetic_value_expression = ''
-    for _ in range(choice(list(range(3, 6)))):
+    for _ in range(choice(list(range(1, 5)))):
         operator = choice(OPERATORS)
         key_operand = choices(keys)[0]
         print(key_operand)
@@ -132,10 +134,11 @@ def generate_merged_dataset(size):
 
     return merged_dataset
 
-key_value_pairs_to_key_expressions = generate_merged_dataset(5)
+key_value_pairs_to_key_expressions = generate_merged_dataset(LEN_DATASET)
 print("last dataset: \n\n", key_value_pairs_to_key_expressions)
 
-# METHOD 1 to create datasets:
+
+# WRITING TO JSON
 D_KV_SUBS, D_SUBS_VAL, D_KV_VAL =  key_to_value_mappings, [], key_value_pairs_to_key_expressions
 
 def create_arithmetic_dataset_list(mapping, dataset_list):
@@ -146,16 +149,6 @@ def create_arithmetic_dataset_list(mapping, dataset_list):
         dataset_list.append(record)
 
 create_arithmetic_dataset_list(val_expr_to_arithmetic_val, D_SUBS_VAL)
-
-# f = open("test_samples_key_value_pairings.txt", "w")
-# prompt, ans = key_expr_to_val_expr[3]
-# f.write(prompt+"\n"+ans)
-# f.close()
-
-# f = open("test_samples_key_solution_pairings.txt", "w")
-# prompt, ans = key_expr_to_arithmetic_val[3]
-# f.write(prompt+"\n"+str(ans))
-# f.close()
 
 # adapter 1
 with open("D_KV_SUBS.json", "w") as outfile:
@@ -168,27 +161,3 @@ with open("D_SUBS_VAL.json", "w") as outfile:
 # merged
 with open("D_KV_VAL.json", "w") as outfile:
     json.dump(D_KV_VAL, outfile)
-
-# METHOD 2 to create datasets:
-# D_KV_SUBS, D_KV_VAL, D_SUBS_VAL =  [], [], []
-
-# for key, subs in key_expr_to_val_expr:
-#     row = "<s><INST> Given an arithmetic expression between strings: '" \
-#          + key + "'. Find the corresponding arithmetic expression in numeric terms between the numeric mappings of those strings.</INST> " \
-#              + "The corresponding numeric expression is: '" + subs + "'.</s>"
-#     D_KV_SUBS.append(row)
-
-# for key, val in key_expr_to_arithmetic_val:
-#     row = "<s><INST> Given an arithmetic expression of the following type: '" \
-#          + key + "'. Find the value corresponding to the solution of this arithmetic expression.</INST> " \
-#              + "The numeric solution to this arithmetic expression is: '" + str(val) + "'.</s>"
-#     D_KV_VAL.append(row)
-
-# for key, subs in val_expr_to_arithmetic_val:
-#     row = "<s><INST> Given an arithmetic expression: '" \
-#          + key + "'. Find the value corresponding to the solution of this arithmetic expression.</INST> " \
-#              + "The numeric solution to this arithmetic expression is: '" + str(val) + "'.</s>"
-#     D_SUBS_VAL.append(row)
-
-
-# print(D_KV_SUBS, D_KV_VAL, D_SUBS_VAL)

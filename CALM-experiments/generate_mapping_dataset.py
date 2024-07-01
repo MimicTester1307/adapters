@@ -94,14 +94,14 @@ val_expr_to_arithmetic_val = generate_arithmetic_training_dataset(LEN_DATASET)
 # GENERATING DATASET 3
 def create_arithmetic_expressions_from_keys(map):
     keys = list(map.keys())
-    print(map)
-    print(keys)
+    # print(map)
+    # print(keys)
     arithmetic_key_expression = ''
     arithmetic_value_expression = ''
     for _ in range(choice(list(range(1, 5)))):
         operator = choice(OPERATORS)
         key_operand = choices(keys)[0]
-        print(key_operand)
+        # print(key_operand)
         numeric_operand = map[key_operand]
         arithmetic_key_expression += key_operand + operator
         arithmetic_value_expression += str(numeric_operand) + operator
@@ -137,7 +137,7 @@ def generate_merged_dataset(size):
     return merged_dataset
 
 key_value_pairs_to_key_expressions = generate_merged_dataset(LEN_DATASET)
-print("last dataset: \n\n", key_value_pairs_to_key_expressions)
+# print("last dataset: \n\n", key_value_pairs_to_key_expressions)
 
 
 # WRITING TO JSON

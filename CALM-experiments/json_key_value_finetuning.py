@@ -85,7 +85,7 @@ print("row in formatted dataset: ", train_dataset[0])
 # packing examples with padding
 max_seq_len = 1024
 
-breakpoint() 
+# breakpoint() 
 
 # print(tokenizer([s["example"] for s in train_dataset]))
 
@@ -211,7 +211,7 @@ trainer.train()
 model.push_to_hub("schaturv/llama2-7b-key-value-adapter")
 
 # testing on one prompt
-prompt = "### Arithmetic Expression: {'lkd': 45, 'br': 41, 'ean': 74}, ### Query: {query}"
+prompt = "### Arithmetic Expression: {'lkd': 45, 'br': 41, 'ean': 74}, ### Query: 'br' ### Value: "
 inputs = tokenizer(prompt, return_tensors="pt").input_ids
 inputs = inputs.to('cuda')
 outputs = model.generate(inputs, max_new_tokens=200, do_sample=True, top_k=50, top_p=0.95)

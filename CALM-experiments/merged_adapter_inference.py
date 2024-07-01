@@ -28,8 +28,8 @@ print("Active adapters: ", peft_model.active_adapters)
 # breakpoint()
 
 # testing on prompts
-outfile = open("merged_adapter_inference_outputs_smaller_numbers.txt", 'w')
-with open("inference_for_merged_adapter.txt") as file:
+outfile = open("inference_outputs/merged_adapter_inference_outputs_smaller_numbers.txt", 'w')
+with open("inference_inputs/inference_for_merged_adapter.txt") as file:
     prompts = [line.rstrip() for line in file]
 
 outfile.write("Smaller prompts with maximum length of expressions having 3 operands and smaller numeric values, with a ceiling of 30.\n\n")
@@ -37,7 +37,7 @@ outfile.write("Smaller prompts with maximum length of expressions having 3 opera
 for prompt in prompts:
     inputs = tokenizer(prompt, return_tensors="pt").input_ids
     inputs = inputs.to('cuda')
-    outputs = model.generate(inputs, max_new_tokens=20)
+    outputs = model.generate(inputs, max_new_tokens=40)
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     outfile.write(tokenized_output[0])
     outfile.write("\n")

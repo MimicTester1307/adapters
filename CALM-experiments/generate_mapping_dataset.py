@@ -136,7 +136,7 @@ key_value_pairs_to_key_expressions = generate_merged_dataset(5)
 
 
 # METHOD 1 to create datasets:
-D_KV_SUBS, D_KV_VAL, D_SUBS_VAL =  key_to_value_mappings, [], key_value_pairs_to_key_expressions
+D_KV_SUBS, D_SUBS_VAL, D_KV_VAL =  key_to_value_mappings, [], key_value_pairs_to_key_expressions
 
 def create_arithmetic_dataset_list(mapping, dataset_list):
     for key, val in mapping:

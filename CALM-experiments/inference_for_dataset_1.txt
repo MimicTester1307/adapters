@@ -1,0 +1,10 @@
+# Arithmetic Expression: {'iizsg': 74, 'rjzl': 76, 'etbi': 20, 'bk': 61, 'pwnc': 37}, # Query: bk # Value: 
+# Arithmetic Expression: {'vwhf': 70, 'rlix': 58, 'pvru': 21, 'hef': 29}, # Query: pvru # Value: 
+# Arithmetic Expression: {'ttq': 92, 'asr': 44, 'th': 25, 'lzsu': 33, 'hef': 29}, # Query: lzsu # Value: 
+# Arithmetic Expression: {'dcem': 91, 'nh': 98, 'aiy': 14, 'rpoe': 53, 'rvgkr': 57}, # Query: aiy # Value: 
+# Arithmetic Expression: {'etbi': 20, 'fa': 22, 'ar': 62, 'nh': 98}, # Query: etbi # Value: 
+# Arithmetic Expression: {'dw': 4, 'kpdc': 2, 'rysf': 7, 'wjyri': 66}, # Query: kpdc # Value: 
+# Arithmetic Expression: {'lzsu': 33, 'wi': 89, 'hli': 27, 'pvf': 10, 'dfa': 86}, # Query: hli # Value: 
+# Arithmetic Expression: {'ulo': 55, 'okfqb': 31, 'ai': 93, 'ty': 65, 'rpoe': 53}, # Query: ulo # Value: 
+# Arithmetic Expression: {'wi': 89, 'pvru': 21}, # Query: pvru # Value: 
+# Arithmetic Expression: {'smcmy': 87, 'ulo': 55, 'jelkq': 43}, # Query: smcmy # Value: 

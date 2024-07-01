@@ -1,0 +1,20 @@
+# Pairs: {'uenyz': 15, 'nm': 88, 'cjebr': 42, 'kr': 63}, # Arithmetic Expression: uenyz - cjebr + cjebr, # Value: 
+# Pairs: {'ui': 23, 'cju': 69, 'ty': 65, 'av': 81, 'puwdd': 41}, # Arithmetic Expression: av + puwdd - cju - cju - ui, # Value: 
+# Pairs: {'xypb': 17, 'blb': 45, 'lm': 18}, # Arithmetic Expression: lm - blb, # Value: 
+# Pairs: {'qlhz': 12, 'iizsg': 74, 'nq': 97}, # Arithmetic Expression: nq - nq + nq + iizsg, # Value: 
+# Pairs: {'lzsu': 33, 'ihisr': 83, 'kilv': 13, 'uyhi': 96}, # Arithmetic Expression: kilv + lzsu - lzsu, # Value: 
+# Pairs: {'rpoe': 53, 'uxm': 60, 'nm': 88, 'asr': 44, 'nh': 98}, # Arithmetic Expression: rpoe - nh, # Value: 
+# Pairs: {'tahh': 54, 'vok': 16, 'kpdc': 2}, # Arithmetic Expression: vok + kpdc - vok + kpdc - tahh, # Value: 
+# Pairs: {'dfa': 86, 'cjebr': 42, 'kpdc': 2, 'rolqp': 34}, # Arithmetic Expression: kpdc - dfa - dfa - cjebr, # Value: 
+# Pairs: {'adb': 94, 'zx': 78, 'ar': 62, 'sqghb': 82, 'an': 11}, # Arithmetic Expression: an + ar - ar - sqghb + an, # Value: 
+# Pairs: {'rjzl': 76, 'th': 25, 'rysf': 7}, # Arithmetic Expression: rysf + th - th - rjzl, # Value: 
+# Pairs: {'hd': 77, 'bem': 30, 'vok': 16, 'pwnc': 37}, # Arithmetic Expression: hd + vok + hd, # Value: 
+# Pairs: {'nj': 8, 'obky': 28, 'jelkq': 43, 'pvf': 10}, # Arithmetic Expression: obky - nj + pvf - obky, # Value: 
+# Pairs: {'ncksq': 19, 'jelkq': 43, 'szp': 90, 'dw': 4}, # Arithmetic Expression: szp + szp - ncksq + ncksq, # Value: 
+# Pairs: {'zhv': 40, 'lwuf': 6, 'kpdc': 2, 'uxm': 60, 'ihisr': 83}, # Arithmetic Expression: kpdc + lwuf - uxm - lwuf, # Value: 
+# Pairs: {'cq': 71, 'asi': 64, 'pb': 1, 'gzo': 9, 'cmeh': 72}, # Arithmetic Expression: cq - cq - asi + cq, # Value: 
+# Pairs: {'bem': 30, 'cju': 69, 'okvlo': 35, 'hli': 27, 'motu': 85}, # Arithmetic Expression: okvlo + okvlo + cju, # Value: 
+# Pairs: {'qf': 46, 'okvlo': 35, 'ttq': 92, 'unfb': 24}, # Arithmetic Expression: okvlo - okvlo - okvlo + unfb - qf, # Value: 
+# Pairs: {'hd': 77, 'pb': 1, 'ndhvg': 75}, # Arithmetic Expression: pb - hd, # Value: 
+# Pairs: {'asi': 64, 'nq': 97, 'ai': 93}, # Arithmetic Expression: asi + asi + ai - ai - ai, # Value: 
+# Pairs: {'fnv': 26, 'rpoe': 53, 'cjebr': 42}, # Arithmetic Expression: fnv + fnv, # Value: 

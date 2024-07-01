@@ -38,27 +38,11 @@ with open("D_KV_SUBS.json", "r") as f:
     dataset = json.load(f)
 
 one_row = dataset[232]
-print(one_row)
+print("one row of the dataset: ", one_row)
 
 model_id = 'meta-llama/Llama-2-7b-hf'
 tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token	
-
-print(tokenizer.encode("My experiments are going strong!"))
-
-# with padding - so it'll not exceed 10 tokens then
-# print(tokenizer.encode(outputs[0], padding='max_length', max_length=10))
-# print(tokenizer.encode("My experiments are going strong!", padding='max_length', max_length=10))
-
-# pytorch tensors
-# print(tokenizer.encode(outputs[0], 
-#                  padding='max_length', 
-#                  max_length=10,
-#                  return_tensors="pt"))
-# print(tokenizer.encode("My experiments are going strong!", 
-#                  padding='max_length', 
-#                  max_length=10,
-#                  return_tensors="pt"))
 
 # dividing train and eval datasets
 train_dataset = dataset[:-4000]
@@ -66,32 +50,34 @@ eval_dataset = dataset[-4000:]
 
 print("lengths of datasets: ", len(train_dataset), len(eval_dataset))
 
-train_table = pd.DataFrame(train_dataset)
-eval_table  = pd.DataFrame(eval_dataset)
-
 def pad_eos(ds):
     EOS_TOKEN = "</s>"
     return [f"{row['value']}{EOS_TOKEN}" for row in ds]
 
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):
-    return ("Learn the key value pairings provided in the format of corresponding arithmetic expressions.\n\n"
-            "### Key:\n{key}\n\n### Value:\n{value}").format_map(row)
+    return ("### Examples:\n{examples}\n\n### Query: {list(query.keys())}\n").format_map(row)
 
 def create_prompt(row):
     return prompt_input(row)
 
 # checking row in dataset
-print(train_dataset[0])
+print("row in dataset: ", train_dataset[0])
 
 train_prompts = [create_prompt(row) for row in train_dataset]
 eval_prompts = [create_prompt(row) for row in eval_dataset]
+
+# printing prompt
+print("single prompt: ", train_prompts[0])
 
 train_outputs = pad_eos(train_dataset)
 eval_outputs = pad_eos(eval_dataset)
 
 train_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(train_prompts, train_outputs)]
 eval_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(eval_prompts, eval_outputs)]
+
+# checking row in dataset
+print("row in formatted dataset: ", train_dataset[0])
 
 # packing examples with padding
 max_seq_len = 1024
@@ -126,31 +112,6 @@ from torch.utils.data import DataLoader
 from transformers import default_data_collator
 
 torch.manual_seed(seed)
-# batch_size = 8 # good starter number
-
-# train_dataloader = DataLoader(
-#     train_ds_packed,
-#     batch_size=batch_size,
-#     collate_fn=default_data_collator, # we don't need any special collator 😎
-# )
-
-# eval_dataloader = DataLoader(
-#     eval_ds_packed,
-#     batch_size=batch_size,
-#     collate_fn=default_data_collator,
-#     shuffle=False,
-# )
-
-# # print one batch
-# b = next(iter(train_dataloader))
-# print(b)
-
-# # decoding the batch
-# print(tokenizer.decode(b["input_ids"][0])[:250])
-# print(tokenizer.decode(b["labels"][0])[:250])
-
-# print(b["input_ids"][0])
-# print(b["labels"][0])
 
 # adding lora config
 from peft import LoraConfig, get_peft_model
@@ -173,7 +134,7 @@ batch_size = 8
 gradient_accumulation_steps = 4
 num_train_epochs = 3
 
-total_num_steps = num_train_epochs * 2101 // (batch_size * gradient_accumulation_steps)
+total_num_steps = num_train_epochs * total_sequences // (batch_size * gradient_accumulation_steps)
 
 print(total_num_steps)
 
@@ -183,7 +144,7 @@ training_args = TrainingArguments(
     per_device_train_batch_size=batch_size,
     per_device_eval_batch_size=batch_size//2,
     bf16=True,
-    learning_rate=2e-4,
+    learning_rate=2e-3,
     lr_scheduler_type="cosine",
     warmup_ratio = 0.1,
     max_steps = 10,
@@ -193,30 +154,18 @@ training_args = TrainingArguments(
     gradient_checkpointing_kwargs=dict(use_reentrant=False),
     evaluation_strategy="steps",
     eval_steps=total_num_steps // num_train_epochs,
-    # eval_steps=10,
     # logging strategies
     logging_strategy="steps",
-    logging_steps=1,
+    logging_steps=5,
     save_strategy="steps",
     save_steps=total_num_steps // num_train_epochs,
     use_cpu=False,
-)
-
-model_kwargs = dict(
-    device_map={"" : 0},
-    trust_remote_code=True,
-    # low_cpu_mem_usage=True,
-    torch_dtype=torch.bfloat16,
-    # use_flash_attention_2=True,
-    use_cache=False,
+    do_predict=True,
 )
 
 model = AutoModelForCausalLM.from_pretrained(model_id)
-model.add_adapter(peft_config, adapter_name="adapter_key_value_pairs")
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# model= torch.nn.DataParallel(model)
-# model.to(device)
+model.add_adapter(peft_config, adapter_name="llama2-7b-key-value-pairings-adapter")
+model.set_adapter("llama2-7b-key-value-pairings-adapter")
 
 for param in model.parameters():
   param.requires_grad = False  # freeze the model - train adapters later
@@ -229,8 +178,10 @@ model.enable_input_require_grads()
 
 torch.cuda.empty_cache()
 
-#defining callback
+device = torch.device("cuda")
+model.to(device)
 
+#defining callback
 class MyCallBack(TrainerCallback):
    def on_evaluate(self, args, state, model, tokenizer):
          tokens = tokenizer("text")
@@ -247,8 +198,17 @@ trainer = Trainer(
     # use_cache=False,
 )
 
+print("active adapter before training: ", model.active_adapters())
+
 trainer.train()
 
 # save model
-access_token = "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"
-model.push_to_hub("schaturv/llama2-7b-key-value-adapter", access_token=access_token)
+model.push_to_hub("schaturv/llama2-7b-key-value-adapter")
+
+# testing on one prompt
+prompt = "### Arithmetic Expression: {'lkd': 45, 'br': 41, 'ean': 74}, ### Query: {query}"
+inputs = tokenizer(prompt, return_tensors="pt").input_ids
+inputs = inputs.to('cuda')
+outputs = model.generate(inputs, max_new_tokens=200, do_sample=True, top_k=50, top_p=0.95)
+tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+print(tokenized_output)

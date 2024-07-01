@@ -35,19 +35,6 @@ peft_config = LoraConfig(
     target_modules=["q_proj", "k_proj","v_proj","o_proj"], # the name of the layers to add LoRA
 )
 
-# adding create_prompt to use as formatting_func argument during training
-def prompt_input(row):
-    return ("# Arithmetic Expression:{key} # Answer:").format_map(row)
-
-def prompt_input_pairings(row):
-    return ("# Examples: {examples} # Query: {query} # Value: ").format_map(row)
-
-def create_prompt_pairings(row):
-    return prompt_input_pairings(row)
-    
-def create_prompt(row):
-    return prompt_input(row)
-
 # packing examples with padding
 max_seq_len = 1024
 
@@ -79,18 +66,31 @@ with open("D_SUBS_VAL.json", "r") as f:
 with open("D_KV_SUBS.json", "r") as f:
     dataset_pairings = json.load(f)
 
+# adding create_prompt to use as formatting_func argument during training
+def prompt_input(row):
+    return ("# Arithmetic Expression:{key} # Answer:").format_map(row)
+
+def pairings_prompt_input(row):
+    return ("# Examples: {examples} # Query: {query} # Value: ").format_map(row)
+
+def pairings_create_prompt(row):
+    return pairings_prompt_input(row)
+    
+def create_prompt(row):
+    return prompt_input(row)
+
 # dividing train and eval datasets
 train_dataset = dataset_arithmetic[:-4000]
 eval_dataset = dataset_arithmetic[-4000:]
 
-train_dataset_pairings = dataset_pairings[:-4000]
-eval_dataset_pairings = dataset_pairings[-4000:]
+pairings_train_dataset = dataset_pairings[:-4000]
+pairings_eval_dataset = dataset_pairings[-4000:]
 
 train_prompts = [create_prompt(row) for row in train_dataset]
 eval_prompts = [create_prompt(row) for row in eval_dataset]
 
-train_prompts_pairings = [create_prompt_pairings(row) for row in train_dataset]
-eval_prompts_pairings = [create_prompt_pairings(row) for row in eval_dataset]
+pairings_train_prompts = [pairings_create_prompt(row) for row in pairings_train_dataset]
+pairings_eval_prompts = [pairings_create_prompt(row) for row in pairings_eval_dataset]
 
 def dataset_preprocessing_till_packing(train_dataset, eval_dataset, train_prompts, eval_prompts):
     # padded outputs
@@ -108,7 +108,7 @@ def dataset_preprocessing_till_packing(train_dataset, eval_dataset, train_prompt
 
     return train_ds_packed, eval_ds_packed
 
-train_ds_packed_pairings, eval_ds_packed_pairings = dataset_preprocessing_till_packing(train_dataset_pairings, eval_dataset_pairings, train_prompts_pairings, eval_prompts_pairings)
+train_ds_packed_pairings, eval_ds_packed_pairings = dataset_preprocessing_till_packing(pairings_train_dataset, pairings_train_dataset, pairings_train_prompts, pairings_eval_prompts)
 train_ds_packed_arithmetic, eval_ds_packed_arithmetic = dataset_preprocessing_till_packing(train_dataset, eval_dataset, train_prompts, eval_prompts)
 
 # length of sequences we get after packing them together

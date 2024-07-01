@@ -185,6 +185,8 @@ def inference_dataset_for_adapter_1(size):
 
 inference_dataset_for_adapter_1(10)
 
+inference_knowledge_artifact = generate_string_to_number_mappings(30)
+
 def inference_dataset_for_merged_adapter(size):
     f = open("inference_for_merged_adapter.txt", 'w')
 
@@ -192,7 +194,7 @@ def inference_dataset_for_merged_adapter(size):
         collection = defaultdict(list)
 
         for sample_length in range(choice(list(range(3, 6)))):
-            collection["pairs"].append(choices(knowledge_artifact_list))
+            collection["pairs"].append(choices(inference_knowledge_artifact))
 
         unpacked_examples = [item[0] for item in collection['pairs']]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}

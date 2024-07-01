@@ -51,17 +51,86 @@ arithmetic_key_expressions = []
 arithmetic_value_expressions = []
 arithmetic_values = []
 
-def generate_datasets(length):
+def create_arithmetic_expressions_from_keys(map):
+    keys = list(map.keys())
+    print(map)
+    print(keys)
+    arithmetic_key_expression = ''
+    arithmetic_value_expression = ''
+    for _ in range(choice(list(range(3, 6)))):
+        operator = choice(OPERATORS)
+        key_operand = choices(keys)[0]
+        print(key_operand)
+        numeric_operand = map[key_operand]
+        arithmetic_key_expression += key_operand + operator
+        arithmetic_value_expression += str(numeric_operand) + operator
+
+    last_key_operand = choices(keys)[0]
+    last_numeric_operand = map[key_operand]
+    arithmetic_key_expression += last_key_operand
+    arithmetic_value_expression += str(last_numeric_operand)
+
+    total_value = eval(arithmetic_value_expression)
+    return arithmetic_key_expression, total_value
+
+
+def generate_key_pairs_dataset(size):
+    key_expressions = []
+
+    for _ in range(size):
+        collection = defaultdict(list)
+
+        for sample_length in range(choice(list(range(3, 6)))):
+            collection["examples"].append(choices(knowledge_artifact_list))
+
+        collection["query"] = choices(collection["examples"])
+        unpacked_examples = [item[0] for item in collection['examples']]
+        query, value = collection['query'][0][0]
+        mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        mapped_query = {query: value}
+        transformed_dict = {
+            'examples': mapped_examples,
+            'query': mapped_query
+        }
+
+        key_expressions.append(transformed_dict)
+
+    return (key_expressions)
+
+print(generate_key_pairs_dataset(5))
+
+def generate_merged_dataset(size):
+    merged_dataset = []
+    for _ in range(size):
+        collection = defaultdict(list)
+        for sample_length in range(choice(list(range(3, 6)))):
+            collection["pairs"].append(choices(knowledge_artifact_list))
+        # print(collection["pairs"])
+        unpacked_examples = [item[0] for item in collection['pairs']]
+        mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        transformed_collection = {
+            'pairs': mapped_examples,
+            'expression': '',
+        }
+        # print(transformed_dict["pairs"].keys())
+        arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(transformed_collection["pairs"])
+        transformed_collection["expression"] = {arithmetic_key_expression: total_value}
+        merged_dataset.append(transformed_collection)
+
+    return merged_dataset
+
+print(generate_merged_dataset(5))
+
+def generate_arithmetic_training_dataset(length):
 
     for _ in range(length):
         arithmetic_key_expression, arithmetic_value_expression, arithmetic_value = create_arithmetic_expressions()
-        arithmetic_key_expressions.append(arithmetic_key_expression)
         arithmetic_value_expressions.append(arithmetic_value_expression)
         arithmetic_values.append(arithmetic_value)
     
     # print(arithmetic_key_expressions, arithmetic_value_expressions, arithmetic_values)
 
-    key_expr_to_val_expr = list(zip(arithmetic_key_expressions, arithmetic_value_expressions))
+    key_expr_to_val_expr = list(zip(arithmet    ic_key_expressions, arithmetic_value_expressions))
     key_expr_to_arithmetic_val = list(zip(arithmetic_key_expressions, arithmetic_values))
     val_expr_to_arithmetic_val = list(zip(arithmetic_value_expressions, arithmetic_values))
 
@@ -79,9 +148,7 @@ def create_dataset_list(mapping, dataset_list):
         record["value"] = val
         dataset_list.append(record)
 
-create_dataset_list(key_expr_to_val_expr, D_KV_SUBS)
 create_dataset_list(val_expr_to_arithmetic_val, D_SUBS_VAL)
-create_dataset_list(key_expr_to_arithmetic_val, D_KV_VAL)
 
 f = open("test_samples_key_value_pairings.txt", "w")
 prompt, ans = key_expr_to_val_expr[3]

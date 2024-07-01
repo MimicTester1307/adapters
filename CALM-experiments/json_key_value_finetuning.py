@@ -56,7 +56,7 @@ def pad_eos(ds):
 
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):
-    return ("### Examples:\n{examples}\n\n### Query: {list(query.keys())}\n").format_map(row)
+    return ("### Examples:\n{examples}\n\n### Query: {query}\n\n### Value: ").format_map(row)
 
 def create_prompt(row):
     return prompt_input(row)
@@ -72,6 +72,9 @@ print("single prompt: ", train_prompts[0])
 
 train_outputs = pad_eos(train_dataset)
 eval_outputs = pad_eos(eval_dataset)
+
+# printing output
+print("single output: ", train_outputs[0])
 
 train_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(train_prompts, train_outputs)]
 eval_dataset = [{"prompt":s, "output":t, "example": s + t} for s, t in zip(eval_prompts, eval_outputs)]

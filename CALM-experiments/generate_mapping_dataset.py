@@ -55,7 +55,7 @@ def generate_key_pairs_dataset(size):
 
     return (key_expressions)
 
-key_to_value_mappings = generate_key_pairs_dataset(5)
+key_to_value_mappings = generate_key_pairs_dataset(LEN_DATASET)
 
 
 # GENERATING DATASET 2
@@ -136,7 +136,7 @@ def generate_merged_dataset(size):
 
     return merged_dataset
 
-key_value_pairs_to_key_expressions = generate_merged_dataset(5)
+key_value_pairs_to_key_expressions = generate_merged_dataset(LEN_DATASET)
 print("last dataset: \n\n", key_value_pairs_to_key_expressions)
 
 

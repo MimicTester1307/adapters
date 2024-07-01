@@ -1,0 +1,20 @@
+# Pairs: {'uqe': 8, 'kjxy': 9, 'nr': 25, 'lq': 18, 'kof': 2}, # Arithmetic Expression: lq + nr, # Value: 
+# Pairs: {'hj': 20, 'vtvqt': 5, 'kof': 2}, # Arithmetic Expression: vtvqt - hj, # Value: 
+# Pairs: {'dr': 10, 'wkst': 27, 'nrno': 3, 'zy': 6, 'uqe': 8}, # Arithmetic Expression: dr - uqe, # Value: 
+# Pairs: {'kof': 2, 'kjxy': 9, 'nr': 25, 'nrno': 3}, # Arithmetic Expression: kjxy - nrno, # Value: 
+# Pairs: {'dr': 10, 'veuvq': 30, 'fx': 15, 'wumpb': 4, 'zznnw': 1}, # Arithmetic Expression: zznnw + wumpb, # Value: 
+# Pairs: {'drt': 21, 'veuvq': 30, 'uqe': 8, 'nrno': 3, 'qvb': 13}, # Arithmetic Expression: qvb + uqe, # Value: 
+# Pairs: {'ch': 12, 'qslqx': 24, 'fkh': 7, 'qvb': 13}, # Arithmetic Expression: qvb + qslqx, # Value: 
+# Pairs: {'kjxy': 9, 'pf': 11, 'bv': 19, 'kxj': 28}, # Arithmetic Expression: kjxy + kjxy, # Value: 
+# Pairs: {'hj': 20, 'iar': 23, 'wumpb': 4, 'pf': 11}, # Arithmetic Expression: hj + wumpb, # Value: 
+# Pairs: {'hj': 20, 'wumpb': 4, 'lq': 18, 'ay': 26}, # Arithmetic Expression: lq + ay, # Value: 
+# Pairs: {'lq': 18, 'wumpb': 4, 'drt': 21, 'vtvqt': 5}, # Arithmetic Expression: vtvqt + lq, # Value: 
+# Pairs: {'ch': 12, 'wumpb': 4, 'kjxy': 9, 'crhg': 29, 'qslqx': 24}, # Arithmetic Expression: kjxy + kjxy, # Value: 
+# Pairs: {'drt': 21, 'kxj': 28, 'nr': 25}, # Arithmetic Expression: kxj - kxj, # Value: 
+# Pairs: {'uqe': 8, 'dr': 10, 'veuvq': 30}, # Arithmetic Expression: veuvq - uqe, # Value: 
+# Pairs: {'lq': 18, 'wumpb': 4, 'zy': 6}, # Arithmetic Expression: lq - zy, # Value: 
+# Pairs: {'nrno': 3, 'uqe': 8, 'vtvqt': 5}, # Arithmetic Expression: vtvqt + nrno, # Value: 
+# Pairs: {'pf': 11, 'ahd': 17, 'crhg': 29, 'wumpb': 4}, # Arithmetic Expression: crhg - wumpb, # Value: 
+# Pairs: {'kjxy': 9, 'kof': 2, 'nr': 25}, # Arithmetic Expression: kof + kjxy, # Value: 
+# Pairs: {'bv': 19, 'veuvq': 30, 'nrno': 3}, # Arithmetic Expression: veuvq - bv, # Value: 
+# Pairs: {'crhg': 29, 'kxj': 28, 'ay': 26, 'nrno': 3}, # Arithmetic Expression: kxj + kxj, # Value: 

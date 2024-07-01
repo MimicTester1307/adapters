@@ -1,0 +1,10 @@
+# Arithmetic Expression: {'vavd': 63, 'juvd': 88, 'ofpfe': 49, 'doh': 62, 'whn': 84}, # Query: doh # Value: 
+# Arithmetic Expression: {'khm': 11, 'iuwn': 13, 'isk': 19}, # Query: isk # Value: 
+# Arithmetic Expression: {'sdsie': 36, 'hlzi': 33, 'zxaqu': 28, 'etqx': 58}, # Query: sdsie # Value: 
+# Arithmetic Expression: {'fv': 42, 'cxnn': 57, 'brpz': 53}, # Query: cxnn # Value: 
+# Arithmetic Expression: {'doh': 62, 'pvcwe': 59, 'wpxbl': 72, 'cp': 45}, # Query: cp # Value: 
+# Arithmetic Expression: {'isk': 19, 'mt': 24, 'ka': 10, 'pqmk': 74}, # Query: ka # Value: 
+# Arithmetic Expression: {'et': 21, 'muxad': 93, 'xkhb': 96}, # Query: muxad # Value: 
+# Arithmetic Expression: {'flrw': 9, 'bmeo': 38, 'ofpfe': 49, 'ssacm': 3}, # Query: bmeo # Value: 
+# Arithmetic Expression: {'ozlhk': 27, 'kmshi': 89, 'mbpy': 8, 'tk': 97}, # Query: tk # Value: 
+# Arithmetic Expression: {'mdd': 66, 'npsg': 26, 'hwnpa': 98}, # Query: mdd # Value: 

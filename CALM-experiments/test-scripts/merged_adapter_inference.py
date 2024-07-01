@@ -28,11 +28,11 @@ print("Active adapters: ", peft_model.active_adapters)
 # breakpoint()
 
 # testing on prompts
-outfile = open("merged_adapter_inference_outputs_smaller.txt", 'w')
+outfile = open("merged_adapter_inference_outputs_smaller_numbers.txt", 'w')
 with open("inference_for_merged_adapter.txt") as file:
     prompts = [line.rstrip() for line in file]
 
-outfile.write("Smaller prompts with maximum length of expressions having 3 operands.\n\n")
+outfile.write("Smaller prompts with maximum length of expressions having 3 operands and smaller numeric values, with a ceiling of 30.\n\n")
 
 for prompt in prompts:
     inputs = tokenizer(prompt, return_tensors="pt").input_ids

@@ -168,7 +168,6 @@ with open("D_KV_VAL.json", "w") as outfile:
 # Creating small dataset for inference
 def inference_dataset_for_adapter_1(size):
     f = open("inference_for_dataset_1.txt", 'w')
-    prompts = []
 
     for _ in range(size):
         collection = defaultdict(list)
@@ -180,12 +179,31 @@ def inference_dataset_for_adapter_1(size):
         unpacked_examples = [item[0] for item in collection['examples']]
         query, value = collection['query'][0][0]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
-        prompt = f"### Arithmetic Expression: {mapped_examples}, ### Query: {query} ### Value: "
+        prompt = f"# Arithmetic Expression: {mapped_examples}, # Query: {query} # Value: "
 
-        prompts.append(prompt)
         f.write(prompt)
         f.write('\n')
 
     f.close()
 
 inference_dataset_for_adapter_1(10)
+
+def inference_dataset_for_merged_adapter(size):
+    f = open("inference_for_merged_adapter.txt", 'w')
+
+    for _ in range(size):
+        collection = defaultdict(list)
+
+        for sample_length in range(choice(list(range(3, 6)))):
+            collection["pairs"].append(choices(knowledge_artifact_list))
+
+        unpacked_examples = [item[0] for item in collection['pairs']]
+        mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(transformed_collection["pairs"])
+        prompt = f"# Pairs: {mapped_examples}, # Arithmetic Expression: {arithmetic_key_expression}, # Value: "
+        f.write(prompt)
+        f.write('\n')
+
+    f.close()
+
+inference_dataset_for_merged_adapter(20)

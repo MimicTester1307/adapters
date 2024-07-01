@@ -35,7 +35,7 @@ for prompt in prompts:
     inputs = inputs.to('cuda')
     outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
-    outfile.write(tokenized_output)
-    print(tokenized_output)
+    outfile.write(tokenized_output[0])
+    print(tokenized_output[0])
 
 outfile.close()

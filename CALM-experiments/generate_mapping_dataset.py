@@ -183,6 +183,7 @@ def inference_dataset_for_adapter_1(size):
     f.close()
 
 inference_knowledge_artifact = generate_string_to_number_mappings(30)
+print(inference_knowledge_artifact, dict(inference_knowledge_artifact))
 
 def inference_dataset_for_adapter_2(size):
     f = open("inference_inputs/inference_for_dataset_2.txt", 'w')

@@ -55,10 +55,10 @@ key_to_value_mappings = generate_key_pairs_dataset(LEN_DATASET)
 
 
 # GENERATING DATASET 2
-def create_numeric_arithmetic_expressions(knowledge_base):
+def create_numeric_arithmetic_expressions(knowledge_base, expression_length):
     arithmetic_value_expression = ''
 
-    for _ in range(choice(list(range(1, 5)))):
+    for _ in range(choice(list(range(1, expression_length)))):
         operator = choice(OPERATORS)
         key = generate_random_key(knowledge_base)
         arithmetic_value_expression += str(knowledge_base[key]) + operator
@@ -74,7 +74,7 @@ def generate_arithmetic_training_dataset(length):
     arithmetic_values = []
 
     for _ in range(length):
-        arithmetic_value_expression, arithmetic_value = create_numeric_arithmetic_expressions(knowledge_artifact)
+        arithmetic_value_expression, arithmetic_value = create_numeric_arithmetic_expressions(knowledge_artifact, 5)
         arithmetic_value_expressions.append(arithmetic_value_expression)
         arithmetic_values.append(arithmetic_value)
     
@@ -188,7 +188,7 @@ def inference_dataset_for_adapter_2(size):
     f = open("inference_inputs/inference_for_dataset_2.txt", 'w')
 
     for _ in range(size):
-        arithmetic_value_expression, arithmetic_value = create_numeric_arithmetic_expressions(dict(inference_knowledge_artifact))
+        arithmetic_value_expression, arithmetic_value = create_numeric_arithmetic_expressions(dict(inference_knowledge_artifact, 2))
         prompt = f"# Arithmetic Expression: {arithmetic_value_expression}, # Value: "
     
         f.write(prompt)

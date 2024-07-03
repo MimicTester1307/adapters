@@ -188,7 +188,7 @@ def inference_dataset_for_adapter_2(size):
     f = open("inference_inputs/inference_for_dataset_2.txt", 'w')
 
     for _ in range(size):
-        arithmetic_value_expression, arithmetic_value = create_numeric_arithmetic_expressions(inference_knowledge_artifact)
+        arithmetic_value_expression, arithmetic_value = create_numeric_arithmetic_expressions(dict(inference_knowledge_artifact))
         prompt = f"# Arithmetic Expression: {arithmetic_value_expression}, # Value: "
     
         f.write(prompt)

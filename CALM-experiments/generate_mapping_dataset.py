@@ -46,7 +46,7 @@ def generate_key_pairs_dataset(size):
         random.shuffle(unpacked_examples)
         shuffled_mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         collection["queries"] = list(shuffled_mapped_examples.keys())
-        collection["values"] = [shuffled_mapped_examples[query] for query in queries]
+        collection["values"] = list(shuffled_mapped_examples.values())
 
         key_expressions.append(collection)
 

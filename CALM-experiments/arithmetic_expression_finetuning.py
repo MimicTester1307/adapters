@@ -12,7 +12,6 @@ from transformers import (
 import pandas as pd
 import torch
 import os
-from generate_mapping_dataset import create_arithmetic_expressions
 
 os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
 
@@ -210,14 +209,6 @@ trainer.train()
 # save model
 # access_token = "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"
 model.push_to_hub("schaturv/llama2-7b-arithmetic-calculations-adapter")
-
-# prompting the model
-# prompt, expected_ans, _ = create_arithmetic_expressions()
-# pipe = pipeline(task="text-generation", model=model, tokenizer=tokenizer, max_length=200)
-# result = pipe(f"<s>[INST] Given an arithmetic expression between strings: {prompt}. Find the corresponding arithmetic expression in numeric terms between the numeric mappings of those strings.[/INST]")
-# print(prompt, expected_ans)
-# print(result[0]['generated_text'])
-# trainer.predict(test_dataset = eval_dataset)
 
 # testing on prompts
 with open("inference_inputs/inference_for_dataset_2.txt") as file:

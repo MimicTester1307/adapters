@@ -16,7 +16,7 @@ os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
 
 seed = 42
 
-## Print CUDA Summary  
+## Print CUDA Summary
 
 import sys
 from subprocess import call
@@ -211,7 +211,7 @@ trainer.train()
 model.push_to_hub("schaturv/llama2-7b-key-value-adapter")
 
 # testing on one prompt
-with open("inference_for_dataset_1.txt") as file:
+with open("inference_inputs/inference_for_dataset_1.txt") as file:
     prompts = [line.rstrip() for line in file]
 
 for prompt in prompts:

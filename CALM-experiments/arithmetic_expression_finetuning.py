@@ -219,10 +219,13 @@ model.push_to_hub("schaturv/llama2-7b-arithmetic-calculations-adapter")
 # print(result[0]['generated_text'])
 # trainer.predict(test_dataset = eval_dataset)
 
-# testing on one prompt
-prompt = "### Arithmetic Expression: '24 - 61' ### Answer:"
-inputs = tokenizer(prompt, return_tensors="pt").input_ids
-inputs = inputs.to('cuda')
-outputs = model.generate(inputs, max_new_tokens=200, do_sample=True, top_k=50, top_p=0.95)
-tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
-print(tokenized_output)
+# testing on prompts
+with open("inference_inputs/inference_for_dataset_2.txt") as file:
+    prompts = [line.rstrip() for line in file]
+
+for prompt in prompts:
+    inputs = tokenizer(prompt, return_tensors="pt").input_ids
+    inputs = inputs.to('cuda')
+    outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
+    tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+    print(tokenized_output)

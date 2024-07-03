@@ -41,17 +41,12 @@ def generate_key_pairs_dataset(size):
         for sample_length in range(choice(list(range(3, 6)))):
             collection["examples"].append(choices(knowledge_artifact_list))
 
-        collection["query"] = choices(collection["examples"])
         unpacked_examples = [item[0] for item in collection['examples']]
-        query, value = collection['query'][0][0]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
-        transformed_dict = {
-            'examples': mapped_examples,
-            'query': query,
-            'value': value,
-        }
+        collection["queries"] = list(random.shuffle(mapped_examples).keys())
+        collection["values"] = [mapped_examples[query] for query in queries]
 
-        key_expressions.append(transformed_dict)
+        key_expressions.append(collection)
 
     return (key_expressions)
 
@@ -59,7 +54,7 @@ key_to_value_mappings = generate_key_pairs_dataset(LEN_DATASET)
 
 
 # GENERATING DATASET 2
-def create_numeric_arithmetic_expressions():
+def create_numeric_arithmetic_expressions(knowledge_artifact):
     arithmetic_value_expression = ''
 
     for _ in range(choice(list(range(1, 5)))):
@@ -78,7 +73,7 @@ def generate_arithmetic_training_dataset(length):
     arithmetic_values = []
 
     for _ in range(length):
-        arithmetic_value_expression, arithmetic_value = create_numeric_arithmetic_expressions()
+        arithmetic_value_expression, arithmetic_value = create_numeric_arithmetic_expressions(knowledge_artifact)
         arithmetic_value_expressions.append(arithmetic_value_expression)
         arithmetic_values.append(arithmetic_value)
     
@@ -183,9 +178,20 @@ def inference_dataset_for_adapter_1(size):
 
     f.close()
 
-inference_dataset_for_adapter_1(10)
-
 inference_knowledge_artifact = generate_string_to_number_mappings(30)
+
+def inference_dataset_for_adapter_2(size):
+    f = open("inference_inputs/inference_for_dataset_2.txt", 'w')
+
+    for _ in range(size):
+        arithmetic_value_expression, arithmetic_value = create_numeric_arithmetic_expressions(inference_knowledge_artifact)
+        prompt = f"# Arithmetic Expression: {arithmetic_value_expression}, # Value: "
+    
+        f.write(prompt)
+        f.write('\n')
+
+    f.close()
+
 
 def inference_dataset_for_merged_adapter(size):
     f = open("inference_inputs/inference_for_merged_adapter.txt", 'w')
@@ -205,4 +211,6 @@ def inference_dataset_for_merged_adapter(size):
 
     f.close()
 
+inference_dataset_for_adapter_1(20)
+inference_dataset_for_adapter_2(20)
 inference_dataset_for_merged_adapter(20)

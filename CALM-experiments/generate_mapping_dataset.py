@@ -27,9 +27,8 @@ def generate_string_to_number_mappings(count):
 knowledge_artifact_list = generate_string_to_number_mappings(RANGE_OF_MAPPINGS)
 knowledge_artifact = dict(knowledge_artifact_list)
 
-def generate_random_key():
+def generate_random_key(knowledge_artifact):
     return choice(list(knowledge_artifact.keys()))
-
 
 # GENERATING DATASET 1 
 def generate_key_pairs_dataset(size):
@@ -56,16 +55,16 @@ key_to_value_mappings = generate_key_pairs_dataset(LEN_DATASET)
 
 
 # GENERATING DATASET 2
-def create_numeric_arithmetic_expressions(knowledge_artifact):
+def create_numeric_arithmetic_expressions(knowledge_base):
     arithmetic_value_expression = ''
 
     for _ in range(choice(list(range(1, 5)))):
         operator = choice(OPERATORS)
-        key = generate_random_key()
-        arithmetic_value_expression += str(knowledge_artifact[key]) + operator
+        key = generate_random_key(knowledge_base)
+        arithmetic_value_expression += str(knowledge_base[key]) + operator
 
-    last_key = generate_random_key()
-    arithmetic_value_expression += str(knowledge_artifact[last_key])
+    last_key = generate_random_key(knowledge_base)
+    arithmetic_value_expression += str(knowledge_base[last_key])
     arithmetic_value = eval(arithmetic_value_expression)    
 
     return arithmetic_value_expression, arithmetic_value

@@ -43,9 +43,10 @@ def generate_key_pairs_dataset(size):
 
         unpacked_examples = [item[0] for item in collection['examples']]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
-        random.shuffle(mapped_examples)
-        collection["queries"] = list(mapped_examples.keys())
-        collection["values"] = [mapped_examples[query] for query in queries]
+        random.shuffle(unpacked_examples)
+        shuffled_mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        collection["queries"] = list(shuffled_mapped_examples.keys())
+        collection["values"] = [shuffled_mapped_examples[query] for query in queries]
 
         key_expressions.append(collection)
 
@@ -171,8 +172,9 @@ def inference_dataset_for_adapter_1(size):
         collection["query"] = choices(collection["examples"])
         unpacked_examples = [item[0] for item in collection['examples']]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
-        random.shuffle(mapped_examples)
-        queries, values = list(mapped_examples.keys()), list(mapped_examples.values())
+        random.shuffle(unpacked_examples)
+        shuffled_mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        queries, values = list(shuffled_mapped_examples.keys()), list(shuffled_mapped_examples.values())
         prompt = f"# Arithmetic Expression: {mapped_examples}, # Queries: {queries} # Values: "
 
         f.write(prompt)

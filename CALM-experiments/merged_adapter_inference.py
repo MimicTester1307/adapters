@@ -10,6 +10,24 @@ model = AutoModelForCausalLM.from_pretrained(
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=True)
 
+# testing on prompts
+outfile = open("inference_outputs/merged_adapter_inference_outputs_base_vs_peft.txt", 'w')
+with open("inference_inputs/inference_for_merged_adapter.txt") as file:
+    prompts = [line.rstrip() for line in file]
+
+outfile.write("##INFERENCE ON BASE MODEL\n\n")
+
+for prompt in prompts:
+    inputs = tokenizer(prompt, return_tensors="pt").input_ids
+    inputs = inputs.to('cuda')
+    outputs = model.generate(inputs, max_new_tokens=40)
+    tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+    outfile.write(tokenized_output[0])
+    outfile.write("\n")
+    print(tokenized_output[0])
+
+outfile.write("\n\n\n")
+
 
 peft_model = PeftModel.from_pretrained(model, "schaturv/llama2-7b-arithmetic-calculations-adapter", adapter_name="arithmetic", is_trainable=True)
 
@@ -29,11 +47,10 @@ print("Active adapters: ", peft_model.active_adapters)
 # breakpoint()
 
 # testing on prompts
-outfile = open("inference_outputs/merged_adapter_inference_outputs_no_prompt_format.txt", 'w')
 with open("inference_inputs/inference_for_merged_adapter.txt") as file:
     prompts = [line.rstrip() for line in file]
 
-outfile.write("Smaller prompts with maximum length of expressions having 3 operands and smaller numeric values, with a ceiling of 30.\n\n")
+outfile.write("##INFERENCE ON PEFT MODEL WITH ACTIVATED ADAPTER\n\n")
 
 for prompt in prompts:
     inputs = tokenizer(prompt, return_tensors="pt").input_ids

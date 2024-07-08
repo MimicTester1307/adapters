@@ -42,6 +42,7 @@ def generate_key_pairs_dataset(size):
 
         unpacked_examples = [item[0] for item in collection['pairs']]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        collection["pairs"] = mapped_examples 
         random.shuffle(unpacked_examples)
         shuffled_mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         collection["queries"] = list(shuffled_mapped_examples.keys())
@@ -171,6 +172,7 @@ def inference_dataset_for_adapter_1(size):
         # collection["query"] = choices(collection["pairs"])
         unpacked_examples = [item[0] for item in collection['pairs']]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        collection["pairs"] = mapped_examples
         random.shuffle(unpacked_examples)
         shuffled_mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         queries, values = list(shuffled_mapped_examples.keys()), list(shuffled_mapped_examples.values())

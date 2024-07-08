@@ -10,6 +10,7 @@ model = AutoModelForCausalLM.from_pretrained(
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=True)
 
+print(model)
 # testing on prompts
 outfile = open("inference_outputs/merged_adapter_inference_outputs_base_vs_peft.txt", 'w')
 with open("inference_inputs/inference_for_merged_adapter.txt") as file:

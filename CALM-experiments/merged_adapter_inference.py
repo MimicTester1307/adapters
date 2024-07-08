@@ -28,7 +28,7 @@ print("Active adapters: ", peft_model.active_adapters)
 # breakpoint()
 
 # testing on prompts
-outfile = open("inference_outputs/merged_adapter_inference_outputs_smaller_numbers.txt", 'w')
+outfile = open("inference_outputs/merged_adapter_inference_outputs_no_prompt_format.txt", 'w')
 with open("inference_inputs/inference_for_merged_adapter.txt") as file:
     prompts = [line.rstrip() for line in file]
 

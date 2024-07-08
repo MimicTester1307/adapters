@@ -52,7 +52,7 @@ print("lengths of datasets: ", len(train_dataset), len(eval_dataset))
 
 def pad_eos(ds):
     EOS_TOKEN = "</s>"
-    return [f"{row['values']}{EOS_TOKEN}" for row in ds]
+    return [f"{row['value']}{EOS_TOKEN}" for row in ds]
 
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):

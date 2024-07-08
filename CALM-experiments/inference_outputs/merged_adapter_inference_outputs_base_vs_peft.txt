@@ -1,0 +1,13 @@
+##INFERENCE ON BASE MODEL
+
+{'tcj': 15, 'bjob': 22, 'yowq': 18}, yowq + bjob = 40
+        }
+
+    def solve(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        dp
+{'vwal': 16, 'xj': 25, 'wni': 23, 'iq': 19, 'ruqrz': 17}, ruqrz + ruqrz = 17, 17 + 17 = 34, 34 + 34 = 68, 68 + 68 = 136
+{'eliw': 21, 'amatg': 7}, amatg + amatg = 14, eliw + eliw = 42, amatg + eliw = 31, eliw + amatg = 32, amatg +

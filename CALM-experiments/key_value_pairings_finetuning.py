@@ -56,7 +56,7 @@ def pad_eos(ds):
 
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):
-    return ("{examples}; {queries} = ").format_map(row)
+    return ("{pairs}; {queries} = ").format_map(row)
 
 def create_prompt(row):
     return prompt_input(row)

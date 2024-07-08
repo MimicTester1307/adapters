@@ -40,11 +40,17 @@ def generate_key_pairs_dataset(size):
         for sample_length in range(choice(list(range(3, 6)))):
             collection["pairs"].append(choices(knowledge_artifact_list))
 
-        unpacked_examples = [item[0] for item in collection['pairs']]
-        mapped_examples = {string_key : value for string_key, value in unpacked_examples}
-        collection["pairs"] = mapped_examples
         collection["query"] = choices(collection["pairs"])
-        collection["value"] = mapped_examples[collection["query"]]
+        unpacked_examples = [item[0] for item in collection['pairs']]
+        query, value = collection['query'][0][0]
+        mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        transformed_dict = {
+            'examples': mapped_examples,
+            'query': query,
+            'value': value,
+        }
+        key_expressions.append(transformed_dict)
+        key_expressions.append(collection)
         # random.shuffle(unpacked_examples)
         # shuffled_mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         # collection["queries"] = list(shuffled_mapped_examples.keys())
@@ -171,12 +177,10 @@ def inference_dataset_for_adapter_1(size):
         for sample_length in range(choice(list(range(3, 6)))):
             collection["pairs"].append(choices(knowledge_artifact_list))
 
-        # collection["query"] = choices(collection["pairs"])
+        collection["query"] = choices(collection["pairs"])
         unpacked_examples = [item[0] for item in collection['pairs']]
+        query, value = collection['query'][0][0]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
-        collection["pairs"] = mapped_examples
-        query = choices(collection["pairs"])
-        value = mapped_examples[query]
         # random.shuffle(unpacked_examples)
         # shuffled_mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         # queries, values = list(shuffled_mapped_examples.keys()), list(shuffled_mapped_examples.values())

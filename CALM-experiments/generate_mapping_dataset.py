@@ -38,9 +38,9 @@ def generate_key_pairs_dataset(size):
         collection = defaultdict(list)
 
         for sample_length in range(choice(list(range(3, 6)))):
-            collection["examples"].append(choices(knowledge_artifact_list))
+            collection["pairs"].append(choices(knowledge_artifact_list))
 
-        unpacked_examples = [item[0] for item in collection['examples']]
+        unpacked_examples = [item[0] for item in collection['pairs']]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         random.shuffle(unpacked_examples)
         shuffled_mapped_examples = {string_key : value for string_key, value in unpacked_examples}
@@ -166,15 +166,15 @@ def inference_dataset_for_adapter_1(size):
         collection = defaultdict(list)
 
         for sample_length in range(choice(list(range(3, 6)))):
-            collection["examples"].append(choices(knowledge_artifact_list))
+            collection["pairs"].append(choices(knowledge_artifact_list))
 
-        collection["query"] = choices(collection["examples"])
-        unpacked_examples = [item[0] for item in collection['examples']]
+        # collection["query"] = choices(collection["pairs"])
+        unpacked_examples = [item[0] for item in collection['pairs']]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         random.shuffle(unpacked_examples)
         shuffled_mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         queries, values = list(shuffled_mapped_examples.keys()), list(shuffled_mapped_examples.values())
-        prompt = f"# Arithmetic Expression: {mapped_examples}, # Queries: {queries} # Values: "
+        prompt = f"{mapped_examples}, {queries} = "
 
         f.write(prompt)
         f.write('\n')
@@ -189,7 +189,7 @@ def inference_dataset_for_adapter_2(size):
 
     for _ in range(size):
         arithmetic_value_expression, arithmetic_value = create_numeric_arithmetic_expressions(dict(inference_knowledge_artifact), 2)
-        prompt = f"# Arithmetic Expression: {arithmetic_value_expression}, # Value: "
+        prompt = f"{arithmetic_value_expression} = "
     
         f.write(prompt)
         f.write('\n')
@@ -209,7 +209,7 @@ def inference_dataset_for_merged_adapter(size):
         unpacked_examples = [item[0] for item in collection['pairs']]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(mapped_examples, 2)
-        prompt = f"# Pairs: {mapped_examples}, # Arithmetic Expression: {arithmetic_key_expression}, # Value: "
+        prompt = f"{mapped_examples}, {arithmetic_key_expression} = "
         f.write(prompt)
         f.write('\n')
 

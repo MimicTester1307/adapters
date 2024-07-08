@@ -50,13 +50,13 @@ def generate_key_pairs_dataset(size):
             'value': value,
         }
         key_expressions.append(transformed_dict)
-        key_expressions.append(collection)
+        # key_expressions.append(collection)
         # random.shuffle(unpacked_examples)
         # shuffled_mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         # collection["queries"] = list(shuffled_mapped_examples.keys())
         # collection["values"] = list(shuffled_mapped_examples.values())
 
-        key_expressions.append(collection)
+        # key_expressions.append(collection)
 
     return (key_expressions)
 

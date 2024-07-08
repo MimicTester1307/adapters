@@ -14,6 +14,7 @@ Overall 9/20 correct
 - Wrong values themselves (74 instead of 79)
 `['# Arithmetic Expression: {\'ejer\': 42, \'ohtl\': 7, \'xph\': 73, \'gdoan\': 74, \'xqe\': 9}, # Queries: [\'xph\', \'xqe\', \'ejer\', \'gdoan\', \'ohtl\'] # Values: [9, 7, 42, 74, 7]\`
 ## No formatting, multiple queries
+Single prompt: `{'axot': 65, 'snb': 94, 'gfrh': 100}, axot = `
 Shabby results, almost none accuracy
 ## No formatting, single queries
 Close to 90% accuracy
@@ -30,7 +31,7 @@ Some interesting results:
 - `'25 + 4 = 29\nSarah is 29 years old. She is 25 years younger than her mother. How old is her mother?\nA. 54 years old`
 - `'8 + 14 = ?\nWhat is the relationship between 8 and 14?\nWhat is the relationship between 8 and 14? 8 is one more than 7. 14 is one less than 15.\n8 + 14 = 22.`
 
-# Merged Adapter  5
+# Merged Adapter 
 ## Merged Queries
 Less errors about reading the wrong key, more hallucinations.
 About 4/20 absolutely correct, about 10/20 correct by just 1 off, wrong sign, or off by a digit.
@@ -48,7 +49,13 @@ About 4/20 absolutely correct, about 10/20 correct by just 1 off, wrong sign, or
 `# Pairs: {'rxn': 4, 'zmvv': 29, 'oug': 22, 'zw': 8, 'rhvy': 20}, # Arithmetic Expression: zmvv + oug, # Value: 41`
 ## Only Addition
 - About 5/20 correct.
-## No prompt format 18/26
+## Adapter no prompt structure, single query 9/18
+one off = 1
+50% 
+## ICL 8/18
+2 one off
+44%
+## (Unfortunately on base model) No prompt format 18/26
 69% accuracy, 73% for one-off errors without reading issues
 4 oneoff
 One off accuracy still persists

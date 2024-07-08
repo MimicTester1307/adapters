@@ -10,6 +10,7 @@ model = AutoModelForCausalLM.from_pretrained(
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=True)
 
+
 peft_model = PeftModel.from_pretrained(model, "schaturv/llama2-7b-arithmetic-calculations-adapter", adapter_name="arithmetic", is_trainable=True)
 
 peft_model.load_adapter("schaturv/llama2-7b-key-value-adapter", adapter_name="pairings")
@@ -37,7 +38,7 @@ outfile.write("Smaller prompts with maximum length of expressions having 3 opera
 for prompt in prompts:
     inputs = tokenizer(prompt, return_tensors="pt").input_ids
     inputs = inputs.to('cuda')
-    outputs = model.generate(inputs, max_new_tokens=40)
+    outputs = peft_model.generate(inputs, max_new_tokens=40)
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     outfile.write(tokenized_output[0])
     outfile.write("\n")

@@ -45,7 +45,7 @@ def generate_key_pairs_dataset(size):
         query, value = collection['query'][0][0]
         mapped_examples = {string_key : value for string_key, value in unpacked_examples}
         transformed_dict = {
-            'examples': mapped_examples,
+            'pairs': mapped_examples,
             'query': query,
             'value': value,
         }

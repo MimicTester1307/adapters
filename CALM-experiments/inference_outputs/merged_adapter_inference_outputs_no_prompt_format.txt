@@ -1,0 +1,38 @@
+Smaller prompts with maximum length of expressions having 3 operands and smaller numeric values, with a ceiling of 30.
+
+{'tcj': 15, 'bjob': 22, 'yowq': 18}, yowq + bjob = 18, yowq + bjob + tcj = 18 + 15 + 22 = 55
+  }
+}
+\end{code
+{'vwal': 16, 'xj': 25, 'wni': 23, 'iq': 19, 'ruqrz': 17}, ruqrz + ruqrz = 34,
+    'ruqrz': 17, 'ruqrz': 17, 'ruqrz': 17, 'ruqrz': 1
+{'eliw': 21, 'amatg': 7}, amatg + amatg = 14,
+      amatg + 'eliw' = 21, amatg + 'eliw' = 21,
+      amatg + amat
+{'xj': 25, 'ekffy': 20, 'fzfpi': 1}, ekffy + ekffy = 40, ekffy * ekffy = 8000, fzfpi * fzfpi = 16, ekffy * fzfpi
+{'bjob': 22, 'gt': 5, 'iq': 19}, gt + iq = 26
+
+
+def test_faster_than_slow():
+    '''
+    Test that the fast method is faster than the slow method
+    '''
+    for i in
+{'ryz': 13, 'yowq': 18, 'fwzp': 2, 'ekffy': 20}, ekffy + yowq = 39, yowq + fwzp = 21, fwzp + ry = 15, ry + ekffy = 23, ekff
+{'xj': 25, 'mtwl': 14, 'deyf': 6, 'myc': 10, 'amatg': 7}, myc + mtwl = 17, deyf + amatg = 13, xj + myc = 27, xj + mtwl = 25, xj +
+{'kecj': 8, 'vwal': 16, 'nu': 30}, kecj + vwal = 46, nu = 30.
+{'kecj': 8, 'vwal': 16, 'nu': 30}, kecj + vwal
+{'vwal': 16, 'gt': 5, 'tcj': 15}, tcj + gt = 20, gt = 5, vwal = 16, tcj = 15, vwal + gt = 21, vwal = 1
+{'njtd': 11, 'dcnx': 24, 'gt': 5}, dcnx + gt = 29, njtd + dcnx + gt = 45, njtd = 16, gt = 13, dcnx = 9
+The
+{'ruqrz': 17, 'ptzs': 9, 'dcnx': 24}, ruqrz + ptzs = 36, dcnx + ruqrz + ptzs = 50, 17 + 9 + 24 = 50, 36 + 9
+{'mtwl': 14, 'ekffy': 20, 'gbnp': 3}, gbnp + mtwl = 54, gbnp = 54 - mtwl, gbnp = 54 - 14 = 38, ekffy + gbnp =
+{'gbnp': 3, 'amatg': 7, 'deyf': 6, 'tcj': 15, 'img': 26}, img + img = 52,
+        img + img + img = 84, img + img + img + img = 126, img + img + img + img + img = 
+{'mtwl': 14, 'zyjd': 4, 'iq': 19, 'yowq': 18}, zyjd + iq = 27, zyjd + iq = 27, yowq + iq = 28, yowq + iq = 28, zyjd
+{'kecj': 8, 'ptzs': 9, 'bjob': 22}, bjob + kecj = 31, ptzs + bjob = 33, kecj + ptzs = 34, ptzs + bjob = 35, kecj + b
+{'myc': 10, 'zyjd': 4, 'iq': 19, 'vwal': 16}, zyjd + myc = 5, iq + vwal = 15, iq + myc = 20, iq + vwal + myc = 25, zyjd +
+{'bjob': 22, 'zyjd': 4, 'amatg': 7, 'tcj': 15}, bjob + bjob = 44, bjob + 44 = 92, bjob + 92 = 184, bjob + 184 = 366,
+{'fzfpi': 1, 'ute': 28, 'ryz': 13}, ute + ryz = 41, ute + fzfpi = 42, ute + ryfpi = 43, ute + rfpi = 44, ute
+{'amatg': 7, 'wni': 23, 'zyjd': 4, 'myc': 10, 'goyli': 27}, zyjd + amatg = 4 + 7 = 11, goyli + myc = 27 + 10 = 37, wni + zyjd = 23 +
+{'njtd': 11, 'iq': 19, 'tcj': 15}, njtd + njtd = 22, iq + iq = 38, tcj + tcj = 30, njtd + tcj = 41, iq +

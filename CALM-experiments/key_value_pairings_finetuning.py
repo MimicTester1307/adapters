@@ -169,6 +169,8 @@ training_args = TrainingArguments(
 )
 
 model = AutoModelForCausalLM.from_pretrained(model_id)
+device = torch.device("cuda")
+model.to(device)
 
 # checking prompt performance on base model
 with open("inference_inputs/inference_for_dataset_1.txt") as file:
@@ -194,9 +196,6 @@ model.gradient_checkpointing_enable()  # reduce number of stored activations
 model.enable_input_require_grads()
 
 torch.cuda.empty_cache()
-
-device = torch.device("cuda")
-model.to(device)
 
 #defining callback
 class MyCallBack(TrainerCallback):

@@ -42,7 +42,7 @@ print("one row of the dataset: ", one_row)
 
 model_id = 'meta-llama/Llama-2-7b-hf'
 tokenizer = AutoTokenizer.from_pretrained(model_id)
-tokenizer.pad_token = tokenizer.eos_token	
+tokenizer.pad_token = tokenizer.eos_token
 
 # dividing train and eval datasets
 train_dataset = dataset[:-4000]
@@ -169,6 +169,18 @@ training_args = TrainingArguments(
 )
 
 model = AutoModelForCausalLM.from_pretrained(model_id)
+
+# checking prompt performance on base model
+with open("inference_inputs/inference_for_dataset_1.txt") as file:
+    prompts = [line.rstrip() for line in file]
+
+for prompt in prompts:
+    inputs = tokenizer(prompt, return_tensors="pt").input_ids
+    inputs = inputs.to('cuda')
+    outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
+    tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+    print(tokenized_output[0])
+
 model.add_adapter(peft_config, adapter_name="llama2-7b-key-value-pairings-adapter")
 model.set_adapter("llama2-7b-key-value-pairings-adapter")
 
@@ -219,4 +231,4 @@ for prompt in prompts:
     inputs = inputs.to('cuda')
     outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
-    print(tokenized_output)
+    print(tokenized_output[0])

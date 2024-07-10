@@ -174,15 +174,15 @@ model = AutoModelForCausalLM.from_pretrained(model_id)
 # model.to(device)
 
 # checking prompt performance on base model
-# with open("inference_inputs/inference_for_dataset_1.txt") as file:
-#     prompts = [line.rstrip() for line in file]
+with open("inference_inputs/inference_for_base_model_dataset_1.txt") as file:
+    prompts = [line.rstrip() for line in file]
 
-# for prompt in prompts:
-#     inputs = tokenizer(prompt, return_tensors="pt").input_ids
-#     # inputs = inputs.to('cuda')
-#     outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
-#     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
-#     print(tokenized_output[0])
+for prompt in prompts:
+    inputs = tokenizer(prompt, return_tensors="pt").input_ids
+    # inputs = inputs.to('cuda')
+    outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
+    tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+    print(tokenized_output[0])
 
 model.add_adapter(peft_config, adapter_name="llama2-7b-key-value-pairings-adapter")
 model.set_adapter("llama2-7b-key-value-pairings-adapter")

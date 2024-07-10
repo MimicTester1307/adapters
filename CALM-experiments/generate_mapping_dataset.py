@@ -170,6 +170,7 @@ with open("datasets/D_KV_VAL.json", "w") as outfile:
 # Creating small dataset for inference
 def inference_dataset_for_adapter_1(size):
     f = open("inference_inputs/inference_for_dataset_1.txt", 'w')
+    icl = open("inference_inputs/inference_for_base_model_dataset_1.txt", 'w')
 
     for _ in range(size):
         collection = defaultdict(list)
@@ -189,7 +190,22 @@ def inference_dataset_for_adapter_1(size):
         f.write(prompt)
         f.write('\n')
 
+    for _ in range(size):
+        collection = defaultdict(list)
+
+        for sample_length in range(choice(list(range(3, 6)))):
+            collection["pairs"].append(choices(knowledge_artifact_list))
+
+        collection["query"] = choices(collection["pairs"])
+        unpacked_examples = [item[0] for item in collection['pairs']]
+        query, value = collection['query'][0][0]
+        mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        prompt = f"{mapped_examples}, {query} = "
+        icl.write(prompt)
+        icl.write('\n')
+
     f.close()
+    icl.close()
 
 inference_knowledge_artifact = generate_string_to_number_mappings(30)
 print(inference_knowledge_artifact, dict(inference_knowledge_artifact))

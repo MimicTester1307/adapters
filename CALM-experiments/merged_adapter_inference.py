@@ -8,8 +8,8 @@ compute_dtype = getattr(torch, "float16")
 model = AutoModelForCausalLM.from_pretrained(
         base_model)
 
-device = torch.device("cuda")
-model.to(device)
+# device = torch.device("cuda")
+# model.to(device)
 
 
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=True)

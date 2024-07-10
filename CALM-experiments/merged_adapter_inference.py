@@ -24,7 +24,7 @@ outfile.write("##INFERENCE ON BASE MODEL\n\n")
 
 for prompt in prompts:
     inputs = tokenizer(prompt, return_tensors="pt").input_ids
-    inputs = inputs.to('cuda')
+    # inputs = inputs.to('cuda')
     outputs = model.generate(inputs, max_new_tokens=40)
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     outfile.write(tokenized_output[0])
@@ -59,7 +59,7 @@ outfile.write("##INFERENCE ON PEFT MODEL WITH ACTIVATED ADAPTER\n\n")
 
 for prompt in prompts:
     inputs = tokenizer(prompt, return_tensors="pt").input_ids
-    inputs = inputs.to('cuda')
+    # inputs = inputs.to('cuda')
     outputs = peft_model.generate(inputs, max_new_tokens=40)
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     outfile.write(tokenized_output[0])

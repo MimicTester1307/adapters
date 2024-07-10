@@ -11,7 +11,6 @@ model = AutoModelForCausalLM.from_pretrained(
 # device = torch.device("cuda")
 # model.to(device)
 
-
 tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=True)
 
 print(model)

@@ -169,9 +169,9 @@ training_args = TrainingArguments(
 )
 
 model = AutoModelForCausalLM.from_pretrained(model_id)
-model= torch.nn.DataParallel(model)
-device = torch.device("cuda")
-model.to(device)
+# model= torch.nn.DataParallel(model)
+# device = torch.device("cuda")
+# model.to(device)
 
 # checking prompt performance on base model
 with open("inference_inputs/inference_for_dataset_1.txt") as file:
@@ -179,7 +179,7 @@ with open("inference_inputs/inference_for_dataset_1.txt") as file:
 
 for prompt in prompts:
     inputs = tokenizer(prompt, return_tensors="pt").input_ids
-    inputs = inputs.to('cuda')
+    # inputs = inputs.to('cuda')
     outputs = model.generate(inputs, max_new_tokens=100, do_sample=True, top_k=50, top_p=0.95)
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     print(tokenized_output[0])
@@ -203,6 +203,10 @@ class MyCallBack(TrainerCallback):
    def on_evaluate(self, args, state, model, tokenizer):
          tokens = tokenizer("text")
          generated_text  = model.generate(tokens["input_ids"], tokens["prompt"])
+
+model= torch.nn.DataParallel(model)
+device = torch.device("cuda")
+model.to(device)
 
 trainer = Trainer(
     model=model,

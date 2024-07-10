@@ -64,8 +64,6 @@ for prompt in prompts:
     outfile.write("\n")
     print(tokenized_output[0])
 
-outfile.close()
-
 peft_model.set_adapter("arithmetic")
 
 print(peft_model)

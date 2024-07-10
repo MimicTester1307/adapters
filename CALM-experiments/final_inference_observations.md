@@ -14,10 +14,13 @@ Overall 9/20 correct
 - Wrong values themselves (74 instead of 79)
 `['# Arithmetic Expression: {\'ejer\': 42, \'ohtl\': 7, \'xph\': 73, \'gdoan\': 74, \'xqe\': 9}, # Queries: [\'xph\', \'xqe\', \'ejer\', \'gdoan\', \'ohtl\'] # Values: [9, 7, 42, 74, 7]\`
 ## No formatting, multiple queries
-Single prompt: `{'axot': 65, 'snb': 94, 'gfrh': 100}, axot = `
 Shabby results, almost none accuracy
 ## No formatting, single queries
 Close to 90% accuracy
+## Smaller strings, different ICL prompts
+10/14 ~ 71%
+### ICL 
+10/19 ~ 52%
 # Adapter 2
 Overall 12/20 correct, 14-15/20 if we consider omission of negative sign from solution to still be a correct calculation attempt.
 - Cannot interpret negative signs, either as an operator or sign of a number
@@ -31,7 +34,7 @@ Some interesting results:
 - `'25 + 4 = 29\nSarah is 29 years old. She is 25 years younger than her mother. How old is her mother?\nA. 54 years old`
 - `'8 + 14 = ?\nWhat is the relationship between 8 and 14?\nWhat is the relationship between 8 and 14? 8 is one more than 7. 14 is one less than 15.\n8 + 14 = 22.`
 
-# Merged Adapter 
+# Merged Adapter  5
 ## Merged Queries
 Less errors about reading the wrong key, more hallucinations.
 About 4/20 absolutely correct, about 10/20 correct by just 1 off, wrong sign, or off by a digit.
@@ -49,12 +52,17 @@ About 4/20 absolutely correct, about 10/20 correct by just 1 off, wrong sign, or
 `# Pairs: {'rxn': 4, 'zmvv': 29, 'oug': 22, 'zw': 8, 'rhvy': 20}, # Arithmetic Expression: zmvv + oug, # Value: 41`
 ## Only Addition
 - About 5/20 correct.
-## Adapter no prompt structure, single query 9/18
+## Adapter no prompt, single query 9/18
 one off = 1
 50% 
+
+#### Strict Checking
+3/24
 ## ICL 8/18
 2 one off
 44%
+#### Strict Checking
+12/51 = 23.5%
 ## (Unfortunately on base model) No prompt format 18/26
 69% accuracy, 73% for one-off errors without reading issues
 4 oneoff
@@ -64,3 +72,27 @@ Some interestingly wrong results
 - `{'bjob': 22, 'zyjd': 4, 'amatg': 7, 'tcj': 15}, bjob + bjob = 44, bjob + 44 = 92, bjob + 92 = 184, bjob + 184 = 366,`
 Good at key pair readings but fumbling at calculation sometimes
 - `{'mtwl': 14, 'ekffy': 20, 'gbnp': 3}, gbnp + mtwl = 54, gbnp = 54 - mtwl, gbnp = 54 - 14 = 38`
+## Smaller strings, different ICL prompts
+2/20
+6/20 (correct answer on generated prompts, but not on the one originally asked)
+Total: 8-9/20
+#### ICL
+7/20 ~
+1 (generated correct)
+
+# Adapter 1 on merged prompts
+2-3/20
+## Without repetition
+1/20
+## Conclusions
+- Sometimes reveals key being read, mostly correct, wrong calculations
+- 
+# Adapter 2
+2/20
+### Without repetition
+6-7/20
+### Results
+- Correct sometimes when reads the right key, but spews learnt answers initially `{'te': 14, 'hy': 12, 'ts': 11}, te + ts = 27,'hy': 12, 'ts': 11, ts + hy = 23,`
+- Bad at reading key pairs, but good calculation`{'cem': 22, 'lye': 24, 'sh': 18}, sh + lye = 24 + 24 = 48,`
+# Common Conclusions
+- Gave the same answers a lot (could be an issue of memorization of repeated problems) `{'te': 14, 'hy': 12, 'ts': 11}, te + ts = 27,`

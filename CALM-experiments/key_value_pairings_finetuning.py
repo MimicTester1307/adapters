@@ -135,9 +135,9 @@ import transformers
 from transformers import TrainingArguments, TrainerCallback
 from trl import SFTTrainer
 
-batch_size = 8
+batch_size = 4
 gradient_accumulation_steps = 4
-num_train_epochs = 3
+num_train_epochs = 1
 
 total_num_steps = num_train_epochs * total_sequences // (batch_size * gradient_accumulation_steps)
 

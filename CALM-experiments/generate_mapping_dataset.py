@@ -5,7 +5,7 @@ import secrets
 import string
 import json
 
-LEN_DATASET = 48000
+LEN_DATASET = 24000
 RANGE_OF_MAPPINGS = 100
 OPERATORS = [' + ']
 

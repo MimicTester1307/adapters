@@ -169,6 +169,7 @@ training_args = TrainingArguments(
 )
 
 model = AutoModelForCausalLM.from_pretrained(model_id)
+model= torch.nn.DataParallel(model)
 device = torch.device("cuda")
 model.to(device)
 

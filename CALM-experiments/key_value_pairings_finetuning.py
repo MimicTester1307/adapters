@@ -204,9 +204,9 @@ class MyCallBack(TrainerCallback):
          tokens = tokenizer("text")
          generated_text  = model.generate(tokens["input_ids"], tokens["prompt"])
 
-model= torch.nn.DataParallel(model)
-# device = torch.device("cuda")
-# model.to(device)
+# model= torch.nn.DataParallel(model)
+device = torch.device("cuda")
+model.to(device)
 
 trainer = Trainer(
     model=model,

@@ -166,6 +166,17 @@ with open("datasets/D_SUBS_VAL.json", "w") as outfile:
 with open("datasets/D_KV_VAL.json", "w") as outfile:
     json.dump(D_KV_VAL, outfile)
 
+def generate_single_prompt_merged_adapter():
+    collection = defaultdict(list)
+
+    for sample_length in range(choice(list(range(3, 6)))):
+        collection["pairs"].append(choices(inference_knowledge_artifact))
+
+    unpacked_examples = [item[0] for item in collection['pairs']]
+    mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+    arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(mapped_examples, 2)
+    prompt = f"{mapped_examples}, {arithmetic_key_expression} = "
+    return prompt
 
 # Creating small dataset for inference
 def inference_dataset_for_adapter_1(size):

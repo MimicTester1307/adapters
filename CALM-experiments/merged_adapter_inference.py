@@ -1,4 +1,5 @@
 import torch
+from generate_mapping_dataset import generate_single_prompt_merged_adapter
 from peft import PeftModel, PeftConfig
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
@@ -50,8 +51,9 @@ print(peft_model)
 print("Active adapters: ", peft_model.active_adapters)
 
 # testing on prompts
-with open("inference_inputs/inference_for_merged_adapter.txt") as file:
-    prompts = [line.rstrip() for line in file]
+prompts = []
+for _ in range(20):
+    prompts.append(generate_single_prompt_merged_adapter())
 
 outfile.write("##INFERENCE ON PEFT MODEL WITH ACTIVATED ADAPTER\n\n")
 
@@ -66,13 +68,12 @@ for prompt in prompts:
 
 peft_model.set_adapter("arithmetic")
 
-print(peft_model)
-
 print("Active adapters: ", peft_model.active_adapters)
 
 # testing on prompts
-with open("inference_inputs/inference_for_merged_adapter.txt") as file:
-    prompts = [line.rstrip() for line in file]
+prompts = []
+for _ in range(20):
+    prompts.append(generate_single_prompt_merged_adapter())
 
 outfile.write("##INFERENCE ON PEFT MODEL WITH ACTIVATED ADAPTER\n\n")
 

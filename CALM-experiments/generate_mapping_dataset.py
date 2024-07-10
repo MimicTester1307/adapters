@@ -18,7 +18,7 @@ def generate_string_to_number_mappings(count):
     characters = string.ascii_lowercase 
     
     while len(unique_strings) < count:
-        random_string = ''.join(secrets.choice(characters) for _ in range(choice([2,3,4,5])))
+        random_string = ''.join(secrets.choice(characters) for _ in range(choice([2,3])))
         unique_strings.add(random_string)
 
     knowledge_artifact = list(zip(list(unique_strings), unique_values))
@@ -209,6 +209,7 @@ def inference_dataset_for_adapter_2(size):
 
 def inference_dataset_for_merged_adapter(size):
     f = open("inference_inputs/inference_for_merged_adapter.txt", 'w')
+    icl = open("inference_inputs/inference_for_base_model_merged_adapter.txt", 'w')
 
     for _ in range(size):
         collection = defaultdict(list)
@@ -223,7 +224,21 @@ def inference_dataset_for_merged_adapter(size):
         f.write(prompt)
         f.write('\n')
 
+    for _ in range(size):
+        collection = defaultdict(list)
+
+        for sample_length in range(choice(list(range(3, 6)))):
+            collection["pairs"].append(choices(inference_knowledge_artifact))
+
+        unpacked_examples = [item[0] for item in collection['pairs']]
+        mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(mapped_examples, 2)
+        prompt = f"{mapped_examples}, {arithmetic_key_expression} = "
+        icl.write(prompt)
+        icl.write('\n')
+
     f.close()
+    icl.close()
 
 inference_dataset_for_adapter_1(20)
 inference_dataset_for_adapter_2(20)

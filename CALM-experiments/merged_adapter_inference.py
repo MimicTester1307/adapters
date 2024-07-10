@@ -17,7 +17,7 @@ tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf", use_fast=T
 print(model)
 # testing on prompts
 outfile = open("inference_outputs/merged_adapter_inference_outputs_base_vs_peft.txt", 'w')
-with open("inference_inputs/inference_for_merged_adapter.txt") as file:
+with open("inference_inputs/inference_for_base_model_merged_adapter.txt") as file:
     prompts = [line.rstrip() for line in file]
 
 outfile.write("##INFERENCE ON BASE MODEL\n\n")

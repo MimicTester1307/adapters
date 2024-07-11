@@ -86,8 +86,8 @@ def pack(dataset, max_seq_len=1024):
 	    # if you use the model.output.loss you don't need to shift, it is done for you!
     return packed_ds
 
-# train_ds_packed = pack(train_dataset)
-# eval_ds_packed = pack(eval_dataset)
+train_ds_packed = pack(train_dataset)
+eval_ds_packed = pack(eval_dataset)
 
 
 # length of sequences we get after packing them together

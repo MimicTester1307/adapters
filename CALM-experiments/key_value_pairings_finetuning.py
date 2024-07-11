@@ -119,7 +119,7 @@ from trl import SFTTrainer
 
 batch_size = 8
 gradient_accumulation_steps = 4
-num_train_epochs = 5
+num_train_epochs = 50
 
 total_num_steps = num_train_epochs * total_sequences // (batch_size * gradient_accumulation_steps)
 
@@ -155,15 +155,15 @@ device = torch.device("cuda")
 model.to(device)
 
 # checking prompt performance on base model
-with open("inference_inputs/context_only_adapter1_prompts.txt") as file:
-    prompts = [line.rstrip() for line in file]
+# with open("inference_inputs/context_only_adapter1_prompts.txt") as file:
+#     prompts = [line.rstrip() for line in file]
 
-for prompt in prompts:
-    inputs = tokenizer(prompt, return_tensors="pt").input_ids
-    inputs = inputs.to('cuda')
-    outputs = model.generate(inputs, max_new_tokens=40, do_sample=True, top_k=50, top_p=0.95)
-    tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
-    print(tokenized_output[0])
+# for prompt in prompts:
+#     inputs = tokenizer(prompt, return_tensors="pt").input_ids
+#     inputs = inputs.to('cuda')
+#     outputs = model.generate(inputs, max_new_tokens=40, do_sample=True, top_k=50, top_p=0.95)
+#     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
+#     print(tokenized_output[0])
 
 model.add_adapter(peft_config, adapter_name="llama2-7b-key-value-context-adapter")
 model.set_adapter("llama2-7b-key-value-context-adapter")
@@ -213,7 +213,7 @@ with open("inference_inputs/context_only_adapter1_prompts.txt") as file:
 for prompt in prompts:
     inputs = tokenizer(prompt, return_tensors="pt").input_ids
     inputs = inputs.to('cuda')
-    outputs = model.generate(inputs, max_new_tokens=40, do_sample=True, top_k=50, top_p=0.95)
+    outputs = model.generate(inputs, max_new_tokens=10)
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     print(tokenized_output[0])
     

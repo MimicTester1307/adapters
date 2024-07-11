@@ -193,10 +193,9 @@ trainer = Trainer(
     model=model,
     train_dataset=train_ds_packed,
     eval_dataset=eval_ds_packed,
-    # get_train_dataloader=train_ds_packed,
     args=training_args,
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
-    callbacks=[MyCallBack],
+    # callbacks=[MyCallBack],
     # use_cache=False,
 )
 

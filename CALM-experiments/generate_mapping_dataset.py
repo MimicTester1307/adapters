@@ -6,6 +6,7 @@ import string
 import json
 
 LEN_DATASET = 24000
+LEN_PAIRINGS_DATASET = 5000
 RANGE_OF_MAPPINGS = 100
 OPERATORS = [' + ']
 
@@ -31,6 +32,29 @@ def generate_random_key(knowledge_artifact):
     return choice(list(knowledge_artifact.keys()))
 
 # GENERATING DATASET 1 
+
+def key_pair_dataset_context_only(size):
+    key_expressions = []
+    prompts = open("inference_inputs/context_only_adapter1.txt", 'w')
+
+    for _ in range(size):
+        collection = defaultdict(list)
+
+        for sample_length in range(choice(list(range(3, 6)))):
+            collection["pairs"].append(choices(knowledge_artifact_list))
+
+        unpacked_examples = [item[0] for item in collection['pairs']]
+        mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        key_expressions.append(mapped_examples)
+
+        collection["query"] = choices(collection["pairs"])
+        query, value = collection['query'][0][0]
+        prompt = f"{query} = "
+        icl.write(prompt)
+        icl.write('\n')
+
+    return key_expressions
+        
 def generate_key_pairs_dataset(size):
     key_expressions = []
 
@@ -60,8 +84,8 @@ def generate_key_pairs_dataset(size):
 
     return (key_expressions)
 
-key_to_value_mappings = generate_key_pairs_dataset(LEN_DATASET)
-
+# key_to_value_mappings = generate_key_pairs_dataset(LEN_DATASET)
+key_to_value_mappings = key_pair_dataset_context_only(LEN_PAIRINGS_DATASET)
 
 # GENERATING DATASET 2
 def create_numeric_arithmetic_expressions(knowledge_base, expression_length):

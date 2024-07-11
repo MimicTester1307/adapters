@@ -16,24 +16,6 @@ os.environ["CUDA_VISIBLE_DEVICES"]="0,1"
 
 seed = 42
 
-## Print CUDA Summary
-
-import sys
-from subprocess import call
-print('_____Python, Pytorch, Cuda info____')
-print('__Python VERSION:', sys.version)
-print('__pyTorch VERSION:', torch.__version__)
-print('__CUDA RUNTIME API VERSION')
-#os.system('nvcc --version')
-print('__CUDNN VERSION:', torch.backends.cudnn.version())
-print('_____nvidia-smi GPU details____')
-call(["nvidia-smi", "--format=csv", "--query-gpu=index,name,driver_version,memory.total,memory.used,memory.free"])
-print('_____Device assignments____')
-print('Number CUDA Devices:', torch.cuda.device_count())
-print ('Current cuda device: ', torch.cuda.current_device(), ' **May not correspond to nvidia-smi ID above, check visibility parameter')
-print("Device name: ", torch.cuda.get_device_name(torch.cuda.current_device()))
-
-
 with open("datasets/D_KV_SUBS.json", "r") as f:
     dataset = json.load(f)
 
@@ -56,7 +38,7 @@ def pad_eos(ds):
 
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):
-    return ("{pairs}; {query} = ").format_map(row)
+    return ("{key}").format_map(row)
 
 def create_prompt(row):
     return prompt_input(row)
@@ -135,9 +117,9 @@ import transformers
 from transformers import TrainingArguments, TrainerCallback
 from trl import SFTTrainer
 
-batch_size = 4
+batch_size = 8
 gradient_accumulation_steps = 4
-num_train_epochs = 1
+num_train_epochs = 5
 
 total_num_steps = num_train_epochs * total_sequences // (batch_size * gradient_accumulation_steps)
 
@@ -169,9 +151,9 @@ training_args = TrainingArguments(
 )
 
 model = AutoModelForCausalLM.from_pretrained(model_id)
-# model= torch.nn.DataParallel(model)
-# device = torch.device("cuda")
-# model.to(device)
+model= torch.nn.DataParallel(model)
+device = torch.device("cuda")
+model.to(device)
 
 # checking prompt performance on base model
 with open("inference_inputs/inference_for_base_model_dataset_1.txt") as file:
@@ -227,7 +209,7 @@ trainer.train()
 model.push_to_hub("schaturv/llama2-7b-key-value-adapter")
 
 # testing on one prompt
-with open("inference_inputs/inference_for_dataset_1.txt") as file:
+with open("inference_inputs/context_only_adapter1.txt") as file:
     prompts = [line.rstrip() for line in file]
 
 for prompt in prompts:

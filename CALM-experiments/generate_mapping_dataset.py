@@ -35,8 +35,6 @@ def generate_random_key(knowledge_artifact):
 
 def key_pair_dataset_context_only(size):
     key_expressions = []
-    prompts = open("inference_inputs/context_only_adapter1_prompts.txt", 'w')
-    answers = open("inference_inputs/context_only_adapter1_answers.txt", 'w')
 
     for _ in range(size):
         collection = defaultdict(list)
@@ -48,8 +46,14 @@ def key_pair_dataset_context_only(size):
         mapped_examples = [(string_key, value) for string_key, value in unpacked_examples]
         key_expressions.append(mapped_examples)
 
-        collection["query"] = choices(collection["pairs"])
-        query, value = collection['query'][0][0]
+    return key_expressions
+
+def create_context_inference_prompts(size, collection):
+    prompts = open("inference_inputs/context_only_adapter1_prompts.txt", 'w')
+    answers = open("inference_inputs/context_only_adapter1_answers.txt", 'w')
+
+    for _ in range(size):
+        query, value = choices(collection)
         prompt = f"{query} = "
         prompts.write(prompt)
         prompts.write('\n')
@@ -57,7 +61,6 @@ def key_pair_dataset_context_only(size):
         answers.write(str(value))
         answers.write("\n")
 
-    return key_expressions
         
 def generate_key_pairs_dataset(size):
     key_expressions = []
@@ -90,6 +93,7 @@ def generate_key_pairs_dataset(size):
 
 # key_to_value_mappings = generate_key_pairs_dataset(LEN_DATASET)
 key_to_value_mappings = key_pair_dataset_context_only(LEN_PAIRINGS_DATASET)
+create_context_inference_prompts(20, key_to_value_mappings)
 
 # GENERATING DATASET 2
 def create_numeric_arithmetic_expressions(knowledge_base, expression_length):

@@ -93,7 +93,8 @@ def generate_key_pairs_dataset(size):
 
 # key_to_value_mappings = generate_key_pairs_dataset(LEN_DATASET)
 key_to_value_mappings = key_pair_dataset_context_only(LEN_PAIRINGS_DATASET)
-create_context_inference_prompts(20, key_to_value_mappings)
+print(key_to_value_mappings)
+# create_context_inference_prompts(20, key_to_value_mappings)
 
 # GENERATING DATASET 2
 def create_numeric_arithmetic_expressions(knowledge_base, expression_length):
@@ -261,7 +262,7 @@ def inference_dataset_for_adapter_1(size):
     icl.close()
 
 inference_knowledge_artifact = generate_string_to_number_mappings(30)
-print(inference_knowledge_artifact, dict(inference_knowledge_artifact))
+# print(inference_knowledge_artifact, dict(inference_knowledge_artifact))
 
 def inference_dataset_for_adapter_2(size):
     f = open("inference_inputs/inference_for_dataset_2.txt", 'w')

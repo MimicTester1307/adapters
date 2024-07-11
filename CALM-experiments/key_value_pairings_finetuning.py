@@ -209,7 +209,7 @@ trainer.train()
 model.push_to_hub("schaturv/llama2-7b-key-value-adapter")
 
 # testing on one prompt
-with open("inference_inputs/context_only_adapter1.txt") as file:
+with open("inference_inputs/context_only_adapter1_prompts.txt") as file:
     prompts = [line.rstrip() for line in file]
 
 for prompt in prompts:
@@ -218,3 +218,7 @@ for prompt in prompts:
     outputs = model.generate(inputs, max_new_tokens=40, do_sample=True, top_k=50, top_p=0.95)
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     print(tokenized_output[0])
+    
+with open("inference_inputs/context_only_adapter1_answers.txt") as file:
+    answers = [line.rstrip() for line in file]
+    print(answers)

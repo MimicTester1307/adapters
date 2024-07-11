@@ -35,7 +35,8 @@ def generate_random_key(knowledge_artifact):
 
 def key_pair_dataset_context_only(size):
     key_expressions = []
-    prompts = open("inference_inputs/context_only_adapter1.txt", 'w')
+    prompts = open("inference_inputs/context_only_adapter1_prompts.txt", 'w')
+    answers = open("inference_inputs/context_only_adapter1_answers.txt", 'w')
 
     for _ in range(size):
         collection = defaultdict(list)
@@ -50,8 +51,11 @@ def key_pair_dataset_context_only(size):
         collection["query"] = choices(collection["pairs"])
         query, value = collection['query'][0][0]
         prompt = f"{query} = "
-        icl.write(prompt)
-        icl.write('\n')
+        prompts.write(prompt)
+        prompts.write('\n')
+
+        answers.write(str(value))
+        answers.write("\n")
 
     return key_expressions
         

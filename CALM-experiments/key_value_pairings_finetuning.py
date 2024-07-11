@@ -27,8 +27,8 @@ tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token
 
 # dividing train and eval datasets
-train_dataset = dataset[:-600]
-eval_dataset = dataset[-600:]
+train_dataset = dataset[:-300]
+eval_dataset = dataset[-300:]
 
 print("lengths of datasets: ", len(train_dataset), len(eval_dataset))
 
@@ -119,7 +119,7 @@ from trl import SFTTrainer
 
 batch_size = 4
 gradient_accumulation_steps = 4
-num_train_epochs = 500
+num_train_epochs = 1000
 
 total_num_steps = num_train_epochs * total_sequences // (batch_size * gradient_accumulation_steps)
 

@@ -38,13 +38,10 @@ def key_pair_dataset_context_only(size):
 
     for _ in range(size):
         collection = defaultdict(list)
-
-        for sample_length in range(choice(list(range(3, 6)))):
-            collection["pairs"].append(choices(knowledge_artifact_list))
-
-        unpacked_examples = [item[0] for item in collection['pairs']]
-        mapped_examples = [(string_key, value) for string_key, value in unpacked_examples]
-        key_expressions.append(mapped_examples)
+        key, val = choices(knowledge_artifact_list)
+        # unpacked_examples = [item[0] for item in collection['pairs']]
+        # mapped_examples = [(string_key, value) for string_key, value in unpacked_examples]
+        key_expressions.append([(key, val)])
 
     return key_expressions
 

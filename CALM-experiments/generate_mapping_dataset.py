@@ -45,7 +45,7 @@ def key_pair_dataset_context_only(size):
             collection["pairs"].append(choices(knowledge_artifact_list))
 
         unpacked_examples = [item[0] for item in collection['pairs']]
-        mapped_examples = {string_key : value for string_key, value in unpacked_examples}
+        mapped_examples = [(string_key, value) for string_key, value in unpacked_examples]
         key_expressions.append(mapped_examples)
 
         collection["query"] = choices(collection["pairs"])

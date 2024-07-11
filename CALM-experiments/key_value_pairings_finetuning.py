@@ -38,7 +38,7 @@ def pad_eos(ds):
 
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):
-    return ("{key} ").format_map(row)
+    return ("{key} = ").format_map(row)
 
 def create_prompt(row):
     return prompt_input(row)
@@ -117,9 +117,9 @@ import transformers
 from transformers import TrainingArguments, TrainerCallback
 from trl import SFTTrainer
 
-batch_size = 8
+batch_size = 4
 gradient_accumulation_steps = 4
-num_train_epochs = 50
+num_train_epochs = 500
 
 total_num_steps = num_train_epochs * total_sequences // (batch_size * gradient_accumulation_steps)
 
@@ -213,7 +213,7 @@ with open("inference_inputs/context_only_adapter1_prompts.txt") as file:
 for prompt in prompts:
     inputs = tokenizer(prompt, return_tensors="pt").input_ids
     inputs = inputs.to('cuda')
-    outputs = model.generate(inputs, max_new_tokens=10)
+    outputs = model.generate(inputs, max_new_tokens=3)
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     print(tokenized_output[0])
     

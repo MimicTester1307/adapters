@@ -38,7 +38,7 @@ def pad_eos(ds):
 
 # adding create_prompt to use as formatting_func argument during training
 def prompt_input(row):
-    return ("{key}").format_map(row)
+    return ("{key} ").format_map(row)
 
 def create_prompt(row):
     return prompt_input(row)
@@ -151,7 +151,6 @@ training_args = TrainingArguments(
 )
 
 model = AutoModelForCausalLM.from_pretrained(model_id)
-model= torch.nn.DataParallel(model)
 device = torch.device("cuda")
 model.to(device)
 

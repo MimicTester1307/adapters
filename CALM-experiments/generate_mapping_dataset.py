@@ -38,9 +38,7 @@ def key_pair_dataset_context_only(size):
 
     for _ in range(size):
         collection = defaultdict(list)
-        key, val = choices(knowledge_artifact_list)
-        # unpacked_examples = [item[0] for item in collection['pairs']]
-        # mapped_examples = [(string_key, value) for string_key, value in unpacked_examples]
+        key, val = choices(knowledge_artifact_list)[0]
         key_expressions.append([(key, val)])
 
     return key_expressions
@@ -50,7 +48,7 @@ def create_context_inference_prompts(size, collection):
     answers = open("inference_inputs/context_only_adapter1_answers.txt", 'w')
 
     for _ in range(size):
-        query, value = choices(collection)
+        query, value = choices(collection)[0][0]
         prompt = f"{query} = "
         prompts.write(prompt)
         prompts.write('\n')
@@ -90,8 +88,8 @@ def generate_key_pairs_dataset(size):
 
 # key_to_value_mappings = generate_key_pairs_dataset(LEN_DATASET)
 key_to_value_mappings = key_pair_dataset_context_only(LEN_PAIRINGS_DATASET)
-print(key_to_value_mappings)
-# create_context_inference_prompts(20, key_to_value_mappings)
+# print(key_to_value_mappings)
+create_context_inference_prompts(20, key_to_value_mappings)
 
 # GENERATING DATASET 2
 def create_numeric_arithmetic_expressions(knowledge_base, expression_length):
@@ -117,8 +115,6 @@ def generate_arithmetic_training_dataset(length):
         arithmetic_value_expressions.append(arithmetic_value_expression)
         arithmetic_values.append(arithmetic_value)
     
-    # print(arithmetic_key_expressions, arithmetic_value_expressions, arithmetic_values)
-
     val_expr_to_arithmetic_val = list(zip(arithmetic_value_expressions, arithmetic_values))
 
     return val_expr_to_arithmetic_val
@@ -160,7 +156,6 @@ def generate_merged_dataset(size):
             'expression': '',
             'value': 0,
         }
-        # print(transformed_dict["pairs"].keys())
         arithmetic_key_expression, total_value = create_arithmetic_expressions_from_keys(mapped_examples, 5)
         transformed_collection["expression"] = arithmetic_key_expression
         transformed_collection['value'] = total_value
@@ -169,7 +164,6 @@ def generate_merged_dataset(size):
     return merged_dataset
 
 key_value_pairs_to_key_expressions = generate_merged_dataset(LEN_DATASET)
-# print("last dataset: \n\n", key_value_pairs_to_key_expressions)
 
 
 # WRITING TO JSON

@@ -119,7 +119,7 @@ from trl import SFTTrainer
 
 batch_size = 4
 gradient_accumulation_steps = 4
-num_train_epochs = 1000
+num_train_epochs = 2000
 
 total_num_steps = num_train_epochs * total_sequences // (batch_size * gradient_accumulation_steps)
 
@@ -131,7 +131,7 @@ training_args = TrainingArguments(
     per_device_train_batch_size=batch_size,
     per_device_eval_batch_size=batch_size//2,
     bf16=True,
-    learning_rate=2e-3,
+    learning_rate=5e-3,
     lr_scheduler_type="cosine",
     warmup_ratio = 0.1,
     max_steps = 10,

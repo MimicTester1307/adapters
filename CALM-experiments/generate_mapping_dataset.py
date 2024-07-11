@@ -171,16 +171,17 @@ key_value_pairs_to_key_expressions = generate_merged_dataset(LEN_DATASET)
 
 
 # WRITING TO JSON
-D_KV_SUBS, D_SUBS_VAL, D_KV_VAL =  key_to_value_mappings, [], key_value_pairs_to_key_expressions
+D_KV_SUBS, D_SUBS_VAL, D_KV_VAL =  [], [], key_value_pairs_to_key_expressions
 
-def create_arithmetic_dataset_list(mapping, dataset_list):
+def create_dataset_list(mapping, dataset_list):
     for key, val in mapping:
         record = defaultdict()
         record["key"] = key
         record["value"] = val
         dataset_list.append(record)
 
-create_arithmetic_dataset_list(val_expr_to_arithmetic_val, D_SUBS_VAL)
+create_dataset_list(val_expr_to_arithmetic_val, D_SUBS_VAL)
+create_dataset_list(key_to_value_mappings, D_KV_SUBS)
 
 # adapter 1
 with open("datasets/D_KV_SUBS.json", "w") as outfile:

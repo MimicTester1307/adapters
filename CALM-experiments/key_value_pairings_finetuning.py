@@ -155,7 +155,7 @@ device = torch.device("cuda")
 model.to(device)
 
 # checking prompt performance on base model
-with open("inference_inputs/inference_for_base_model_dataset_1.txt") as file:
+with open("inference_inputs/context_only_adapter1_prompts.txt") as file:
     prompts = [line.rstrip() for line in file]
 
 for prompt in prompts:
@@ -165,8 +165,8 @@ for prompt in prompts:
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     print(tokenized_output[0])
 
-model.add_adapter(peft_config, adapter_name="llama2-7b-key-value-pairings-adapter")
-model.set_adapter("llama2-7b-key-value-pairings-adapter")
+model.add_adapter(peft_config, adapter_name="llama2-7b-key-value-context-adapter")
+model.set_adapter("llama2-7b-key-value-context-adapter")
 
 for param in model.parameters():
   param.requires_grad = False  # freeze the model - train adapters later
@@ -205,7 +205,7 @@ print("active adapter before training: ", model.active_adapters())
 trainer.train()
 
 # save model
-model.push_to_hub("schaturv/llama2-7b-key-value-adapter")
+model.push_to_hub("schaturv/llama2-7b-key-value-context-adapter")
 
 # testing on one prompt
 with open("inference_inputs/context_only_adapter1_prompts.txt") as file:

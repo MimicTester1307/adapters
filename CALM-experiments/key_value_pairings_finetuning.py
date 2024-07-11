@@ -91,7 +91,7 @@ def pack(dataset, max_seq_len=1024):
 
 
 # length of sequences we get after packing them together
-total_sequences = len(train_ds_packed)
+total_sequences = len(train_dataset)
 print(total_sequences)
 
 # dataloader

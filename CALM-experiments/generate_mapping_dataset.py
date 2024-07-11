@@ -181,7 +181,16 @@ def create_dataset_list(mapping, dataset_list):
         dataset_list.append(record)
 
 create_dataset_list(val_expr_to_arithmetic_val, D_SUBS_VAL)
-create_dataset_list(key_to_value_mappings, D_KV_SUBS)
+
+def create_context_dataset(mappings, dataset_list):
+    for pair in mappings:
+        for key, val in pair:
+            record = defaultdict()
+            record["key"] = key
+            record["value"] = val
+            dataset_list.append(record)
+
+create_context_dataset(key_to_value_mappings, D_KV_SUBS)
 
 # adapter 1
 with open("datasets/D_KV_SUBS.json", "w") as outfile:

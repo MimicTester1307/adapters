@@ -131,6 +131,7 @@ training_args = TrainingArguments(
     per_device_train_batch_size=batch_size,
     per_device_eval_batch_size=batch_size//2,
     bf16=True,
+    num_train_epochs = num_train_epochs,
     learning_rate=5e-3,
     lr_scheduler_type="cosine",
     warmup_ratio = 0.1,

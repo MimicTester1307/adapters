@@ -27,8 +27,8 @@ tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token
 
 # dividing train and eval datasets
-train_dataset = dataset[:-40]
-eval_dataset = dataset[-40:]
+train_dataset = dataset[:-100]
+eval_dataset = dataset[-100:]
 
 print("lengths of datasets: ", len(train_dataset), len(eval_dataset))
 

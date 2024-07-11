@@ -27,8 +27,8 @@ tokenizer = AutoTokenizer.from_pretrained(model_id)
 tokenizer.pad_token = tokenizer.eos_token
 
 # dividing train and eval datasets
-train_dataset = dataset[:-100]
-eval_dataset = dataset[-100:]
+train_dataset = dataset[:-600]
+eval_dataset = dataset[-600:]
 
 print("lengths of datasets: ", len(train_dataset), len(eval_dataset))
 
@@ -91,7 +91,7 @@ def pack(dataset, max_seq_len=1024):
 
 
 # length of sequences we get after packing them together
-total_sequences = len(train_dataset)
+total_sequences = len(train_ds_packed)
 print(total_sequences)
 
 # dataloader
@@ -191,8 +191,8 @@ model.to(device)
 
 trainer = Trainer(
     model=model,
-    train_dataset=train_dataset,
-    eval_dataset=eval_dataset,
+    train_dataset=train_ds_packed,
+    eval_dataset=eval_ds_packed,
     args=training_args,
     data_collator=transformers.DataCollatorForLanguageModeling(tokenizer, mlm=False),
     # callbacks=[MyCallBack],

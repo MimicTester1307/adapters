@@ -160,7 +160,7 @@ with open("inference_inputs/inference_for_base_model_dataset_1.txt") as file:
 
 for prompt in prompts:
     inputs = tokenizer(prompt, return_tensors="pt").input_ids
-    # inputs = inputs.to('cuda')
+    inputs = inputs.to('cuda')
     outputs = model.generate(inputs, max_new_tokens=40, do_sample=True, top_k=50, top_p=0.95)
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     print(tokenized_output[0])

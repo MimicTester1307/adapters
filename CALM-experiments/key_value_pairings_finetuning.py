@@ -203,7 +203,7 @@ trainer = Trainer(
     # use_cache=False,
 )
 
-print("active adapter before training: ", model.active_adapters())
+# print("active adapter before training: ", model.active_adapters())
 
 trainer.train()
 

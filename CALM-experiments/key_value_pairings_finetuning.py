@@ -33,7 +33,7 @@ eval_dataset = dataset[-300:]
 print("lengths of datasets: ", len(train_dataset), len(eval_dataset))
 
 def pad_eos(ds):
-    EOS_TOKEN = "</s>"
+    EOS_TOKEN = "" # "</s>"
     return [f"{row['value']}{EOS_TOKEN}" for row in ds]
 
 # adding create_prompt to use as formatting_func argument during training
@@ -117,9 +117,9 @@ import transformers
 from transformers import TrainingArguments, TrainerCallback
 from trl import SFTTrainer
 
-batch_size = 4
-gradient_accumulation_steps = 4
-num_train_epochs = 500
+batch_size = 10
+gradient_accumulation_steps = 1
+num_train_epochs = 200
 
 total_num_steps = num_train_epochs * total_sequences // (batch_size * gradient_accumulation_steps)
 
@@ -129,10 +129,10 @@ output_dir = "./output/"
 training_args = TrainingArguments(
     output_dir=output_dir,
     per_device_train_batch_size=batch_size,
-    per_device_eval_batch_size=batch_size//2,
+    per_device_eval_batch_size=batch_size,
     bf16=True,
     num_train_epochs = num_train_epochs,
-    learning_rate=5e-3,
+    learning_rate=1e-4,
     lr_scheduler_type="cosine",
     warmup_ratio = 0.1,
     # max_steps = 10,
@@ -144,9 +144,9 @@ training_args = TrainingArguments(
     eval_steps=total_num_steps // num_train_epochs,
     # logging strategies
     logging_strategy="steps",
-    logging_steps=5,
+    logging_steps=1,
     save_strategy="steps",
-    save_steps=total_num_steps // num_train_epochs,
+    save_steps=total_num_steps,
     use_cpu=False,
     do_predict=True,
 )
@@ -166,8 +166,9 @@ model.to(device)
 #     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
 #     print(tokenized_output[0])
 
-model.add_adapter(peft_config, adapter_name="llama2-7b-key-value-context-adapter")
-model.set_adapter("llama2-7b-key-value-context-adapter")
+
+# model.add_adapter(peft_config, adapter_name="key-value-context-adapter")
+# model.set_adapter("key-value-context-adapter")
 
 for param in model.parameters():
   param.requires_grad = False  # freeze the model - train adapters later
@@ -190,8 +191,10 @@ class MyCallBack(TrainerCallback):
 device = torch.device("cuda")
 model.to(device)
 
+peft_model = get_peft_model(model, peft_config)
+
 trainer = Trainer(
-    model=model,
+    model=peft_model,
     train_dataset=train_ds_packed,
     eval_dataset=eval_ds_packed,
     args=training_args,

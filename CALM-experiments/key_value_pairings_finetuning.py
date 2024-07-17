@@ -141,7 +141,7 @@ training_args = TrainingArguments(
     gradient_checkpointing=True,
     gradient_checkpointing_kwargs=dict(use_reentrant=False),
     evaluation_strategy="steps",
-    eval_steps=(len(eval_ds_packed) / per_device_eval_batch_size),
+    eval_steps=(len(eval_ds_packed) / batch_size),
     # logging strategies
     logging_strategy="steps",
     logging_steps=1,

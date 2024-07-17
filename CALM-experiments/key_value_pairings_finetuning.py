@@ -147,7 +147,7 @@ training_args = TrainingArguments(
     logging_steps=1,
     save_strategy="steps",
     save_steps=total_num_steps,
-    use_cpu=True,
+    use_cpu=False,
     do_predict=True,
 )
 

@@ -117,7 +117,7 @@ import transformers
 from transformers import TrainingArguments, TrainerCallback
 from trl import SFTTrainer
 
-batch_size = 10
+batch_size = 5
 gradient_accumulation_steps = 1
 num_train_epochs = 100
 
@@ -152,8 +152,8 @@ training_args = TrainingArguments(
 )
 
 model = AutoModelForCausalLM.from_pretrained(model_id)
-# device = torch.device("cuda")
-# model.to(device)
+device = torch.device("cuda")
+model.to(device)
 
 # checking prompt performance on base model
 # with open("inference_inputs/context_only_adapter1_prompts.txt") as file:
@@ -188,8 +188,8 @@ class MyCallBack(TrainerCallback):
          generated_text  = model.generate(tokens["input_ids"], tokens["prompt"])
 
 # model= torch.nn.DataParallel(model)
-# device = torch.device("cuda")
-# model.to(device)
+device = torch.device("cuda")
+model.to(device)
 
 peft_model = get_peft_model(model, peft_config)
 
@@ -216,7 +216,7 @@ with open("inference_inputs/context_only_adapter1_prompts.txt") as file:
 
 for prompt in prompts:
     inputs = tokenizer(prompt, return_tensors="pt").input_ids
-    # inputs = inputs.to('cuda')
+    inputs = inputs.to('cuda')
     outputs = model.generate(inputs, max_new_tokens=3)
     tokenized_output = tokenizer.batch_decode(outputs, skip_special_tokens=True)
     print(tokenized_output[0])

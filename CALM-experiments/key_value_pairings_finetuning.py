@@ -93,6 +93,8 @@ eval_ds_packed = pack(eval_dataset)
 # length of sequences we get after packing them together
 total_sequences = len(train_ds_packed)
 print("total packed sequences: ", total_sequences)
+print("total packed sequences eval dataset: ", len(eval_ds_packed))
+print("single seq in packed sequences training dataset: ", train_ds_packed[0])
 
 # dataloader
 from torch.utils.data import DataLoader

@@ -71,7 +71,7 @@ max_seq_len = 1024
 
 # print(tokenizer([s["example"] for s in train_dataset]))
 
-def pack(dataset, max_seq_len=16):
+def pack(dataset, max_seq_len=256):
     tkds_ids = tokenizer([s["example"] for s in dataset])["input_ids"]
     
     all_token_ids = []

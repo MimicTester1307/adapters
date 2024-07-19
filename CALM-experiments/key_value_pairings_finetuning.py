@@ -121,7 +121,7 @@ from trl import SFTTrainer
 
 batch_size = 4
 gradient_accumulation_steps = 16
-num_train_epochs = 30
+num_train_epochs = 1
 
 total_num_steps = num_train_epochs * total_sequences // (batch_size * gradient_accumulation_steps)
 

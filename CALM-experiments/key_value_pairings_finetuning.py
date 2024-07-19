@@ -151,7 +151,7 @@ training_args = TrainingArguments(
     do_predict=True,
 )
 
-model = AutoModelForCausalLM.from_pretrained(model_id)
+model = AutoModelForCausalLM.from_pretrained(model_id, device_map="auto")
 device = torch.device("cuda")
 model.to(device)
 

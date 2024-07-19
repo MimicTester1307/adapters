@@ -92,7 +92,7 @@ eval_ds_packed = pack(eval_dataset)
 
 # length of sequences we get after packing them together
 total_sequences = len(train_ds_packed)
-print(total_sequences)
+print("total packed sequences: ", total_sequences)
 
 # dataloader
 from torch.utils.data import DataLoader
@@ -123,14 +123,15 @@ num_train_epochs = 30
 
 total_num_steps = num_train_epochs * total_sequences // (batch_size * gradient_accumulation_steps)
 
-print(total_num_steps)
+print("total num of steps ", total_num_steps)
 
 output_dir = "./output/"
 training_args = TrainingArguments(
     output_dir=output_dir,
     per_device_train_batch_size=batch_size,
     per_device_eval_batch_size=batch_size,
-    bf16=True,
+    fp16=True,
+    # bf16=True,
     num_train_epochs = num_train_epochs,
     learning_rate=1e-4,
     lr_scheduler_type="cosine",
@@ -151,7 +152,8 @@ training_args = TrainingArguments(
     do_predict=True,
 )
 
-model = AutoModelForCausalLM.from_pretrained(model_id, device_map="auto", torch_dtype=torch.bfloat16)
+model = AutoModelForCausalLM.from_pretrained(model_id)
+# model = AutoModelForCausalLM.from_pretrained(model_id, device_map="auto", torch_dtype=torch.bfloat16)
 device = torch.device("cuda")
 model.to(device)
 
